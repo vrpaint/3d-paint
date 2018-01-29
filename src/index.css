@@ -1,0 +1,16 @@
+#scene{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+#score{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+   color: white;
+    text-shadow: black 0 0 2px;
+    font-size: 40px;
+}
