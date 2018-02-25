@@ -1,7 +1,9 @@
 import * as BABYLON from 'babylonjs';
+import World from "../World";
 
-export default function createCamera(scene:BABYLON.Scene):BABYLON.FreeCamera{
+export default function createCamera(world: World): BABYLON.FreeCamera | BABYLON.WebVRFreeCamera {
 
+    const scene = world.scene;
 
 
 
@@ -23,14 +25,10 @@ export default function createCamera(scene:BABYLON.Scene):BABYLON.FreeCamera{
     },700);
 
 
+    if (!world.webVR) {
 
-
-    if(window.location.pathname==='/novr' || window.location.hash==='#novr') {
-
-        //const camera = new BABYLON.FreeCamera("FreeCamera", BABYLON.Vector3.Zero(), scene);
-
-
-        const camera = new BABYLON.VRDeviceOrientationFreeCamera ("Camera",  BABYLON.Vector3.Zero(), scene);
+        const camera = new BABYLON.FreeCamera("FreeCamera", BABYLON.Vector3.Zero(), scene);
+        //const camera = new BABYLON.VRDeviceOrientationFreeCamera ("Camera",  BABYLON.Vector3.Zero(), scene);
 
         return camera;
 
@@ -43,13 +41,46 @@ export default function createCamera(scene:BABYLON.Scene):BABYLON.FreeCamera{
 
 
         const camera = new BABYLON.WebVRFreeCamera("camera", BABYLON.Vector3.Zero(), scene);
+
+
         scene.onPointerDown = function () {
-            scene.onPointerDown = function (event) {
-                console.log('WebWR click event',event)
-            };
+
+
             camera.attachControl(document.getElementById('scene'), true);
+
+            //todo better
+            /*setTimeout(()=>{
+
+
+                console.log('camera.leftController',camera.leftController);
+
+
+                camera.leftController.onTriggerStateChangedObservable.add((event)=>{
+
+                    console.log('onTriggerStateChangedObservable',event);
+
+
+                });
+
+
+            },500);*/
+
+
         };
 
+
+        /* setInterval(()=>{
+             console.log('camera.leftController',camera.leftController);
+         },1000);
+
+
+
+
+
+
+         (camera as any).onControllersAttached = function(controllers: any) {
+             console.log(controllers);
+         }*/
 
 
 

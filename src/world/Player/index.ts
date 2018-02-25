@@ -13,7 +13,7 @@ export default class Player {
 
     constructor(public world: World) {
 
-        this.camera = createCamera(world.scene);
+        this.camera = createCamera(world);
         this.mesh = BABYLON.Mesh.CreateSphere("player", 16, 1, world.scene);
         this.mesh.isVisible = false;
         this.mesh.position = new BABYLON.Vector3(0, 2, 0);

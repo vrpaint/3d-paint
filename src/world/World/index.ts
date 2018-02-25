@@ -11,6 +11,7 @@ import createSkyboxMesh from './createSkyboxMesh';
 export default class World{
     public engine:BABYLON.Engine;
     public scene:BABYLON.Scene;
+    public webVR: boolean;
     public materialFactory:MaterialFactory;
     public worldGenerator:WorldGenerator;
     public lights:BABYLON.Light[];
@@ -25,6 +26,8 @@ export default class World{
     }
 
     run(){
+        this.webVR = !(window.location.pathname === '/novr' || window.location.hash === '#novr');
+
         this.bricks=[];
         this.engine = new BABYLON.Engine(this.canvasElement, true);
 
