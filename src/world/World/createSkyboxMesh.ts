@@ -11,5 +11,12 @@ export default function createSkyboxMesh(scene:BABYLON.Scene):BABYLON.AbstractMe
     skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     skyboxMaterial.disableLighting = true;
     skyboxMesh.material = skyboxMaterial;
+
+    scene.registerBeforeRender(() => {
+
+        skyboxMesh.rotation.y = (performance.now() / 1000 * Math.PI * 2) / 300;
+
+    });
+
     return skyboxMesh;
 }

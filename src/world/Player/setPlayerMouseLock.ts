@@ -39,6 +39,9 @@ export default function setPlayerMouseLock(canvasElement: HTMLCanvasElement,
     function mouseMoveLocked(event: PointerEvent) {
 
         //console.log('moving');
+        if (document.pointerLockElement !== canvasElement) {
+            return;
+        }
 
         const x = event.movementX;
         const    y = event.movementY;

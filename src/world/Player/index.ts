@@ -16,10 +16,10 @@ export default class Player {
         this.camera = createCamera(world);
         this.mesh = BABYLON.Mesh.CreateSphere("player", 16, 1, world.scene);
         this.mesh.isVisible = false;
-        this.mesh.position = new BABYLON.Vector3(0, 2, 0);
+        //this.mesh.position = new BABYLON.Vector3(0, 2, 0);
         this.mesh.rotation = new BABYLON.Vector3(0, 0, 0);
         this.mesh.scaling = new BABYLON.Vector3(1, 4, 1);
-        this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(
+        /*this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(
             this.mesh,
             BABYLON.PhysicsImpostor.SphereImpostor,
             {
@@ -28,13 +28,13 @@ export default class Player {
                 friction: 100
             },
             world.scene
-        );
+        );*/
 
 
-        this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
+        /*this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
             this.camera.position = this.mesh.position;
             this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
-        });
+        });*/
 
 
         setPlayerMouseLock(this.world.canvasElement, this.camera);

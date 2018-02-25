@@ -22,7 +22,7 @@ export default class MaterialFactory{
 
             let textureScale=1;
             if(materialName==='grass'){
-                textureScale=100;
+                textureScale = 200;
             }
 
             const material = new BABYLON.StandardMaterial(materialName, this._scene);
