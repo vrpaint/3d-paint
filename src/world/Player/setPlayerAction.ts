@@ -1,48 +1,20 @@
 import * as BABYLON from 'babylonjs';
 import Player from './index';
-import {isNull} from "util";
-import * as _ from "lodash";
-
-
-let score = 0;
-
+import DrawingTool from "../DrawingTools/DrawingTool";
 
 export default function setPlayerAction(
     player:Player
 ){
 
 
-    let path:BABYLON.Vector3[] = [];
-    let mesh:BABYLON.Mesh|null = null;
+    //let path:BABYLON.Vector3[] = [];
+    //let mesh:BABYLON.Mesh|null = null;
 
-
-    function redrawMesh(){
-        if(path.length>1) {
-            if (!isNull(mesh)) {
-                mesh.dispose();
-            }
-
-            console.log(`Redrawing ${path.length} long tube.`);
-
-            mesh = BABYLON.MeshBuilder.CreateTube(
-                "tube",
-                {
-                    path,
-                    radius: .05
-                },
-                player.world.scene
-            );
-        }
-    }
-
-
-    const redrawMeshThrottled = _.throttle(redrawMesh,50);
 
 
     if (!player.world.webVR) {
 
-        let painting = false;
-
+        /*let painting = false;
 
         player.world.canvasElement.addEventListener("pointerdown", () => {
             painting=true;
@@ -59,7 +31,7 @@ export default function setPlayerAction(
             redrawMeshThrottled();
             mesh = null;
             path = [];
-        });
+        });*/
 
 
     } else {
@@ -76,37 +48,33 @@ export default function setPlayerAction(
             controllers.forEach((controller) => {
 
 
-                const sphere = BABYLON.Mesh.CreateSphere("sphere", 16, 1, player.world.scene);
+                const drawingTool = new DrawingTool(player.world.scene);
 
+                let intensity = 0;
 
                 controller.onTriggerStateChangedObservable.add((gamepadButton) => {
 
-
-                    //console.log('onTriggerStateChangedObservable',gamepadButton);
-
-                    sphere.position = controller.devicePosition;
-                    sphere.scaling = BABYLON.Vector3.One().scaleInPlace(gamepadButton.value / 5 + .05);
-
-
                     if (gamepadButton.pressed) {
-
-
-                        //console.log('controller.position',controller.mesh.position);
-
-                        path.push(controller.devicePosition.clone());
-                        redrawMeshThrottled();
-
-
+                        drawingTool.start();
                     } else {
-
-                        redrawMeshThrottled();
-                        mesh = null;
-                        path = [];
-
+                        drawingTool.end();
                     }
 
+                    intensity = gamepadButton.value;
 
                 });
+
+
+                function updatePositon() {
+                    drawingTool.update(
+                        controller.devicePosition,
+                        intensity
+                    );
+                    requestAnimationFrame(updatePositon);
+                }
+
+                updatePositon();
+
 
 
             });
