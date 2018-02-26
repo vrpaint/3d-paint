@@ -48,7 +48,7 @@ export default function setPlayerAction(
             controllers.forEach((controller) => {
 
 
-                const drawingTool = new DrawingTool(player.world.scene);
+                const drawingTool = new DrawingTool(player.world);
 
                 let intensity = 0;
 
