@@ -1,6 +1,11 @@
 import * as BABYLON from 'babylonjs';
 import Player from './index';
-import DrawingTool from "../DrawingTools/DrawingTool";
+import TubeDrawingTool from "../DrawingTools/tools/TubeDrawingTool";
+import BrickDrawingTool from "../DrawingTools/tools/BrickDrawingTool";
+
+
+TubeDrawingTool;
+BrickDrawingTool;
 
 export default function setPlayerAction(
     player:Player
@@ -48,7 +53,7 @@ export default function setPlayerAction(
             controllers.forEach((controller) => {
 
 
-                const drawingTool = new DrawingTool(player.world);
+                const drawingTool = new TubeDrawingTool(player.world);
 
                 let intensity = 0;
 
