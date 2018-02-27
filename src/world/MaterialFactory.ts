@@ -20,6 +20,8 @@ export default class MaterialFactory{
             return cashedMaterial;
         }else {
 
+            console.log(`Creating new material ${materialName}.`);
+
             const material = new BABYLON.StandardMaterial(materialName, this._scene);
             material.backFaceCulling = false;
 

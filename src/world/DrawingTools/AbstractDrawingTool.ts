@@ -1,14 +1,14 @@
 import * as BABYLON from "babylonjs";
 import World from "../World";
+import DrawingPoint from "./DrawingPoint";
 
 
 export default class AbstractDrawingTool {
 
     public drawing: boolean = false
     public drawingMesh: BABYLON.Mesh | null;
+    public currentPoint: DrawingPoint;
     private _toolMesh: BABYLON.Mesh;
-    private _position: BABYLON.Vector3;
-    private _intensity: number;
 
     constructor(public world: World) {
         this._toolMesh = this.createToolMesh();
@@ -36,16 +36,15 @@ export default class AbstractDrawingTool {
 
     end() {
         this.drawing = false;
+        console.log('Drawed ', this.drawingMesh);
 
     }
 
-    update(position: BABYLON.Vector3,
-           intensity: number) {
-        this._position = position;
-        this._intensity = intensity;
+    update(point: DrawingPoint) {
+        this.currentPoint = point;
 
-        this._toolMesh.position = this._position;
-        this._toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(this.intensityToRadius(intensity));
+        this._toolMesh.position = point.position;
+        this._toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(this.intensityToRadius(point.intensity));
     }
 
 }

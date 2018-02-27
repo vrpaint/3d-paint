@@ -7,7 +7,7 @@ export default class TubeDrawingTool extends AbstractPathDrawingTool {
     public createDrawingMesh(): BABYLON.Mesh {
 
         const mesh = BABYLON.MeshBuilder.CreateTube(
-            "tube",
+            "tube" + Math.random(),
             {
                 path: this.drawingPath.map((drawingPoint) => drawingPoint.position),
                 radius: .05,

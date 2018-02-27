@@ -1,15 +1,17 @@
 import * as BABYLON from 'babylonjs';
 import Player from './index';
+import DrawingPoint from "../DrawingTools/DrawingPoint";
 import TubeDrawingTool from "../DrawingTools/tools/TubeDrawingTool";
 import BrickDrawingTool from "../DrawingTools/tools/BrickDrawingTool";
 
 
-TubeDrawingTool;
-BrickDrawingTool;
-
 export default function setPlayerAction(
     player:Player
 ){
+
+
+    const tubeDrawingTool = new TubeDrawingTool(player.world);
+    const brickDrawingTool = new BrickDrawingTool(player.world);
 
 
     //let path:BABYLON.Vector3[] = [];
@@ -50,10 +52,10 @@ export default function setPlayerAction(
 
             console.log('controllers', controllers);
 
-            controllers.forEach((controller) => {
+            controllers.forEach((controller, i) => {
 
 
-                const drawingTool = new TubeDrawingTool(player.world);
+                const drawingTool = i === 0 ? tubeDrawingTool : brickDrawingTool;
 
                 let intensity = 0;
 
@@ -71,10 +73,10 @@ export default function setPlayerAction(
 
 
                 function updatePositon() {
-                    drawingTool.update(
+                    drawingTool.update(new DrawingPoint(
                         controller.devicePosition,
                         intensity
-                    );
+                    ));
                     requestAnimationFrame(updatePositon);
                 }
 

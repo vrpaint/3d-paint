@@ -12,10 +12,9 @@ export default class AbstractPathDrawingTool extends AbstractDrawingTool {
         this.drawingPath = [];
     }
 
-    update(position: BABYLON.Vector3,
-           intensity: number) {
+    update(point: DrawingPoint) {
 
-        super.update(position, intensity);
+        super.update(point);
 
         if (this.drawing) {
 
@@ -23,16 +22,23 @@ export default class AbstractPathDrawingTool extends AbstractDrawingTool {
                 this.drawingPath.length === 0 ||
                 this.drawingPath[this.drawingPath.length - 1]
                     .position
-                    .subtract(position)
+                    .subtract(point.position)
                     .length() > 0.01
             ) {
 
-                this.drawingPath.push(new DrawingPoint(
-                    position.clone(),
-                    intensity
-                ));
+                this.drawingPath.push(point.clone());
                 this._redrawMesh();
             }
+        }
+    }
+
+    private _redrawMesh() {
+        if (this.drawingPath.length > 1) {
+            if (!isNull(this.drawingMesh)) {
+                this.drawingMesh.dispose();
+                console.log('disposing');
+            }
+            this.drawingMesh = this.createDrawingMesh();
         }
     }
 
@@ -40,13 +46,5 @@ export default class AbstractPathDrawingTool extends AbstractDrawingTool {
         throw new Error(`This method should be overwritten.`);
     }
 
-    private _redrawMesh() {
-        if (this.drawingPath.length > 1) {
-            if (!isNull(this.drawingMesh)) {
-                this.drawingMesh.dispose();
-            }
-            this.drawingMesh = this.createDrawingMesh();
-        }
-    }
 
 }

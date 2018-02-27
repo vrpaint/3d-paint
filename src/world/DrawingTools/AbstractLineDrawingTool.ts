@@ -5,34 +5,25 @@ import {isNull} from "util";
 
 export default class AbstractLineDrawingTool extends AbstractDrawingTool {
 
-    public drawingPath: DrawingPoint[];
+    public drawingPointA: DrawingPoint;
+    public drawingPointB: DrawingPoint;
 
     restart() {
         super.restart();
-        this.drawingPath = [];
+        this.drawingPointA = this.currentPoint.clone();
+        this.drawingPointB = this.currentPoint;
     }
 
-    update(position: BABYLON.Vector3,
-           intensity: number) {
 
-        super.update(position, intensity);
+    update(point: DrawingPoint) {
+
+        super.update(point);
 
         if (this.drawing) {
 
-            if (
-                this.drawingPath.length === 0 ||
-                this.drawingPath[this.drawingPath.length - 1]
-                    .position
-                    .subtract(position)
-                    .length() > 0.01
-            ) {
+            this.drawingPointB = this.currentPoint;
+            this._redrawMesh();
 
-                this.drawingPath.push(new DrawingPoint(
-                    position.clone(),
-                    intensity
-                ));
-                this._redrawMesh();
-            }
         }
     }
 
@@ -41,12 +32,13 @@ export default class AbstractLineDrawingTool extends AbstractDrawingTool {
     }
 
     private _redrawMesh() {
-        if (this.drawingPath.length > 1) {
-            if (!isNull(this.drawingMesh)) {
-                this.drawingMesh.dispose();
-            }
-            this.drawingMesh = this.createDrawingMesh();
+        if (!isNull(this.drawingMesh)) {
+            this.drawingMesh.dispose();
+            console.log('disposing');
         }
+        this.drawingMesh = this.createDrawingMesh();
     }
+
+
 
 }
