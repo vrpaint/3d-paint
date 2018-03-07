@@ -19,10 +19,6 @@ export default class AbstractDrawingTool {
     }
 
 
-    intensityToRadius(intensity: number) {//todo as param in constructor (or config as param)
-        return intensity / 20 + .01;
-    }
-
     start() {
         if (this.drawing === false) {//todo is it best solution?
             this.restart();
