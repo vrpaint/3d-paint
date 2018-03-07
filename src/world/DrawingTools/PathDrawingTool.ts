@@ -41,7 +41,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
                 this.drawingPath[this.drawingPath.length - 1]
                     .position
                     .subtract(point.position)
-                    .length() > 0.01
+                    .length() > this.options.tessalationInLength
             ) {
 
                 this.drawingPath.push(point.clone());
@@ -63,28 +63,25 @@ export default class PathDrawingTool extends AbstractDrawingTool {
     public createDrawingMesh(): BABYLON.Mesh {
 
 
-        const TESALATION = 10;
+        const pathArray: BABYLON.Vector3[][] = this.options.transformPath(this.drawingPath).map((drawingPoint) => {
 
 
-        const pathArray: BABYLON.Vector3[][] = this.drawingPath.map((drawingPoint) => {
-
-
-            const radius = this.intensityToRadius(drawingPoint.intensity);
+            const radius = this.options.countPointRadius(drawingPoint);
 
 
             const layer = [];
 
 
-            for (let i = 0; i <= TESALATION; i++) {
+            for (let i = 0; i <= this.options.tessalationInRadius; i++) {
 
 
-                const rotation = i / TESALATION * Math.PI * 2;
+                const rotation = i / this.options.tessalationInRadius * Math.PI * 2;
 
-                layer.push(new BABYLON.Vector3(
+                layer.push(this.options.modifySurfacePoint(new BABYLON.Vector3(
                     Math.cos(rotation) * radius,
                     0,
                     Math.sin(rotation) * radius,
-                ).addInPlace(drawingPoint.position))
+                ).addInPlace(drawingPoint.position), drawingPoint, this));
 
 
             }
@@ -108,7 +105,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
             this.world.scene
         );*/
 
-        mesh.material = this.world.materialFactory.getMaterial('#5effcd');
+        mesh.material = this.options.material;
 
         return mesh;
     }
