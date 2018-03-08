@@ -1,8 +1,7 @@
 import * as BABYLON from 'babylonjs';
 import Player from './index';
 import DrawingPoint from "../DrawingTools/DrawingPoint";
-import TubeDrawingTool from "../DrawingTools/tools/TubeDrawingTool";
-import BrickDrawingTool from "../DrawingTools/tools/BrickDrawingTool";
+import PathDrawingToolFactory from "../DrawingTools/PathDrawingToolFactory"
 
 
 export default function setPlayerAction(
@@ -10,8 +9,9 @@ export default function setPlayerAction(
 ){
 
 
-    const tubeDrawingTool = new TubeDrawingTool(player.world);
-    const brickDrawingTool = new BrickDrawingTool(player.world);
+    const pathDrawingToolFactory = new PathDrawingToolFactory(player.world);
+    const tubeDrawingTool = pathDrawingToolFactory.createSimpleTool();
+    const brickDrawingTool = pathDrawingToolFactory.createSimpleTool();
 
 
     //let path:BABYLON.Vector3[] = [];
@@ -75,6 +75,7 @@ export default function setPlayerAction(
                 function updatePositon() {
                     drawingTool.update(new DrawingPoint(
                         controller.devicePosition,
+                        controller.deviceRotationQuaternion,
                         intensity
                     ));
                     requestAnimationFrame(updatePositon);

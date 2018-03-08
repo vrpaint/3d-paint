@@ -8,10 +8,11 @@ export default class AbstractDrawingTool {
     public drawing: boolean = false
     public drawingMesh: BABYLON.Mesh | null;
     public currentPoint: DrawingPoint;
-    private _toolMesh: BABYLON.Mesh;
+
+    //private _toolMesh: BABYLON.Mesh;
 
     constructor(public world: World) {
-        this._toolMesh = this.createToolMesh();
+        //this._toolMesh = this.createToolMesh();
     }
 
     createToolMesh(): BABYLON.Mesh {
@@ -39,8 +40,8 @@ export default class AbstractDrawingTool {
     update(point: DrawingPoint) {
         this.currentPoint = point;
 
-        this._toolMesh.position = point.position;
-        this._toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(this.intensityToRadius(point.intensity));
+        //this._toolMesh.position = point.position;
+        //todo this._toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(this.intensityToRadius(point.intensity));
     }
 
 }

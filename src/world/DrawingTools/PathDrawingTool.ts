@@ -72,10 +72,24 @@ export default class PathDrawingTool extends AbstractDrawingTool {
             const layer = [];
 
 
-            for (let i = 0; i <= this.options.tessalationInRadius; i++) {
+            for (let i = 0; i <= this.options.tessalationInRadius + 1; i++) {
 
 
                 const rotation = i / this.options.tessalationInRadius * Math.PI * 2;
+
+                const surfaceFlatPoint = new BABYLON.Vector2(
+                    Math.cos(rotation) * radius,
+                    Math.sin(rotation) * radius
+                );
+
+                //surfaceFlatPoint.
+
+
+
+
+
+
+
 
                 layer.push(this.options.modifySurfacePoint(new BABYLON.Vector3(
                     Math.cos(rotation) * radius,

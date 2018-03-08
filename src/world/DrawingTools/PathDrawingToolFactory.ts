@@ -13,14 +13,32 @@ export default class {
         return new PathDrawingTool(
             this._world,
             {
-                transformPath: (path: DrawingPoint[]) => path,
+                transformPath: this.transformPath,
                 modifySurfacePoint: (point: BABYLON.Vector3, center: DrawingPoint, tool: PathDrawingTool) => point,
-                tessalationInLength: 0.1,
-                tessalationInRadius: 3,
+                tessalationInLength: 0.02,
+                tessalationInRadius: 7,
                 countPointRadius: (center: DrawingPoint) => center.intensity / 20 + .01,
                 material: this._world.materialFactory.getMaterial('#aefffd')
             }
         );
+
+    }
+
+
+    transformPath(path: DrawingPoint[]): DrawingPoint[] {
+
+
+        return path.map((drawingPoint) => {
+
+            drawingPoint = drawingPoint.clone();
+
+
+            //drawingPoint.rotation = new BABYLON.Quaternion(0,0,0);
+
+            return drawingPoint;
+
+        })
+
 
     }
 
