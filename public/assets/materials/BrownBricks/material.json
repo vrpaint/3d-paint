@@ -1,0 +1,23 @@
+{
+  "textures": {
+    "default": {
+      "src": "albedo.jpeg",
+      "uScale": 2,
+      "vScale": 2
+    },
+    "ambient": null,
+    "diffuse": "default",
+    "specular": "#ffeacb",
+    "emissive": "default",
+    "bump": {
+      "src": "normal.jpeg",
+      "uScale": 2,
+      "vScale": 2
+    }
+  },
+  "physics": {
+    "mass": 100,
+    "-friction": 0,
+    "-restitution": 0
+  }
+}
