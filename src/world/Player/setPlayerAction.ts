@@ -1,7 +1,7 @@
 import * as BABYLON from 'babylonjs';
 import Player from './index';
 import DrawingPoint from "../DrawingTools/DrawingPoint";
-import PathDrawingToolFactory from "../DrawingTools/PathDrawingToolFactory"
+import DrawingToolFactory from "../DrawingTools/DrawingToolFactory"
 
 
 export default async function setPlayerAction(
@@ -9,9 +9,11 @@ export default async function setPlayerAction(
 ){
 
 
-    const pathDrawingToolFactory = new PathDrawingToolFactory(player.world);
-    const tubeDrawingTool = await pathDrawingToolFactory.createSimpleTool();
-    const brickDrawingTool = await pathDrawingToolFactory.createSimpleTool();
+    const drawingToolFactory = new DrawingToolFactory(player.world);
+    //const tubeDrawingTool = await drawingToolFactory.createPathTool();
+    //const brickDrawingTool = await drawingToolFactory.createPathTool();
+    const drawingTool = await drawingToolFactory.createGridTool();
+
 
 
     //alert(123);
@@ -22,7 +24,7 @@ export default async function setPlayerAction(
 
     if (!player.world.webVR) {
 
-        const drawingTool = tubeDrawingTool;
+        //const drawingTool = await drawingToolFactory.createPathTool();
 
         player.world.canvasElement.addEventListener("pointerdown", () => {
             drawingTool.start();
@@ -53,7 +55,7 @@ export default async function setPlayerAction(
             controllers.forEach((controller, i) => {
 
 
-                const drawingTool = i === 0 ? tubeDrawingTool : brickDrawingTool;
+                //const drawingTool = i === 0 ? tubeDrawingTool : brickDrawingTool;
 
                 let intensity = 0;
 

@@ -6,7 +6,7 @@ import DrawingPoint from "./DrawingPoint";
 export default class AbstractDrawingTool {
 
     public drawing: boolean = false
-    public drawingMesh: BABYLON.Mesh | null;
+    //public drawingMesh: BABYLON.Mesh | null;
     public currentPoint: DrawingPoint;
 
     //private _toolMesh: BABYLON.Mesh;
@@ -28,12 +28,12 @@ export default class AbstractDrawingTool {
 
     restart() {
         this.drawing = true;
-        this.drawingMesh = null;
+        //this.drawingMesh = null;
     }
 
     end() {
         this.drawing = false;
-        console.log('Drawed ', this.drawingMesh);
+        //console.log('Drawed ', this.drawingMesh);
 
     }
 

@@ -1,7 +1,9 @@
-import PathDrawingTool from "./PathDrawingTool";
+import PathDrawingTool from "./drawingTools/PathDrawingTool";
 import World from "../World";
 import DrawingPoint from "./DrawingPoint";
 import ITranformPath from "./transformPath/ITranformPath";
+import createTransformPathGrid from "./transformPath/createTransformPathGrid";
+import GridDrawingTool from "./drawingTools/GridDrawingTool";
 
 
 function compose<T>(...funcs: ((input: T) => T)[]): (input: T) => T {
@@ -14,12 +16,12 @@ export default class {
     constructor(private _world: World) {
     }
 
-    async createSimpleTool() {
+    async createPathTool() {
 
 
         const transformPath: ITranformPath =
             compose(
-                //createTransformPathGrid(),
+                createTransformPathGrid(1),
                 //createTransformPathIntensity()
             );
 
@@ -37,5 +39,15 @@ export default class {
 
     }
 
+
+    async createGridTool() {
+        return new GridDrawingTool(
+            this._world,
+            {
+                gridSize: 1,
+                material: (await this._world.materialFactory.getStructure('Meteorite')).babylonMaterial
+            }
+        );
+    }
 
 }

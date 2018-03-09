@@ -1,9 +1,9 @@
-import AbstractDrawingTool from "./AbstractDrawingTool";
-import ITranformPath from "./transformPath/ITranformPath";
-import DrawingPoint from "./DrawingPoint";
+import AbstractDrawingTool from "../AbstractDrawingTool";
+import ITranformPath from "../transformPath/ITranformPath";
+import DrawingPoint from "../DrawingPoint";
 import * as BABYLON from "babylonjs";
 import {isNull} from "util";
-import World from "../World";
+import World from "../../World/index";
 
 interface IPathDrawingToolOptions {
     tessalationInLength: number;
@@ -19,6 +19,7 @@ interface IPathDrawingToolOptions {
 export default class PathDrawingTool extends AbstractDrawingTool {
 
     public drawingPath: DrawingPoint[];
+    public drawingMesh: BABYLON.Mesh | null;
 
     constructor(world: World,
                 public options: IPathDrawingToolOptions) {
@@ -28,6 +29,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
     restart() {
         super.restart();
         this.drawingPath = [];
+        this.drawingMesh = null;
     }
 
     update(point: DrawingPoint) {
