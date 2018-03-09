@@ -4,16 +4,17 @@ import DrawingPoint from "../DrawingTools/DrawingPoint";
 import PathDrawingToolFactory from "../DrawingTools/PathDrawingToolFactory"
 
 
-export default function setPlayerAction(
+export default async function setPlayerAction(
     player:Player
 ){
 
 
     const pathDrawingToolFactory = new PathDrawingToolFactory(player.world);
-    const tubeDrawingTool = pathDrawingToolFactory.createSimpleTool();
-    const brickDrawingTool = pathDrawingToolFactory.createSimpleTool();
+    const tubeDrawingTool = await pathDrawingToolFactory.createSimpleTool();
+    const brickDrawingTool = await pathDrawingToolFactory.createSimpleTool();
 
 
+    //alert(123);
     //let path:BABYLON.Vector3[] = [];
     //let mesh:BABYLON.Mesh|null = null;
 

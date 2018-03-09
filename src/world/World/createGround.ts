@@ -7,12 +7,20 @@ export default function createGroundMesh(
 ):BABYLON.AbstractMesh{
 
     const groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, scene);
-    groundMesh.material = materialFactory.getMaterial('grass');
     groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(
         groundMesh,
         BABYLON.PhysicsImpostor.BoxImpostor,
         { mass: 0, restitution: 0.1},
         scene
     );
+
+    materialFactory.getStructure('DirtyIcySnow').then((structure) => {
+        groundMesh.material = structure.babylonMaterial;
+
+        (groundMesh.material as any).diffuseTexture.uScale = 200;
+        (groundMesh.material as any).diffuseTexture.vScale = 200;
+
+    });
+
     return groundMesh;
 }

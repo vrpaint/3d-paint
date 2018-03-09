@@ -1,3 +1,4 @@
+/*
 import * as BABYLON from 'babylonjs';
 import World from './World';
 
@@ -87,4 +88,4 @@ export default class Brick{
         );
 
     }
-}
+}*/

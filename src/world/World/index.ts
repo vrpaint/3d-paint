@@ -2,7 +2,7 @@ import * as BABYLON from 'babylonjs';
 import MaterialFactory from "../MaterialFactory";
 import WorldGenerator from "../../generator";
 import Player from '../Player';
-import Brick from '../Brick';
+//import Brick from '../Brick';
 import createScene from './createScene';
 import createLights from './createLights';
 import createGroundMesh from './createGround';
@@ -16,7 +16,7 @@ export default class World{
     public worldGenerator:WorldGenerator;
     public lights:BABYLON.Light[];
     public player:Player;
-    public bricks:Brick[];
+    //public bricks:Brick[];
     public groundMesh:BABYLON.AbstractMesh;
     public skyboxMesh:BABYLON.AbstractMesh;
 
@@ -28,7 +28,7 @@ export default class World{
     run(){
         this.webVR = !(window.location.pathname === '/novr' || window.location.hash === '#novr');
 
-        this.bricks=[];
+        //this.bricks=[];
         this.engine = new BABYLON.Engine(this.canvasElement, true);
 
         this.engine.runRenderLoop(()=>{

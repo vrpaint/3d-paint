@@ -6,11 +6,13 @@
   "dependencies": {
     "@types/lodash": "^4.14.97",
     "@types/node": "^8.0.22",
+    "@types/superagent": "^3.5.7",
     "babylonjs": "^3.0.1-alpha",
     "gh-pages": "^1.0.0",
     "gridbuilding": "^0.1.0",
     "lodash": "^4.17.4",
-    "react-scripts-ts": "2.6.0"
+    "react-scripts-ts": "2.6.0",
+    "superagent": "^3.8.2"
   },
   "scripts": {
     "start": "react-scripts-ts start",

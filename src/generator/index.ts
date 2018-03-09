@@ -1,7 +1,5 @@
-import * as BABYLON from 'babylonjs';
-import * as GridBuilding from 'gridbuilding';
 import World from '../world/World';
-import Brick from '../world/Brick';
+//import Brick from '../world/Brick';
 
 export default class WorldGenerator{
     constructor(
