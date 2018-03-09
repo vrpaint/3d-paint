@@ -1,4 +1,5 @@
 import AbstractDrawingTool from "./AbstractDrawingTool";
+import ITranformPath from "./transformPath/ITranformPath";
 import DrawingPoint from "./DrawingPoint";
 import * as BABYLON from "babylonjs";
 import {isNull} from "util";
@@ -8,10 +9,9 @@ interface IPathDrawingToolOptions {
     tessalationInLength: number;
     tessalationInRadius: number;
     material: BABYLON.Material;
+    transformPath: ITranformPath;
 
-    transformPath(path: DrawingPoint[]): DrawingPoint[];
-
-    modifySurfacePoint(point: BABYLON.Vector3, center: DrawingPoint, tool: PathDrawingTool): BABYLON.Vector3;
+    //modifySurfacePoint(point: BABYLON.Vector3, center: DrawingPoint, tool: PathDrawingTool): BABYLON.Vector3;
 
     countPointRadius(center: DrawingPoint): number;
 }
@@ -63,7 +63,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
     public createDrawingMesh(): BABYLON.Mesh {
 
 
-        const pathArray: BABYLON.Vector3[][] = this.options.transformPath(this.drawingPath).map((drawingPoint) => {
+        /*const pathArray: BABYLON.Vector3[][] = this.options.transformPath(this.drawingPath).map((drawingPoint) => {
 
 
             const radius = this.options.countPointRadius(drawingPoint);
@@ -77,12 +77,31 @@ export default class PathDrawingTool extends AbstractDrawingTool {
 
                 const rotation = i / this.options.tessalationInRadius * Math.PI * 2;
 
+
+
+
+
+
+
                 const surfaceFlatPoint = new BABYLON.Vector2(
                     Math.cos(rotation) * radius,
                     Math.sin(rotation) * radius
                 );
 
+
+
+
+                const surfaceVector = new BABYLON.Vector2(
+                    Math.cos(rotation),
+                    Math.sin(rotation)
+                );
+
+
+
                 //surfaceFlatPoint.
+
+
+
 
 
 
@@ -106,18 +125,22 @@ export default class PathDrawingTool extends AbstractDrawingTool {
         });
 
 
-        const mesh = BABYLON.MeshBuilder.CreateRibbon("ribbon", {pathArray}, this.world.scene);
+        const mesh = BABYLON.MeshBuilder.CreateRibbon("ribbon", {pathArray}, this.world.scene);*/
 
 
-        /*const mesh = BABYLON.MeshBuilder.CreateTube(
+        const transformedPath = this.options.transformPath(this.drawingPath);
+
+
+        //todo this.options.tessalationInRadius
+        const mesh = BABYLON.MeshBuilder.CreateTube(
             "tube" + Math.random(),
             {
-                path: this.drawingPath.map((drawingPoint) => drawingPoint.position),
-                radius: .05,
-                radiusFunction: (i, distance) => this.intensityToRadius(this.drawingPath[i].intensity)
+                path: transformedPath.map((drawingPoint) => drawingPoint.position),
+                //radius: .05,
+                radiusFunction: (i, distance) => this.options.countPointRadius(transformedPath[i])
             },
             this.world.scene
-        );*/
+        );
 
         mesh.material = this.options.material;
 
