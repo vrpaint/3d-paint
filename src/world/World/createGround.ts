@@ -17,8 +17,12 @@ export default function createGroundMesh(
     materialFactory.getStructure('DirtyIcySnow').then((structure) => {
         groundMesh.material = structure.babylonMaterial;
 
+        //todo better
         (groundMesh.material as any).diffuseTexture.uScale = 200;
         (groundMesh.material as any).diffuseTexture.vScale = 200;
+
+        (groundMesh.material as any).bumpTexture.uScale = 200;
+        (groundMesh.material as any).bumpTexture.vScale = 200;
 
     });
 

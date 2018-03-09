@@ -14,7 +14,7 @@ export default function createSkyboxMesh(scene:BABYLON.Scene):BABYLON.AbstractMe
 
     scene.registerBeforeRender(() => {
 
-        skyboxMesh.rotation.y = (performance.now() / 1000 * Math.PI * 2) / 300;
+        //skyboxMesh.rotation.y = (performance.now() / 1000 * Math.PI * 2) / 300;
 
     });
 

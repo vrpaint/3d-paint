@@ -4,7 +4,6 @@ import createCamera from './createCamera';
 import setPlayerMouseLock from './setPlayerMouseLock';
 import setPlayerMovement from './setPlayerMovement';
 import setPlayerAction from './setPlayerAction';
-import {PLAYER} from '../../config';
 
 export default class Player {
 
@@ -61,7 +60,9 @@ export default class Player {
 
     addMovement(vector: BABYLON.Vector3) {
 
-        const currentVelocity = this.mesh.physicsImpostor.getLinearVelocity();
+        this.camera.position.addInPlace(vector);
+
+        /*const currentVelocity = this.mesh.physicsImpostor.getLinearVelocity();
         const onGround = true;
 
         const distance = Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.z, 2));
@@ -85,7 +86,7 @@ export default class Player {
 
         const composedVelocityTerminated = surfaceVelocity.add(jumpVelocity);
 
-        this.mesh.physicsImpostor.setLinearVelocity(composedVelocityTerminated);
+        this.mesh.physicsImpostor.setLinearVelocity(composedVelocityTerminated);*/
 
     }
 }

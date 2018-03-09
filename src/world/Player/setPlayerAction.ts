@@ -22,24 +22,21 @@ export default async function setPlayerAction(
 
     if (!player.world.webVR) {
 
-        /*let painting = false;
+        const drawingTool = tubeDrawingTool;
 
         player.world.canvasElement.addEventListener("pointerdown", () => {
-            painting=true;
+            drawingTool.start();
         });
         player.world.canvasElement.addEventListener("pointermove", () => {
-            if(painting){
-                path.push(player.mesh.position.add(player.direction1.scale(10)));
-                redrawMeshThrottled();
-            }
-
+            drawingTool.update(new DrawingPoint(
+                player.mesh.position.add(player.direction1.scale(10)),
+                BABYLON.Quaternion.Zero(),
+                1
+            ));
         });
         player.world.canvasElement.addEventListener("pointerup", () => {
-            painting = false;
-            redrawMeshThrottled();
-            mesh = null;
-            path = [];
-        });*/
+            drawingTool.end();
+        });
 
 
     } else {

@@ -12,7 +12,8 @@
     "gridbuilding": "^0.1.0",
     "lodash": "^4.17.4",
     "react-scripts-ts": "2.6.0",
-    "superagent": "^3.8.2"
+    "superagent": "^3.8.2",
+    "ts-keycode-enum": "^1.0.4"
   },
   "scripts": {
     "start": "react-scripts-ts start",
