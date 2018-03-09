@@ -29,7 +29,7 @@ export default async function setPlayerAction(
         });
         player.world.canvasElement.addEventListener("pointermove", () => {
             drawingTool.update(new DrawingPoint(
-                player.mesh.position.add(player.direction1.scale(10)),
+                player.camera.position.add(player.direction1.scale(5)),
                 BABYLON.Quaternion.Zero(),
                 1
             ));

@@ -2,8 +2,6 @@ import PathDrawingTool from "./PathDrawingTool";
 import World from "../World";
 import DrawingPoint from "./DrawingPoint";
 import ITranformPath from "./transformPath/ITranformPath";
-import createTransformPathGrid from "./transformPath/createTransformPathGrid";
-import createTransformPathIntensity from "./transformPath/createTransformPathIntensity";
 
 
 function compose<T>(...funcs: ((input: T) => T)[]): (input: T) => T {
@@ -21,8 +19,8 @@ export default class {
 
         const transformPath: ITranformPath =
             compose(
-                createTransformPathGrid(),
-                createTransformPathIntensity()
+                //createTransformPathGrid(),
+                //createTransformPathIntensity()
             );
 
         return new PathDrawingTool(

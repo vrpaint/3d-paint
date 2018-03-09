@@ -37,6 +37,15 @@ export default function createCamera(world: World): BABYLON.FreeCamera | BABYLON
         camera.keysRight = [Key.D, Key.RightArrow];
 
 
+        scene.registerBeforeRender(() => {
+
+            if (camera.position.y < 2) {
+                camera.position.y = 2;
+            }
+
+        });
+
+
         //const camera = new BABYLON.VRDeviceOrientationFreeCamera ("Camera",  BABYLON.Vector3.Zero(), scene);
 
         return camera;

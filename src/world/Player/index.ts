@@ -42,7 +42,7 @@ export default class Player {
     }
 
     get direction(): BABYLON.Vector3 {
-        const point1 = this.mesh.position;
+        const point1 = this.camera.position;
         const point2 = this.world.scene.pick(this.world.canvasElement.width / 2, this.world.canvasElement.height / 2, (mesh) => mesh === this.world.skyboxMesh).pickedPoint;
 
         return point2.subtract(point1);
