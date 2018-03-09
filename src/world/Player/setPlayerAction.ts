@@ -2,18 +2,17 @@ import * as BABYLON from 'babylonjs';
 import Player from './index';
 import DrawingPoint from "../DrawingTools/DrawingPoint";
 import DrawingToolFactory from "../DrawingTools/DrawingToolFactory"
+import AbstractDrawingTool from "../DrawingTools/AbstractDrawingTool";
 
 
-export default async function setPlayerAction(
-    player:Player
-){
+export default async function setPlayerAction(player: Player) {
 
 
     const drawingToolFactory = new DrawingToolFactory(player.world);
     //const tubeDrawingTool = await drawingToolFactory.createPathTool();
     //const brickDrawingTool = await drawingToolFactory.createPathTool();
-    const drawingTool = await drawingToolFactory.createGridTool();
-
+    const drawingTool1 = await drawingToolFactory.createPathTool('DamagedConcrete');
+    const drawingTool2 = await drawingToolFactory.createGridTool('Meteorite', .5);
 
 
     //alert(123);
@@ -21,24 +20,43 @@ export default async function setPlayerAction(
     //let mesh:BABYLON.Mesh|null = null;
 
 
-
     if (!player.world.webVR) {
 
-        //const drawingTool = await drawingToolFactory.createPathTool();
 
-        player.world.canvasElement.addEventListener("pointerdown", () => {
-            drawingTool.start();
+        const drawingToolFromEvent: (event: { button: number }) => AbstractDrawingTool = (event: { button: number }) => {
+
+            switch (event.button) {
+                case 0:
+                    return drawingTool1;
+                case 2:
+                    return drawingTool2;
+                default:
+                    return drawingTool1;
+            }
+        };
+
+        const getDrawingPoint = () => new DrawingPoint(
+            player.camera.position.add(player.direction1.scale(5)),
+            BABYLON.Quaternion.Zero(),
+            1
+        );
+
+
+        player.world.canvasElement.addEventListener("mousedown", (event) => {
+            drawingToolFromEvent(event).update(getDrawingPoint());
+            drawingToolFromEvent(event).start();
         });
-        player.world.canvasElement.addEventListener("pointermove", () => {
-            drawingTool.update(new DrawingPoint(
-                player.camera.position.add(player.direction1.scale(5)),
-                BABYLON.Quaternion.Zero(),
-                1
-            ));
+        player.world.canvasElement.addEventListener("mousemove", (event) => {
+            drawingToolFromEvent(event).update(getDrawingPoint());
         });
-        player.world.canvasElement.addEventListener("pointerup", () => {
-            drawingTool.end();
+        player.world.canvasElement.addEventListener("mouseup", (event) => {
+            drawingToolFromEvent(event).end();
         });
+
+        player.world.canvasElement.addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+        });
+
 
 
     } else {
@@ -55,7 +73,7 @@ export default async function setPlayerAction(
             controllers.forEach((controller, i) => {
 
 
-                //const drawingTool = i === 0 ? tubeDrawingTool : brickDrawingTool;
+                const drawingTool = i === 0 ? drawingTool1 : drawingTool2;
 
                 let intensity = 0;
 
@@ -82,7 +100,6 @@ export default async function setPlayerAction(
                 }
 
                 updatePositon();
-
 
 
             });

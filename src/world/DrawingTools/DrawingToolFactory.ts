@@ -2,7 +2,6 @@ import PathDrawingTool from "./drawingTools/PathDrawingTool";
 import World from "../World";
 import DrawingPoint from "./DrawingPoint";
 import ITranformPath from "./transformPath/ITranformPath";
-import createTransformPathGrid from "./transformPath/createTransformPathGrid";
 import GridDrawingTool from "./drawingTools/GridDrawingTool";
 
 
@@ -16,12 +15,12 @@ export default class {
     constructor(private _world: World) {
     }
 
-    async createPathTool() {
+    async createPathTool(materialName: string) {
 
 
         const transformPath: ITranformPath =
             compose(
-                createTransformPathGrid(1),
+                //createTransformPathGrid(1),
                 //createTransformPathIntensity()
             );
 
@@ -33,19 +32,19 @@ export default class {
                 tessalationInLength: 0.02,
                 tessalationInRadius: 7,
                 countPointRadius: (center: DrawingPoint) => center.intensity / 20 + .01,
-                material: (await this._world.materialFactory.getStructure('Meteorite')).babylonMaterial
+                material: (await this._world.materialFactory.getStructure(materialName)).babylonMaterial
             }
         );
 
     }
 
 
-    async createGridTool() {
+    async createGridTool(materialName: string, gridSize: number) {
         return new GridDrawingTool(
             this._world,
             {
-                gridSize: 1,
-                material: (await this._world.materialFactory.getStructure('Meteorite')).babylonMaterial
+                gridSize,
+                material: (await this._world.materialFactory.getStructure(materialName)).babylonMaterial
             }
         );
     }
