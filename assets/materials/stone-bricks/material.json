@@ -1,0 +1,23 @@
+{
+  "textures": {
+    "default": {
+      "src": "stone-bricks.png",
+      "uScale": 4,
+      "vScale": 4
+    },
+    "ambient": null,
+    "diffuse": "default",
+    "specular": "#ffeacb",
+    "emissive": "default",
+    "bump": {
+      "src": "stone-bricks-bump.png",
+      "uScale": 4,
+      "vScale": 4
+    }
+  },
+  "physics": {
+    "mass": 100,
+    "-friction": 0,
+    "-restitution": 0
+  }
+}
