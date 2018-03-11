@@ -20,14 +20,23 @@ export default class PathDrawingTool extends AbstractDrawingTool {
 
     public drawingPath: DrawingPoint[];
     public drawingMesh: BABYLON.Mesh | null;
+    private _toolMesh: BABYLON.Mesh;
+
 
     constructor(world: World,
                 public options: IPathDrawingToolOptions) {
         super(world);
+        this._toolMesh = this.createToolMesh();
+        this._toolMesh.scaling = BABYLON.Vector3.Zero();
+    }
+
+    createToolMesh(): BABYLON.Mesh {
+        return BABYLON.Mesh.CreateSphere("sphere", 16, 2, this.world.scene);
     }
 
     setMaterial(material: BABYLON.Material) {
         this.options.material = material;
+        this._toolMesh.material = material;
     }
 
     restart() {
@@ -40,7 +49,13 @@ export default class PathDrawingTool extends AbstractDrawingTool {
 
         super.update(point);
 
+
         if (this.drawing) {
+
+            //todo better
+            this._toolMesh.position = point.position;
+            this._toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(this.options.countPointRadius(point));
+
 
             if (
                 this.drawingPath.length === 0 ||

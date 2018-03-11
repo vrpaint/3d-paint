@@ -15,6 +15,10 @@ export default async function setPlayerAction(player: Player) {
     const drawingTool2 = await drawingToolFactory.createPathTool('#0000ff');
     //const drawingTool2 = await drawingToolFactory.createGridTool('stone-bricks', .2);
 
+    //todo remove
+    drawingTool1.setMaterial(player.world.materialFactory.getStructureSync('#ff0000').babylonMaterial);
+    drawingTool2.setMaterial(player.world.materialFactory.getStructureSync('#0000ff').babylonMaterial);
+
 
     //alert(123);
     //let path:BABYLON.Vector3[] = [];
@@ -83,12 +87,19 @@ export default async function setPlayerAction(player: Player) {
                 controller.onPadValuesChangedObservable.add((gamepadButton) => {
 
 
-                    const h = (gamepadButton.x + 1) / 2;
+                    const h = (Math.atan2(gamepadButton.y, gamepadButton.x) / (Math.PI * 2) + 1) % 1;
                     const s = 1;
-                    const l = (gamepadButton.y + 1) / 2;
+                    const l = 0.5;
+
+                    //console.log(h);
 
 
                     const [r, g, b] = hslToRgb(h, s, l);
+
+
+                    if (h === 0) return;
+                    //console.log('[h, s, l]',[h, s, l]);
+                    //console.log('[r, g, b]',[r, g, b]);
 
                     const hex = rgbToHex(r, g, b);
 
