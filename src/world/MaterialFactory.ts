@@ -27,6 +27,42 @@ export default class MaterialFactory {
     }
 
 
+    getStructureSync(materialId: string): IStructure {
+
+        const cashedMaterial = this._structuresCache.find((material) => material.id === materialId) || null;
+
+        if (cashedMaterial) {
+            return cashedMaterial;
+        } else {
+            console.log(`Creating structure "${materialId}".`);
+
+            const babylonMaterial = new BABYLON.StandardMaterial(materialId, this._scene);
+            babylonMaterial.backFaceCulling = false;//todo repair mesh builder
+
+            let structure: IStructure = {
+                id: materialId,
+                babylonMaterial,
+                /*physicsOptions: Object.assign({},DEFAULT_PHYSICS_OPTIONS)*/
+            };
+
+
+            if (materialId.substring(0, 1) === '#') {
+
+                babylonMaterial.diffuseColor = BABYLON.Color3.FromHexString(materialId);
+
+            } else {
+
+                throw new Error('This material can be created only in async mode.');
+
+            }
+
+            this._structuresCache.push(structure);
+            return structure;
+
+        }
+    }
+
+
     async getStructure(materialId: string): Promise<IStructure> {
 
         const cashedMaterial = this._structuresCache.find((material) => material.id === materialId) || null;

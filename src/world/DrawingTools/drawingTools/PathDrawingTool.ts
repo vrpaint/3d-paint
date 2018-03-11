@@ -26,6 +26,10 @@ export default class PathDrawingTool extends AbstractDrawingTool {
         super(world);
     }
 
+    setMaterial(material: BABYLON.Material) {
+        this.options.material = material;
+    }
+
     restart() {
         super.restart();
         this.drawingPath = [];
