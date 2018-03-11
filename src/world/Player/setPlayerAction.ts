@@ -11,8 +11,9 @@ export default async function setPlayerAction(player: Player) {
     const drawingToolFactory = new DrawingToolFactory(player.world);
     //const tubeDrawingTool = await drawingToolFactory.createPathTool();
     //const brickDrawingTool = await drawingToolFactory.createPathTool();
-    const drawingTool1 = await drawingToolFactory.createPathTool('DamagedConcrete');
-    const drawingTool2 = await drawingToolFactory.createGridTool('Meteorite', .5);
+    const drawingTool1 = await drawingToolFactory.createPathTool('#ff0000');
+    const drawingTool2 = await drawingToolFactory.createPathTool('#0000ff');
+    //const drawingTool2 = await drawingToolFactory.createGridTool('stone-bricks', .2);
 
 
     //alert(123);
@@ -73,6 +74,7 @@ export default async function setPlayerAction(player: Player) {
             controllers.forEach((controller, i) => {
 
 
+                //const drawingTool = i === 0 ? drawingTool1 : drawingTool2;
                 const drawingTool = i === 0 ? drawingTool1 : drawingTool2;
 
                 let intensity = 0;

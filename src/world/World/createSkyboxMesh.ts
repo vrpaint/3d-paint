@@ -12,11 +12,15 @@ export default function createSkyboxMesh(scene:BABYLON.Scene):BABYLON.AbstractMe
     skyboxMaterial.disableLighting = true;
     skyboxMesh.material = skyboxMaterial;
 
-    scene.registerBeforeRender(() => {
+    if(window.location.hash === '#rotate') {
 
-        //skyboxMesh.rotation.y = (performance.now() / 1000 * Math.PI * 2) / 300;
 
-    });
+        scene.registerBeforeRender(() => {
+
+            skyboxMesh.rotation.y = (performance.now() / 1000 * Math.PI * 2) / 300;
+
+        });
+    }
 
     return skyboxMesh;
 }

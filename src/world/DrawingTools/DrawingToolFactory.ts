@@ -31,7 +31,7 @@ export default class {
                 //modifySurfacePoint: (point: BABYLON.Vector3, center: DrawingPoint, tool: PathDrawingTool) => point,
                 tessalationInLength: 0.02,
                 tessalationInRadius: 7,
-                countPointRadius: (center: DrawingPoint) => center.intensity / 20 + .01,
+                countPointRadius: (center: DrawingPoint) => center.intensity / 40 + .01,
                 material: (await this._world.materialFactory.getStructure(materialName)).babylonMaterial
             }
         );
