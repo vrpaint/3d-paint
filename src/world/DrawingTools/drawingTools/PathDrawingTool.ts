@@ -31,7 +31,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
     }
 
     createToolMesh(): BABYLON.Mesh {
-        return BABYLON.Mesh.CreateSphere("sphere", 16, 2, this.world.scene);
+        return BABYLON.Mesh.CreateBox("sphere", 2, this.world.scene);
     }
 
     setMaterial(material: BABYLON.Material) {
@@ -54,6 +54,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
 
             //todo better
             this._toolMesh.position = point.position;
+            this._toolMesh.rotation = point.rotation;
             this._toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(this.options.countPointRadius(point));
 
 

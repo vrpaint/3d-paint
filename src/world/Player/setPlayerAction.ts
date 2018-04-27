@@ -42,7 +42,7 @@ export default async function setPlayerAction(player: Player) {
 
         const getDrawingPoint = () => new DrawingPoint(
             player.camera.position.add(player.direction1.scale(5)),
-            BABYLON.Quaternion.Zero(),
+            BABYLON.Vector3.Zero(),
             1
         );
 
@@ -145,12 +145,22 @@ export default async function setPlayerAction(player: Player) {
                 });
 
 
+                
+
+
                 function updatePositon() {
-                    drawingTool.update(new DrawingPoint(
-                        controller.devicePosition,
-                        controller.deviceRotationQuaternion,
-                        intensity
-                    ));
+
+                    if(typeof controller.mesh !=='undefined'){
+
+                        console.log(controller.deviceRotationQuaternion);
+                    
+                        
+                        drawingTool.update(new DrawingPoint(
+                            controller.devicePosition,
+                            controller.deviceRotationQuaternion.toEulerAngles(),
+                            intensity
+                        ));
+                    }
                     requestAnimationFrame(updatePositon);
                 }
 

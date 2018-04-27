@@ -4,7 +4,7 @@ export default class DrawingPoint {//todo maybe use in update in AbstractDrawing
 
 
     constructor(public position: BABYLON.Vector3,
-                public rotation: BABYLON.Quaternion,
+                public rotation: BABYLON.Vector3,
                 public intensity: number) {
     }
 
