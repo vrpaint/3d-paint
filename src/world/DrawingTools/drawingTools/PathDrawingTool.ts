@@ -49,12 +49,12 @@ export default class PathDrawingTool extends AbstractDrawingTool {
 
         super.update(point);
 
+        this._toolMesh.position = point.position;
+        this._toolMesh.rotation = point.rotation;
+
 
         if (this.drawing) {
 
-            //todo better
-            this._toolMesh.position = point.position;
-            this._toolMesh.rotation = point.rotation;
             this._toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(this.options.countPointRadius(point));
 
 
