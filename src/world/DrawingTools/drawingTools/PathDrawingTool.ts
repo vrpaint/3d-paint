@@ -32,7 +32,8 @@ export default class PathDrawingTool extends AbstractDrawingTool {
     }
 
     createToolMesh(): BABYLON.Mesh {
-        return BABYLON.Mesh.CreateBox("sphere", 2, this.world.scene);
+        return BABYLON.Mesh.CreateSphere("sphere", 16, 2, this.world.scene);
+        //return BABYLON.Mesh.CreateBox("sphere", 2, this.world.scene);
     }
 
     setMaterial(material: BABYLON.Material) {
