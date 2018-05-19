@@ -78,6 +78,16 @@ export default async function setPlayerAction(player: Player) {
             controllers.forEach((controller, i) => {
 
 
+
+                /*player.world.scene.registerBeforeRender(()=>{
+
+                    if(player.world.scene.meshes.some((mesh)=>mesh.intersectsPoint(controller.devicePosition))){
+                        controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(1,10));//todo as type use GamepadHapticActuator
+                    }
+                });*/
+
+
+
                 //const drawingTool = i === 0 ? drawingTool1 : drawingTool2;
                 const drawingTool = i === 0 ? drawingTool1 : drawingTool2;
 
@@ -132,6 +142,13 @@ export default async function setPlayerAction(player: Player) {
                     console.log('onPadStateChangedObservable',gamepadButton);
                 });*/
 
+                let vibrationIntensity = 0;
+                setInterval(()=>{
+                    if(vibrationIntensity){
+                        controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(intensity,10));//todo as type use GamepadHapticActuator
+                    }   
+                },10);
+
                 controller.onTriggerStateChangedObservable.add((gamepadButton) => {
 
                     if (gamepadButton.pressed) {
@@ -141,6 +158,9 @@ export default async function setPlayerAction(player: Player) {
                     }
 
                     intensity = gamepadButton.value;
+                    vibrationIntensity = intensity;
+
+        
 
                 });
 
