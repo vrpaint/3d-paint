@@ -152,9 +152,6 @@ export default async function setPlayerAction(player: Player) {
 
                     if(typeof controller.mesh !=='undefined'){
 
-                        console.log(controller.deviceRotationQuaternion);
-                    
-                        
                         drawingTool.update(new DrawingPoint(
                             controller.devicePosition,
                             controller.deviceRotationQuaternion.toEulerAngles(),

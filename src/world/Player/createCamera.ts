@@ -57,30 +57,33 @@ export default function createCamera(world: World): BABYLON.FreeCamera | BABYLON
         const camera = new BABYLON.WebVRFreeCamera("camera", BABYLON.Vector3.Zero(), scene);
 
 
+        let vr=false;
+
+
+        //todo VR helper
+
+
         scene.onPointerDown = function () {
 
 
-            camera.attachControl(document.getElementById('scene'), true);
+            camera.getEngine().enableVR();
 
-            //todo better
-            /*setTimeout(()=>{
+            /*console.log(1);
 
+            camera.getEngine().enableVR();
+            
+            //camera.attachControl(document.getElementById('scene'), true);
 
-                console.log('camera.leftController',camera.leftController);
-
-
-                camera.leftController.onTriggerStateChangedObservable.add((event)=>{
-
-                    console.log('onTriggerStateChangedObservable',event);
-
-
-                });
-
-
-            },500);*/
+            setTimeout(()=>{
+                
+                camera.getEngine().disableVR();
+                console.log(2);
+            },2000);*/
 
 
         };
+
+        
 
 
         /* setInterval(()=>{
