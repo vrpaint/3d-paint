@@ -152,7 +152,10 @@ export default async function setPlayerAction(player: Player) {
                 controller.onTriggerStateChangedObservable.add((gamepadButton) => {
 
                     if (gamepadButton.pressed) {
-                        drawingTool.start();
+                        setTimeout(()=>{
+                            drawingTool.start();
+                        },50);
+                        
                     } else {
                         drawingTool.end();
                     }
