@@ -96,8 +96,10 @@ export default async function setPlayerAction(player: Player) {
 
                 controller.onPadValuesChangedObservable.add((gamepadButton) => {
 
+                    const pieces = 24;
+                    const radians = Math.round(Math.atan2(gamepadButton.y, gamepadButton.x)/(Math.PI*2)*pieces)*(Math.PI*2)/pieces;
 
-                    const h = (Math.atan2(gamepadButton.y, gamepadButton.x) / (Math.PI * 2) + 1) % 1;
+                    const h = (radians / (Math.PI * 2) + 1) % 1;
                     const s = 1;
                     const l = 0.5;
 
@@ -158,6 +160,9 @@ export default async function setPlayerAction(player: Player) {
                         
                     } else {
                         drawingTool.end();
+                        setTimeout(()=>{
+                            drawingTool.end();
+                        },50);
                     }
 
                     intensity = gamepadButton.value;
