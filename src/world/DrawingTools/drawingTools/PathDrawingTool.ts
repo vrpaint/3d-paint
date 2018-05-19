@@ -19,7 +19,7 @@ interface IPathDrawingToolOptions {
 export default class PathDrawingTool extends AbstractDrawingTool {
 
     public drawingPath: DrawingPoint[];
-    public drawingMesh: BABYLON.Mesh | null;
+    public drawingMeshes: BABYLON.Mesh[] = [];
     private _toolMesh: BABYLON.Mesh;
 
 
@@ -42,7 +42,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
     restart() {
         super.restart();
         this.drawingPath = [];
-        this.drawingMesh = null;
+        this.drawingMeshes = [];
     }
 
     update(point: DrawingPoint) {
@@ -74,15 +74,15 @@ export default class PathDrawingTool extends AbstractDrawingTool {
 
     private _redrawMesh() {
         if (this.drawingPath.length > 1) {
-            if (!isNull(this.drawingMesh)) {
-                this.drawingMesh.dispose();
-                console.log('disposing');
+            for(const drawingMesh of this.drawingMeshes) {
+                drawingMesh.dispose();
+                //console.log('disposing');
             }
-            this.drawingMesh = this.createDrawingMesh();
+            this.drawingMeshes = this.createDrawingMesh();
         }
     }
 
-    public createDrawingMesh(): BABYLON.Mesh {
+    public createDrawingMesh(): BABYLON.Mesh[] {
 
 
         /*const pathArray: BABYLON.Vector3[][] = this.options.transformPath(this.drawingPath).map((drawingPoint) => {
@@ -154,7 +154,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
 
 
         //todo this.options.tessalationInRadius
-        const mesh = BABYLON.MeshBuilder.CreateTube(
+        const ribbonMesh = BABYLON.MeshBuilder.CreateTube(
             "tube" + Math.random(),
             {
                 path: transformedPath.map((drawingPoint) => drawingPoint.position),
@@ -164,9 +164,23 @@ export default class PathDrawingTool extends AbstractDrawingTool {
             this.world.scene
         );
 
-        mesh.material = this.options.material;
+        ribbonMesh.material = this.options.material;
 
-        return mesh;
+
+
+        const sphere1Mesh = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter:this.options.countPointRadius(transformedPath[0])*2}, this.world.scene);
+        sphere1Mesh.position = transformedPath[0].position;
+        sphere1Mesh.material = this.options.material;
+
+
+        const last = transformedPath.length-1;
+        const sphere2Mesh = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter:this.options.countPointRadius(transformedPath[last])*2}, this.world.scene);
+        sphere2Mesh.position = transformedPath[last].position;
+        sphere2Mesh.material = this.options.material;
+
+
+
+        return [ribbonMesh,sphere1Mesh,sphere2Mesh];
     }
 
 
