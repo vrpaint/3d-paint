@@ -18,8 +18,9 @@ interface IPathDrawingToolOptions {
 
 export default class PathDrawingTool extends AbstractDrawingTool {
 
+    public lastDrawingMeshes: BABYLON.Mesh[][] = [];
     public drawingPath: DrawingPoint[];
-    public drawingMeshes: BABYLON.Mesh[] = [];
+    public drawingMeshes: BABYLON.Mesh[];//this should be only counted from lastDrawingMeshes
     private _toolMesh: BABYLON.Mesh;
 
 
@@ -39,10 +40,27 @@ export default class PathDrawingTool extends AbstractDrawingTool {
         this._toolMesh.material = material;
     }
 
+    
+
+    back(){
+        if(this.lastDrawingMeshes.length){
+            const drawingMeshes = this.lastDrawingMeshes.pop();
+            if(drawingMeshes.length){
+                console.log('removing',drawingMeshes);
+                for(const drawingMesh of drawingMeshes) {
+                    drawingMesh.dispose();
+                }
+            }else{
+                this.back();//todo better
+            }
+        }
+    }
+
     restart() {
         super.restart();
         this.drawingPath = [];
         this.drawingMeshes = [];
+        this.lastDrawingMeshes.push(this.drawingMeshes);
     }
 
     update(point: DrawingPoint) {
@@ -79,6 +97,8 @@ export default class PathDrawingTool extends AbstractDrawingTool {
                 //console.log('disposing');
             }
             this.drawingMeshes = this.createDrawingMesh();
+            this.lastDrawingMeshes[this.lastDrawingMeshes.length-1] = this.drawingMeshes;//todo remove
+            //console.log(this.lastDrawingMeshes);
         }
     }
 

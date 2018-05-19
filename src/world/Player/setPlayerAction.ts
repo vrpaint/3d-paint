@@ -126,7 +126,17 @@ export default async function setPlayerAction(player: Player) {
                 });
 
 
-                /*controller.onTriggerStateChangedObservable.add((gamepadButton) => {
+                controller.onMainButtonStateChangedObservable.add((gamepadButton)=>{
+                   console.log('onMainButtonStateChangedObservable',gamepadButton);
+                   if(gamepadButton.pressed===false){//on release
+                    drawingTool.back();
+                   }
+                });
+
+
+
+                /*/
+                controller.onTriggerStateChangedObservable.add((gamepadButton) => {
                     console.log('onTriggerStateChangedObservable',gamepadButton);
                 });
 
@@ -140,9 +150,14 @@ export default async function setPlayerAction(player: Player) {
                     console.log('onPadStateChangedObservable',gamepadButton);
                 });
 
+                controller.onMainButtonStateChangedObservable.add((gamepadButton)=>{
+                    console.log('onMainButtonStateChangedObservable',gamepadButton);
+                });
+
                 controller.onPadValuesChangedObservable.add((gamepadButton) => {
                     console.log('onPadStateChangedObservable',gamepadButton);
-                });*/
+                });
+                /**/
 
                 let vibrationIntensity = 0;
                 setInterval(()=>{
