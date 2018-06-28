@@ -12,12 +12,12 @@ export default async function setPlayerAction(player: Player) {
     //const tubeDrawingTool = await drawingToolFactory.createPathTool();
     //const brickDrawingTool = await drawingToolFactory.createPathTool();
     const drawingTool1 = await drawingToolFactory.createPathTool('#ff0000');
-    const drawingTool2 = await drawingToolFactory.createPathTool('#0000ff');
-    //const drawingTool2 = await drawingToolFactory.createGridTool('stone-bricks', .2);
+    //const drawingTool2 = await drawingToolFactory.createPathTool('#0000ff');
+    const drawingTool2 = await drawingToolFactory.createGridTool('stone-bricks', .2);
 
     //todo remove
     drawingTool1.setMaterial(player.world.materialFactory.getStructureSync('#ff0000').babylonMaterial);
-    drawingTool2.setMaterial(player.world.materialFactory.getStructureSync('#0000ff').babylonMaterial);
+    //drawingTool2.setMaterial(player.world.materialFactory.getStructureSync('#0000ff').babylonMaterial);
 
 
     //alert(123);
@@ -69,7 +69,9 @@ export default async function setPlayerAction(player: Player) {
 
         const camera = player.camera as BABYLON.WebVRFreeCamera;
 
-
+        /*camera.onControllerMeshLoadedObservable.add((controller)=>{
+            console.log('onControllerMeshLoadedObservable',controller);
+        });*/
         camera.onControllersAttachedObservable.add((controllers) => {
 
 
@@ -89,12 +91,45 @@ export default async function setPlayerAction(player: Player) {
 
 
                 //const drawingTool = i === 0 ? drawingTool1 : drawingTool2;
-                const drawingTool = i === 0 ? drawingTool1 : drawingTool2;
+                let drawingTool = i === 0 ? drawingTool1 : drawingTool2;
 
                 let intensity = 0;
 
 
                 controller.onPadValuesChangedObservable.add((gamepadButton) => {
+
+
+                 /*/
+ 
+                 controller.onMainButtonStateChangedObservable.add((gamepadButton)=>{
+                     console.log('onMainButtonStateChangedObservable',gamepadButton);
+                  });
+ 
+                 
+                 controller.onTriggerStateChangedObservable.add((gamepadButton) => {
+                     console.log('onTriggerStateChangedObservable',gamepadButton);
+                 });
+ 
+ 
+                 controller.onSecondaryButtonStateChangedObservable.add((gamepadButton) => {
+                     console.log('onSecondaryButtonStateChangedObservable',gamepadButton);
+                 });
+ 
+ 
+                 controller.onPadStateChangedObservable.add((gamepadButton) => {
+                     console.log('onPadStateChangedObservable',gamepadButton);
+                 });
+ 
+ 
+                 controller.onPadValuesChangedObservable.add((gamepadButton) => {
+                     console.log('onPadValuesChangedObservable',gamepadButton);
+                 });
+
+                 
+                 /**/
+
+
+                 
 
                     const pieces = 24;
                     const radians = Math.round(Math.atan2(gamepadButton.y, gamepadButton.x)/(Math.PI*2)*pieces)*(Math.PI*2)/pieces;
@@ -115,49 +150,26 @@ export default async function setPlayerAction(player: Player) {
 
                     const hex = rgbToHex(r, g, b);
 
-                    drawingTool.setMaterial(player.world.materialFactory.getStructureSync(hex).babylonMaterial);
+                    //todo drawingTool.setMaterial(player.world.materialFactory.getStructureSync(hex).babylonMaterial);
 
                     /*drawingTool
 
                     gamepadButton.x
                     gamepadButton.y*/
 
+                    
+
 
                 });
 
 
                 controller.onMainButtonStateChangedObservable.add((gamepadButton)=>{
-                   console.log('onMainButtonStateChangedObservable',gamepadButton);
-                   if(gamepadButton.pressed===false){//on release
-                    drawingTool.back();
-                   }
-                });
+                    if(gamepadButton.pressed===false){//on release
+                     drawingTool.back();
+                    }
+                 });
 
 
-
-                /*/
-                controller.onTriggerStateChangedObservable.add((gamepadButton) => {
-                    console.log('onTriggerStateChangedObservable',gamepadButton);
-                });
-
-
-                controller.onSecondaryButtonStateChangedObservable.add((gamepadButton) => {
-                    console.log('onSecondaryButtonStateChangedObservable',gamepadButton);
-                });
-
-
-                controller.onPadStateChangedObservable.add((gamepadButton) => {
-                    console.log('onPadStateChangedObservable',gamepadButton);
-                });
-
-                controller.onMainButtonStateChangedObservable.add((gamepadButton)=>{
-                    console.log('onMainButtonStateChangedObservable',gamepadButton);
-                });
-
-                controller.onPadValuesChangedObservable.add((gamepadButton) => {
-                    console.log('onPadStateChangedObservable',gamepadButton);
-                });
-                /**/
 
                 let vibrationIntensity = 0;
                 setInterval(()=>{
@@ -185,6 +197,12 @@ export default async function setPlayerAction(player: Player) {
 
         
 
+                });
+
+                controller.onSecondaryButtonStateChangedObservable.add((gamepadButton)=>{
+                    if(gamepadButton.pressed===false){//on release
+                            drawingTool = drawingTool===drawingTool1?drawingTool2:drawingTool1;
+                       }
                 });
 
 

@@ -45,7 +45,7 @@ export default function createCamera(world: World): BABYLON.FreeCamera | BABYLON
 
         });
 
-
+    
         //const camera = new BABYLON.VRDeviceOrientationFreeCamera ("Camera",  BABYLON.Vector3.Zero(), scene);
 
         return camera;
@@ -60,7 +60,7 @@ export default function createCamera(world: World): BABYLON.FreeCamera | BABYLON
         let vr=false;
 
 
-        //todo VR helper
+        //todo maybe VR helper
 
 
         scene.onPointerDown = function () {

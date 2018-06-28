@@ -37,6 +37,10 @@ export default class AbstractDrawingTool {
 
     }
 
+    back(){
+        
+    }
+
     update(point: DrawingPoint) {
         this.currentPoint = point;
 
