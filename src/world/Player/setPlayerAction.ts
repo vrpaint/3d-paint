@@ -16,7 +16,7 @@ export default async function setPlayerAction(player: Player) {
     const drawingTool2 = await drawingToolFactory.createGridTool('stone-bricks', .2);
 
     //todo remove
-    drawingTool1.setMaterial(player.world.materialFactory.getStructureSync('#ff0000').babylonMaterial);
+    drawingTool1.setMaterial((await player.world.materialFactory.getStructure('#ff0000')).babylonMaterial);
     //drawingTool2.setMaterial(player.world.materialFactory.getStructureSync('#0000ff').babylonMaterial);
 
 
