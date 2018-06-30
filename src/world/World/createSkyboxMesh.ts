@@ -2,6 +2,7 @@ import * as BABYLON from 'babylonjs';
 
 export default function createSkyboxMesh(scene:BABYLON.Scene):BABYLON.AbstractMesh{
     const skyboxMesh = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
+    skyboxMesh.visibility = 0;
     skyboxMesh.infiniteDistance = true;
     const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;

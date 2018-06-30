@@ -1,4 +1,5 @@
 import * as BABYLON from 'babylonjs';
+//import 'babylonjs-post-process';
 import {Key} from 'ts-keycode-enum';
 import World from "../World";
 
@@ -48,6 +49,13 @@ export default function createCamera(world: World): BABYLON.FreeCamera | BABYLON
     
         //const camera = new BABYLON.VRDeviceOrientationFreeCamera ("Camera",  BABYLON.Vector3.Zero(), scene);
 
+        /*/
+        var postProcess = new BABYLON.DigitalRainPostProcess("AsciiArt", camera, {
+            font: "10px Roboto"
+        });
+        /**/
+
+        
         return camera;
 
 

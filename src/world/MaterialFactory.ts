@@ -27,7 +27,7 @@ export default class MaterialFactory {
     }
 
 
-    getStructureSync(materialId: string): IStructure {
+    /*getStructureSync(materialId: string): IStructure {
 
         const cashedMaterial = this._structuresCache.find((material) => material.id === materialId) || null;
 
@@ -42,7 +42,6 @@ export default class MaterialFactory {
             let structure: IStructure = {
                 id: materialId,
                 babylonMaterial,
-                /*physicsOptions: Object.assign({},DEFAULT_PHYSICS_OPTIONS)*/
             };
 
 
@@ -60,7 +59,7 @@ export default class MaterialFactory {
             return structure;
 
         }
-    }
+    }*/
 
 
     async getStructure(materialId: string): Promise<IStructure> {
@@ -86,6 +85,11 @@ export default class MaterialFactory {
 
                 babylonMaterial.diffuseColor = BABYLON.Color3.FromHexString(materialId);
 
+            }else
+            if(materialId==='webcam'){
+
+                //BABYLON.VideoTexture.CreateFromWebCam(s,()=>, { maxWidth: 256, maxHeight: 256 });
+            
             }else {
 
 
