@@ -29,7 +29,7 @@ export default class World{
         this.webVR = !(window.location.pathname === '/novr' || window.location.hash === '#novr');
 
         //this.bricks=[];
-        this.engine = new BABYLON.Engine(this.canvasElement, true);
+        this.engine = new BABYLON.Engine(this.canvasElement, true, {preserveDrawingBuffer:true});
 
         this.engine.runRenderLoop(()=>{
             this.scene.render();
@@ -41,7 +41,7 @@ export default class World{
 
         this.scene = createScene(this.engine);
         this.lights = createLights(this.scene);
-        this.materialFactory = new MaterialFactory(this.scene);
+        this.materialFactory = new MaterialFactory(this);
         this.player = new Player(this);
         this.skyboxMesh = createSkyboxMesh(this.scene);
         //this.groundMesh = createGroundMesh(this.scene,this.materialFactory);

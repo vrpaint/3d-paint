@@ -13,7 +13,7 @@ export default async function setPlayerAction(player: Player) {
     //const brickDrawingTool = await drawingToolFactory.createPathTool();
     const drawingTool1 = await drawingToolFactory.createPathTool('#ff0000');
     //const drawingTool2 = await drawingToolFactory.createPathTool('#0000ff');
-    const drawingTool2 = await drawingToolFactory.createGridTool('stone-bricks', .2);
+    const drawingTool2 = await drawingToolFactory.createGridTool(/* 'stone-bricks' */ ':screenshot', .2);
 
     //todo remove
     drawingTool1.setMaterial((await player.world.materialFactory.getStructure('#ff0000')).babylonMaterial);
@@ -34,6 +34,10 @@ export default async function setPlayerAction(player: Player) {
                 case 0:
                     return drawingTool1;
                 case 2:
+                    player.world.materialFactory.getStructure(':screenshot').then((structure)=>{
+
+                        drawingTool2.options.material = structure.babylonMaterial;
+                    });
                     return drawingTool2;
                 default:
                     return drawingTool1;

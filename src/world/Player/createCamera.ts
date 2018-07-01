@@ -28,6 +28,7 @@ export default function createCamera(world: World): BABYLON.FreeCamera | BABYLON
 
     if (!world.webVR) {
 
+        //const camera = new BABYLON.VRDeviceOrientationFreeCamera ("Camera",  BABYLON.Vector3.Zero(), scene);
         const camera = new BABYLON.FreeCamera("FreeCamera", BABYLON.Vector3.Zero(), scene);
         camera.attachControl(document.getElementById('scene'), true);
 

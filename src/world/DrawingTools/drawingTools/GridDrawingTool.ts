@@ -5,7 +5,7 @@ import World from "../../World/index";
 
 interface IGridDrawingToolOptions {
     gridSize: number;
-    material: BABYLON.Material;
+    material: BABYLON.Material;//todo here should be structure
 }
 
 export default class GridDrawingTool extends AbstractDrawingTool {

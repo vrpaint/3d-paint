@@ -8,7 +8,7 @@ import World from "../../World/index";
 interface IPathDrawingToolOptions {
     tessalationInLength: number;
     tessalationInRadius: number;
-    material: BABYLON.Material;
+    material: BABYLON.Material;//todo here should be structure
     transformPath: ITranformPath;
 
     //modifySurfacePoint(point: BABYLON.Vector3, center: DrawingPoint, tool: PathDrawingTool): BABYLON.Vector3;

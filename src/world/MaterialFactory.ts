@@ -2,6 +2,7 @@ import * as superagent from 'superagent';
 import * as BABYLON from 'babylonjs';
 import IStructure from "./IStructure";
 import {isNull} from "util";
+import World from './World';
 
 //todo class Structure
 /*
@@ -22,7 +23,7 @@ export default class MaterialFactory {
     private _structuresCache: IStructure[];
 
 
-    constructor(private _scene: BABYLON.Scene) {
+    constructor(private world: World) {
         this._structuresCache = [];
     }
 
@@ -36,7 +37,7 @@ export default class MaterialFactory {
         } else {
             console.log(`Creating structure "${materialId}".`);
 
-            const babylonMaterial = new BABYLON.StandardMaterial(materialId, this._scene);
+            const babylonMaterial = new BABYLON.StandardMaterial(materialId, this.world.scene);
             babylonMaterial.backFaceCulling = false;//todo repair mesh builder
 
             let structure: IStructure = {
@@ -62,7 +63,7 @@ export default class MaterialFactory {
     }*/
 
 
-    createTexture(textureId: string): BABYLON.Texture|BABYLON.Color3{
+    async createTexture(textureId: string): Promise<BABYLON.Texture|BABYLON.Color3>{
         if(textureId.substring(0,1)==='#'){
 
             return BABYLON.Color3.FromHexString(textureId);
@@ -72,9 +73,26 @@ export default class MaterialFactory {
 
             switch(textureId.substring(1)){
 
-                case ':'://
-                    return BABYLON.VideoTexture.CreateFromWebCam(this._scene,()=>{}, { maxWidth: 256, maxHeight: 256 , minWidth: 256, minHeight: 256 } as any );
-                    break;
+                case 'webcam':
+                    return BABYLON.VideoTexture.CreateFromWebCam(this.world.scene,()=>{}, { maxWidth: 256, maxHeight: 256 , minWidth: 256, minHeight: 256 } as any ) as any;//why?
+
+                case 'screenshot':
+
+                    return await new Promise((resolve: (value: BABYLON.Texture)=>void,reject)=>{
+                        BABYLON.Tools.CreateScreenshot(this.world.engine, this.world.player.camera, 200, (screenshot)=>{
+
+                            downloadURI('screenshot.png',screenshot);
+                            //console.log(screenshot);
+                            resolve(new BABYLON.Texture(screenshot, this.world.scene));
+    
+    
+                        }) 
+                    });
+                    
+
+                
+                    //throw new Error(`Can't create texture from textureId = "${textureId}". Unknown :special id.`);
+                    //break;
                 default:
                 throw new Error(`Can't create texture from textureId = "${textureId}". Unknown :special id.`);
             }
@@ -95,11 +113,11 @@ export default class MaterialFactory {
     
         console.log(`Creating structure "${materialId}".`);
 
-        const babylonMaterial = new BABYLON.StandardMaterial(materialId, this._scene);
+        const babylonMaterial = new BABYLON.StandardMaterial(materialId, this.world.scene);
         babylonMaterial.backFaceCulling = false;//todo repair mesh builder
 
 
-        const colorOrTexture = this.createTexture(materialId);
+        const colorOrTexture = await this.createTexture(materialId);
 
         if (colorOrTexture instanceof BABYLON.Texture)
             babylonMaterial.diffuseTexture = colorOrTexture;
@@ -127,7 +145,7 @@ export default class MaterialFactory {
                 //console.log(structureConfig);
 
                 const root = process.env.PUBLIC_URL + `/assets/materials/${materialId}/`;
-                const defaultTexture = parseTextureConfig(structureConfig.textures.default, root, this._scene, null);
+                const defaultTexture = parseTextureConfig(structureConfig.textures.default, root, this.world.scene, null);
 
                 if ('textures' in structureConfig) {
                     for (const textureType of ['ambient', 'diffuse', 'specular', 'emissive', 'bump']) {
@@ -135,7 +153,7 @@ export default class MaterialFactory {
 
 
                             
-                            const colorOrTexture = parseTextureConfig(structureConfig.textures[textureType], root, this._scene, defaultTexture);
+                            const colorOrTexture = parseTextureConfig(structureConfig.textures[textureType], root, this.world.scene, defaultTexture);
                             if (colorOrTexture instanceof BABYLON.Color3) {
                                 structure.babylonMaterial[textureType + 'Color'] = colorOrTexture;
                             } else if (colorOrTexture instanceof BABYLON.Texture) {
@@ -163,7 +181,7 @@ export default class MaterialFactory {
 
     async getStructure(materialId: string): Promise<IStructure> {
 
-        const cashedMaterial = this._structuresCache.find((material) => material.id === materialId) || null;
+        const cashedMaterial:IStructure|null = null;//this._structuresCache.find((material) => material.id === materialId) || null;
 
         if (cashedMaterial) {
             return cashedMaterial;
@@ -215,4 +233,16 @@ function parseTextureConfig(textureConfig: null | string | { src?: string, color
     }
 
     return null;
+}
+
+
+//to tools
+function downloadURI(name:string, dataUri:string) {
+    const link = document.createElement("a");
+    link.download = name;
+    link.href = dataUri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    //delete link;
 }
