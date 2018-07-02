@@ -1,10 +1,6 @@
 import Player from './index';
 
-
-export default function setPlayerMovement(
-    player:Player
-){
-
+export default function setPlayerMovement(player: Player) {
     /*subscribeKeys(KEYMAP.FORWARD,SubscriberModes.FRAME,()=>{
 
         player.addMovement(new BABYLON.Vector3(PLAYER.SPEED.FORWARD,0,0));

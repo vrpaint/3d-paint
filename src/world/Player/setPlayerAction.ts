@@ -1,90 +1,80 @@
 import * as BABYLON from 'babylonjs';
 import Player from './index';
-import DrawingPoint from "../DrawingTools/DrawingPoint";
-import DrawingToolFactory from "../DrawingTools/DrawingToolFactory"
-import AbstractDrawingTool from "../DrawingTools/AbstractDrawingTool";
-
+import DrawingPoint from '../DrawingTools/DrawingPoint';
+import DrawingToolFactory from '../DrawingTools/DrawingToolFactory';
+import AbstractDrawingTool from '../DrawingTools/AbstractDrawingTool';
 
 export default async function setPlayerAction(player: Player) {
-
-
     const drawingToolFactory = new DrawingToolFactory(player.world);
     //const tubeDrawingTool = await drawingToolFactory.createPathTool();
     //const brickDrawingTool = await drawingToolFactory.createPathTool();
     const drawingTool1 = await drawingToolFactory.createPathTool('#ff0000');
     //const drawingTool2 = await drawingToolFactory.createPathTool('#0000ff');
-    const drawingTool2 = await drawingToolFactory.createGridTool(/* 'stone-bricks' */ ':screenshot', .2);
+    const drawingTool2 = await drawingToolFactory.createGridTool(
+        /* 'stone-bricks' */ ':screenshot',
+        0.2,
+    );
 
     //todo remove
-    drawingTool1.setMaterial((await player.world.materialFactory.getStructure('#ff0000')).babylonMaterial);
+    //drawingTool1.setMaterial((await player.world.materialFactory.getStructure('#ff0000')).babylonMaterial);
     //drawingTool2.setMaterial(player.world.materialFactory.getStructureSync('#0000ff').babylonMaterial);
-
 
     //alert(123);
     //let path:BABYLON.Vector3[] = [];
     //let mesh:BABYLON.Mesh|null = null;
 
-
     if (!player.world.webVR) {
-
-
-        const drawingToolFromEvent: (event: { button: number }) => AbstractDrawingTool = (event: { button: number }) => {
-
+        const drawingToolFromEvent: (
+            event: { button: number },
+        ) => AbstractDrawingTool = (event: { button: number }) => {
             switch (event.button) {
                 case 0:
                     return drawingTool1;
                 case 2:
-                    player.world.materialFactory.getStructure(':screenshot').then((structure)=>{
-
-                        drawingTool2.options.material = structure.babylonMaterial;
-                    });
+                    //todo remove and make palette
+                    player.world.materialFactory
+                        .getStructure(':webcam')
+                        .then((structure) => {
+                            drawingTool2.options.material =
+                                structure.babylonMaterial;
+                        });
                     return drawingTool2;
                 default:
                     return drawingTool1;
             }
         };
 
-        const getDrawingPoint = () => new DrawingPoint(
-            player.camera.position.add(player.direction1.scale(5)),
-            BABYLON.Vector3.Zero(),
-            1
-        );
+        const getDrawingPoint = () =>
+            new DrawingPoint(
+                player.camera.position.add(player.direction1.scale(5)),
+                BABYLON.Vector3.Zero(),
+                1,
+            );
 
-
-        player.world.canvasElement.addEventListener("mousedown", (event) => {
+        player.world.canvasElement.addEventListener('mousedown', (event) => {
             drawingToolFromEvent(event).update(getDrawingPoint());
             drawingToolFromEvent(event).start();
         });
-        player.world.canvasElement.addEventListener("mousemove", (event) => {
+        player.world.canvasElement.addEventListener('mousemove', (event) => {
             drawingToolFromEvent(event).update(getDrawingPoint());
         });
-        player.world.canvasElement.addEventListener("mouseup", (event) => {
+        player.world.canvasElement.addEventListener('mouseup', (event) => {
             drawingToolFromEvent(event).end();
         });
 
-        player.world.canvasElement.addEventListener("contextmenu", (event) => {
+        player.world.canvasElement.addEventListener('contextmenu', (event) => {
             event.preventDefault();
         });
-
-
-
     } else {
-
-
         const camera = player.camera as BABYLON.WebVRFreeCamera;
 
         /*camera.onControllerMeshLoadedObservable.add((controller)=>{
             console.log('onControllerMeshLoadedObservable',controller);
         });*/
         camera.onControllersAttachedObservable.add((controllers) => {
-
-
             console.log('controllers', controllers);
 
             controllers.forEach((controller, i) => {
-
-
-
                 /*player.world.scene.registerBeforeRender(()=>{
 
                     if(player.world.scene.meshes.some((mesh)=>mesh.intersectsPoint(controller.devicePosition))){
@@ -92,18 +82,13 @@ export default async function setPlayerAction(player: Player) {
                     }
                 });*/
 
-
-
                 //const drawingTool = i === 0 ? drawingTool1 : drawingTool2;
                 let drawingTool = i === 0 ? drawingTool1 : drawingTool2;
 
                 let intensity = 0;
 
-
                 controller.onPadValuesChangedObservable.add((gamepadButton) => {
-
-
-                 /*/
+                    /*/
  
                  controller.onMainButtonStateChangedObservable.add((gamepadButton)=>{
                      console.log('onMainButtonStateChangedObservable',gamepadButton);
@@ -132,11 +117,15 @@ export default async function setPlayerAction(player: Player) {
                  
                  /**/
 
-
-                 
-
                     const pieces = 24;
-                    const radians = Math.round(Math.atan2(gamepadButton.y, gamepadButton.x)/(Math.PI*2)*pieces)*(Math.PI*2)/pieces;
+                    const radians =
+                        (Math.round(
+                            (Math.atan2(gamepadButton.y, gamepadButton.x) /
+                                (Math.PI * 2)) *
+                                pieces,
+                        ) *
+                            (Math.PI * 2)) /
+                        pieces;
 
                     const h = (radians / (Math.PI * 2) + 1) % 1;
                     const s = 1;
@@ -144,9 +133,7 @@ export default async function setPlayerAction(player: Player) {
 
                     //console.log(h);
 
-
                     const [r, g, b] = hslToRgb(h, s, l);
-
 
                     if (h === 0) return;
                     //console.log('[h, s, l]',[h, s, l]);
@@ -160,85 +147,87 @@ export default async function setPlayerAction(player: Player) {
 
                     gamepadButton.x
                     gamepadButton.y*/
-
-                    
-
-
                 });
 
-
-                controller.onMainButtonStateChangedObservable.add((gamepadButton)=>{
-                    if(gamepadButton.pressed===false){//on release
-                     drawingTool.back();
-                    }
-                 });
-
-
+                controller.onMainButtonStateChangedObservable.add(
+                    (gamepadButton) => {
+                        if (gamepadButton.pressed === false) {
+                            //on release
+                            drawingTool.back();
+                        }
+                    },
+                );
 
                 let vibrationIntensity = 0;
-                setInterval(()=>{
-                    if(vibrationIntensity){
-                        controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(intensity,10));//todo as type use GamepadHapticActuator
-                    }   
-                },10);
-
-                controller.onTriggerStateChangedObservable.add((gamepadButton) => {
-
-                    if (gamepadButton.pressed) {
-                        setTimeout(()=>{
-                            drawingTool.start();
-                        },50);
-                        
-                    } else {
-                        drawingTool.end();
-                        setTimeout(()=>{
-                            drawingTool.end();
-                        },50);
+                setInterval(() => {
+                    if (vibrationIntensity) {
+                        controller.browserGamepad.hapticActuators.forEach(
+                            (hapticActuator: any) =>
+                                hapticActuator.pulse(intensity, 10),
+                        ); //todo as type use GamepadHapticActuator
                     }
+                }, 10);
 
-                    intensity = gamepadButton.value;
-                    vibrationIntensity = intensity;
+                controller.onTriggerStateChangedObservable.add(
+                    (gamepadButton) => {
+                        if (gamepadButton.pressed) {
+                            setTimeout(() => {
+                                //todo remove and make palette
+                                if (drawingTool2 === drawingTool) {
+                                    player.world.materialFactory
+                                        .getStructure(':screenshot')
+                                        .then((structure) => {
+                                            drawingTool2.options.material =
+                                                structure.babylonMaterial;
+                                        });
+                                }
 
-        
+                                drawingTool.start();
+                            }, 50);
+                        } else {
+                            drawingTool.end();
+                            setTimeout(() => {
+                                drawingTool.end();
+                            }, 50);
+                        }
 
-                });
+                        intensity = gamepadButton.value;
+                        vibrationIntensity = intensity;
+                    },
+                );
 
-                controller.onSecondaryButtonStateChangedObservable.add((gamepadButton)=>{
-                    if(gamepadButton.pressed===false){//on release
-                            drawingTool = drawingTool===drawingTool1?drawingTool2:drawingTool1;
-                       }
-                });
-
-
-                
-
+                controller.onSecondaryButtonStateChangedObservable.add(
+                    (gamepadButton) => {
+                        if (gamepadButton.pressed === false) {
+                            //on release
+                            drawingTool =
+                                drawingTool === drawingTool1
+                                    ? drawingTool2
+                                    : drawingTool1;
+                        }
+                    },
+                );
 
                 function updatePositon() {
-
-                    if(typeof controller.mesh !=='undefined'){
-
-                        drawingTool.update(new DrawingPoint(
-                            controller.devicePosition,
-                            controller.deviceRotationQuaternion.toEulerAngles(),
-                            intensity
-                        ));
+                    if (typeof controller.mesh !== 'undefined') {
+                        drawingTool.update(
+                            new DrawingPoint(
+                                controller.devicePosition,
+                                controller.deviceRotationQuaternion.toEulerAngles(),
+                                intensity,
+                            ),
+                        );
                     }
                     requestAnimationFrame(updatePositon);
                 }
 
                 updatePositon();
-
-
             });
-
 
             //console.log('onControllersAttachedObservable',controllers);
         });
-
-
     }
 }
-
 
 /**
  * Converts an HSL color value to RGB. Conversion formula
@@ -276,7 +265,6 @@ function hslToRgb(h: number, s: number, l: number) {
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
 
-
 function rgbToHex(r: number, g: number, b: number) {
-    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }

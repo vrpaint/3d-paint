@@ -6,14 +6,12 @@ import setPlayerMovement from './setPlayerMovement';
 import setPlayerAction from './setPlayerAction';
 
 export default class Player {
-
     public mesh: BABYLON.AbstractMesh;
     public camera: BABYLON.FreeCamera;
 
     constructor(public world: World) {
-
         this.camera = createCamera(world);
-        this.mesh = BABYLON.Mesh.CreateSphere("player", 16, 1, world.scene);
+        this.mesh = BABYLON.Mesh.CreateSphere('player', 16, 1, world.scene);
         this.mesh.isVisible = false;
         //this.mesh.position = new BABYLON.Vector3(0, 2, 0);
         this.mesh.rotation = new BABYLON.Vector3(0, 0, 0);
@@ -29,12 +27,10 @@ export default class Player {
             world.scene
         );*/
 
-
         /*this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
             this.camera.position = this.mesh.position;
             this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
         });*/
-
 
         setPlayerMouseLock(this.world.canvasElement, this.camera);
         setPlayerMovement(this);
@@ -43,7 +39,11 @@ export default class Player {
 
     get direction(): BABYLON.Vector3 {
         const point1 = this.camera.position;
-        const point2 = this.world.scene.pick(this.world.canvasElement.width / 2, this.world.canvasElement.height / 2, (mesh) => mesh === this.world.skyboxMesh).pickedPoint;
+        const point2 = this.world.scene.pick(
+            this.world.canvasElement.width / 2,
+            this.world.canvasElement.height / 2,
+            (mesh) => mesh === this.world.skyboxMesh,
+        ).pickedPoint;
 
         return point2.subtract(point1);
     }
@@ -59,7 +59,6 @@ export default class Player {
     }
 
     addMovement(vector: BABYLON.Vector3) {
-
         this.camera.position.addInPlace(vector);
 
         /*const currentVelocity = this.mesh.physicsImpostor.getLinearVelocity();
@@ -87,6 +86,5 @@ export default class Player {
         const composedVelocityTerminated = surfaceVelocity.add(jumpVelocity);
 
         this.mesh.physicsImpostor.setLinearVelocity(composedVelocityTerminated);*/
-
     }
 }

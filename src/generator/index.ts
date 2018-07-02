@@ -1,13 +1,10 @@
 import World from '../world/World';
 //import Brick from '../world/Brick';
 
-export default class WorldGenerator{
-    constructor(
-        private world:World
-    ){}
+export default class WorldGenerator {
+    constructor(private world: World) {}
 
-    generateWorld(){
-
+    generateWorld() {
         //----------------------------------Building
         /*
         const floors = 8;
@@ -54,6 +51,5 @@ export default class WorldGenerator{
             }
         }/**/
         //----------------------------------
-
     }
 }

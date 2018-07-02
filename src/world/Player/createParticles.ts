@@ -1,22 +1,27 @@
 import * as BABYLON from 'babylonjs';
 
-interface IParticleSettings{
-    color1:string;
-    color2:string;
-    minSize?:number;
-    maxSize?:number;
-    minLifeTime?:number;
-    maxLifeTime?:number;
+interface IParticleSettings {
+    color1: string;
+    color2: string;
+    minSize?: number;
+    maxSize?: number;
+    minLifeTime?: number;
+    maxLifeTime?: number;
 }
 
-export default function createParticles(fountainMesh:BABYLON.AbstractMesh, settings:IParticleSettings, scene:BABYLON.Scene):BABYLON.ParticleSystem{
-
-
+export default function createParticles(
+    fountainMesh: BABYLON.AbstractMesh,
+    settings: IParticleSettings,
+    scene: BABYLON.Scene,
+): BABYLON.ParticleSystem {
     // Create a particle system
-    var particleSystem = new BABYLON.ParticleSystem("particles", 1000, scene);
+    var particleSystem = new BABYLON.ParticleSystem('particles', 1000, scene);
 
     //Texture of each particle
-    particleSystem.particleTexture = new BABYLON.Texture("./assets/particles/flare.png", scene);
+    particleSystem.particleTexture = new BABYLON.Texture(
+        './assets/particles/flare.png',
+        scene,
+    );
 
     // Where the particles come from
     particleSystem.emitter = fountainMesh; // the starting object, the emitter
@@ -24,17 +29,21 @@ export default function createParticles(fountainMesh:BABYLON.AbstractMesh, setti
     particleSystem.maxEmitBox = new BABYLON.Vector3(0, 0, 0); // To...
 
     // Colors of all particles
-    particleSystem.color1 = BABYLON.Color4.FromHexString(settings.color1+'FF');
-    particleSystem.color2 = BABYLON.Color4.FromHexString(settings.color2+'FF');
+    particleSystem.color1 = BABYLON.Color4.FromHexString(
+        settings.color1 + 'FF',
+    );
+    particleSystem.color2 = BABYLON.Color4.FromHexString(
+        settings.color2 + 'FF',
+    );
     particleSystem.colorDead = new BABYLON.Color4(0, 0, 0, 0);
 
     // Size of each particle (random between...
-    particleSystem.minSize = settings.minSize||0.1;
-    particleSystem.maxSize = settings.maxSize||2;
+    particleSystem.minSize = settings.minSize || 0.1;
+    particleSystem.maxSize = settings.maxSize || 2;
 
     // Life time of each particle (random between...
-    particleSystem.minLifeTime = settings.minLifeTime||0.1;
-    particleSystem.maxLifeTime = settings.maxLifeTime||2;
+    particleSystem.minLifeTime = settings.minLifeTime || 0.1;
+    particleSystem.maxLifeTime = settings.maxLifeTime || 2;
 
     // Emission rate
     particleSystem.emitRate = 1000;
@@ -62,5 +71,4 @@ export default function createParticles(fountainMesh:BABYLON.AbstractMesh, setti
     particleSystem.start();
 
     return particleSystem;
-
 }

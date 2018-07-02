@@ -1,11 +1,9 @@
-import * as BABYLON from "babylonjs";
-import World from "../World";
-import DrawingPoint from "./DrawingPoint";
-
+import * as BABYLON from 'babylonjs';
+import World from '../World';
+import DrawingPoint from './DrawingPoint';
 
 export default class AbstractDrawingTool {
-
-    public drawing: boolean = false
+    public drawing: boolean = false;
     //public drawingMesh: BABYLON.Mesh | null;
     public currentPoint: DrawingPoint;
 
@@ -16,12 +14,12 @@ export default class AbstractDrawingTool {
     }
 
     createToolMesh(): BABYLON.Mesh {
-        return BABYLON.Mesh.CreateSphere("sphere", 16, 1, this.world.scene);
+        return BABYLON.Mesh.CreateSphere('sphere', 16, 1, this.world.scene);
     }
 
-
     start() {
-        if (this.drawing === false) {//todo is it best solution?
+        if (this.drawing === false) {
+            //todo is it best solution?
             this.restart();
         }
     }
@@ -34,12 +32,9 @@ export default class AbstractDrawingTool {
     end() {
         this.drawing = false;
         //console.log('Drawed ', this.drawingMesh);
-
     }
 
-    back(){
-        
-    }
+    back() {}
 
     update(point: DrawingPoint) {
         this.currentPoint = point;
@@ -47,5 +42,4 @@ export default class AbstractDrawingTool {
         //this._toolMesh.position = point.position;
         //todo this._toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(this.intensityToRadius(point.intensity));
     }
-
 }

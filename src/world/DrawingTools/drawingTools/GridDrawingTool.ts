@@ -1,19 +1,17 @@
-import AbstractDrawingTool from "../AbstractDrawingTool";
-import DrawingPoint from "../DrawingPoint";
-import * as BABYLON from "babylonjs";
-import World from "../../World/index";
+import AbstractDrawingTool from '../AbstractDrawingTool';
+import DrawingPoint from '../DrawingPoint';
+import * as BABYLON from 'babylonjs';
+import World from '../../World/index';
 
 interface IGridDrawingToolOptions {
     gridSize: number;
-    material: BABYLON.Material;//todo here should be structure
+    material: BABYLON.Material; //todo here should be structure
 }
 
 export default class GridDrawingTool extends AbstractDrawingTool {
-
     public lastGridPoint: DrawingPoint;
 
-    constructor(world: World,
-                public options: IGridDrawingToolOptions) {
+    constructor(world: World, public options: IGridDrawingToolOptions) {
         super(world);
     }
 
@@ -24,19 +22,14 @@ export default class GridDrawingTool extends AbstractDrawingTool {
     }
 
     update(point: DrawingPoint) {
-
         super.update(point);
 
         if (this.drawing) {
-
-
-            const currentGridPoint = this._gridPoint(point);//todo or use point???
-
+            const currentGridPoint = this._gridPoint(point); //todo or use point???
 
             if (
                 !this.lastGridPoint.position.equals(currentGridPoint.position)
             ) {
-
                 this.lastGridPoint = currentGridPoint;
                 this._drawMesh(currentGridPoint);
 
@@ -45,18 +38,26 @@ export default class GridDrawingTool extends AbstractDrawingTool {
         }
     }
 
-
     private _gridPoint(point: DrawingPoint): DrawingPoint {
         const gridPoint = point.clone();
-        gridPoint.position.x = Math.round(gridPoint.position.x / this.options.gridSize) * this.options.gridSize;
-        gridPoint.position.y = Math.round(gridPoint.position.y / this.options.gridSize) * this.options.gridSize;
-        gridPoint.position.z = Math.round(gridPoint.position.z / this.options.gridSize) * this.options.gridSize;
+        gridPoint.position.x =
+            Math.round(gridPoint.position.x / this.options.gridSize) *
+            this.options.gridSize;
+        gridPoint.position.y =
+            Math.round(gridPoint.position.y / this.options.gridSize) *
+            this.options.gridSize;
+        gridPoint.position.z =
+            Math.round(gridPoint.position.z / this.options.gridSize) *
+            this.options.gridSize;
         return gridPoint;
     }
 
-
     private _drawMesh(point: DrawingPoint) {
-        const box = BABYLON.Mesh.CreateBox('box', this.options.gridSize, this.world.scene);
+        const box = BABYLON.Mesh.CreateBox(
+            'box',
+            this.options.gridSize,
+            this.world.scene,
+        );
         box.position = point.position;
         box.material = this.options.material;
     }
@@ -82,6 +83,4 @@ export default class GridDrawingTool extends AbstractDrawingTool {
 
 
     }*/
-
-
 }

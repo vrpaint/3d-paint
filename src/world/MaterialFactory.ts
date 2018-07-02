@@ -1,7 +1,7 @@
 import * as superagent from 'superagent';
 import * as BABYLON from 'babylonjs';
-import IStructure from "./IStructure";
-import {isNull} from "util";
+import IStructure from './IStructure';
+import { isNull } from 'util';
 import World from './World';
 
 //todo class Structure
@@ -15,18 +15,13 @@ soundSettings
 
 */
 
-
 //todo rename to StructuresFactory
 export default class MaterialFactory {
-
-
     private _structuresCache: IStructure[];
-
 
     constructor(private world: World) {
         this._structuresCache = [];
     }
-
 
     /*getStructureSync(materialId: string): IStructure {
 
@@ -62,70 +57,83 @@ export default class MaterialFactory {
         }
     }*/
 
-
-    async createTexture(textureId: string): Promise<BABYLON.Texture|BABYLON.Color3>{
-        if(textureId.substring(0,1)==='#'){
-
+    async createTexture(
+        textureId: string,
+    ): Promise<BABYLON.Texture | BABYLON.Color3> {
+        if (textureId.substring(0, 1) === '#') {
             return BABYLON.Color3.FromHexString(textureId);
-
-        }else
-        if(textureId.substring(0,1)===':'){
-
-            switch(textureId.substring(1)){
-
+        } else if (textureId.substring(0, 1) === ':') {
+            switch (textureId.substring(1)) {
                 case 'webcam':
-                    return BABYLON.VideoTexture.CreateFromWebCam(this.world.scene,()=>{}, { maxWidth: 256, maxHeight: 256 , minWidth: 256, minHeight: 256 } as any ) as any;//why?
+
+                    return new BABYLON.Texture(screenshot(),this.world.scene);
+
+                    /*return BABYLON.VideoTexture.CreateFromWebCam(
+                        this.world.scene,
+                        () => {},
+                        {
+                            maxWidth: 256,
+                            maxHeight: 256,
+                            minWidth: 256,
+                            minHeight: 256,
+                        } as any,
+                    ) as any; //why?*/
 
                 case 'screenshot':
+                    return await new Promise(
+                        (resolve: (value: BABYLON.Texture) => void, reject) => {
+                            BABYLON.Tools.CreateScreenshot(
+                                this.world.engine,
+                                this.world.player.camera,
+                                1024,
+                                (screenshot) => {
+                                    //downloadURI('screenshot.png',screenshot);
+                                    //console.log(screenshot);
+                                    resolve(
+                                        new BABYLON.Texture(
+                                            screenshot,
+                                            this.world.scene,
+                                        ),
+                                    );
+                                },
+                            );
+                        },
+                    );
 
-                    return await new Promise((resolve: (value: BABYLON.Texture)=>void,reject)=>{
-                        BABYLON.Tools.CreateScreenshot(this.world.engine, this.world.player.camera, 200, (screenshot)=>{
-
-                            downloadURI('screenshot.png',screenshot);
-                            //console.log(screenshot);
-                            resolve(new BABYLON.Texture(screenshot, this.world.scene));
-    
-    
-                        }) 
-                    });
-                    
-
-                
-                    //throw new Error(`Can't create texture from textureId = "${textureId}". Unknown :special id.`);
-                    //break;
+                //throw new Error(`Can't create texture from textureId = "${textureId}". Unknown :special id.`);
+                //break;
                 default:
-                throw new Error(`Can't create texture from textureId = "${textureId}". Unknown :special id.`);
+                    throw new Error(
+                        `Can't create texture from textureId = "${textureId}". Unknown :special id.`,
+                    );
             }
 
             //BABYLON.VideoTexture.CreateFromWebCam(s,()=>, { maxWidth: 256, maxHeight: 256 });
-        
-        }else
-        if(textureId.substring(0,1)==='/'){
-            
-            throw new Error(`Can't create texture from textureId = "${textureId}". Urls not implemented yet.`);
-
-        }else{
-            throw new Error(`Can't create texture from textureId = "${textureId}".`);
+        } else if (textureId.substring(0, 1) === '/') {
+            throw new Error(
+                `Can't create texture from textureId = "${textureId}". Urls not implemented yet.`,
+            );
+        } else {
+            throw new Error(
+                `Can't create texture from textureId = "${textureId}".`,
+            );
         }
     }
 
     async createStructure(materialId: string): Promise<IStructure> {
-    
         console.log(`Creating structure "${materialId}".`);
 
-        const babylonMaterial = new BABYLON.StandardMaterial(materialId, this.world.scene);
-        babylonMaterial.backFaceCulling = false;//todo repair mesh builder
-
+        const babylonMaterial = new BABYLON.StandardMaterial(
+            materialId,
+            this.world.scene,
+        );
+        babylonMaterial.backFaceCulling = false; //todo repair mesh builder
 
         const colorOrTexture = await this.createTexture(materialId);
 
         if (colorOrTexture instanceof BABYLON.Texture)
-            babylonMaterial.diffuseTexture = colorOrTexture;
-        else
-            babylonMaterial.diffuseColor = colorOrTexture;
-
-        
-       
+            babylonMaterial.emissiveTexture = colorOrTexture;
+        else babylonMaterial.diffuseColor = colorOrTexture;
 
         /*if(materialId.substring(0,1)==='#'){
 
@@ -177,11 +185,8 @@ export default class MaterialFactory {
         };
     }
 
-
-
     async getStructure(materialId: string): Promise<IStructure> {
-
-        const cashedMaterial:IStructure|null = null;//this._structuresCache.find((material) => material.id === materialId) || null;
+        const cashedMaterial: IStructure | null = null; //this._structuresCache.find((material) => material.id === materialId) || null;
 
         if (cashedMaterial) {
             return cashedMaterial;
@@ -189,26 +194,38 @@ export default class MaterialFactory {
             const structure = await this.createStructure(materialId);
             this._structuresCache.push(structure);
             return structure;
-
         }
     }
-
 }
 
-
-function parseTextureConfig(textureConfig: null | string | { src?: string, color?: string, uScale?: number, vScale?: number, uOffset?: number, vOffset?: number }, root: string, scene: BABYLON.Scene, defaultTexture: BABYLON.Color3 | BABYLON.Texture | null): BABYLON.Color3 | BABYLON.Texture | null {
+function parseTextureConfig(
+    textureConfig:
+        | null
+        | string
+        | {
+              src?: string;
+              color?: string;
+              uScale?: number;
+              vScale?: number;
+              uOffset?: number;
+              vOffset?: number;
+          },
+    root: string,
+    scene: BABYLON.Scene,
+    defaultTexture: BABYLON.Color3 | BABYLON.Texture | null,
+): BABYLON.Color3 | BABYLON.Texture | null {
     if (typeof textureConfig === 'string') {
         if (textureConfig === 'default') {
             return defaultTexture;
         }
         if (textureConfig.substring(0, 1) === '#') {
             textureConfig = {
-                color: textureConfig
-            }
+                color: textureConfig,
+            };
         } else {
             textureConfig = {
-                src: textureConfig
-            }
+                src: textureConfig,
+            };
         }
     }
     if (isNull(textureConfig)) {
@@ -218,31 +235,93 @@ function parseTextureConfig(textureConfig: null | string | { src?: string, color
         if ('color' in textureConfig) {
             return BABYLON.Color3.FromHexString(textureConfig.color as string);
         } else if ('src' in textureConfig) {
-
-            const texture = new BABYLON.Texture(root + textureConfig.src, scene);
-            for (const textureParam of ['uScale', 'vScale', 'uOffset', 'vOffset']) {
+            const texture = new BABYLON.Texture(
+                root + textureConfig.src,
+                scene,
+            );
+            for (const textureParam of [
+                'uScale',
+                'vScale',
+                'uOffset',
+                'vOffset',
+            ]) {
                 if (textureParam in textureConfig) {
                     texture[textureParam] = textureConfig[textureParam];
                 }
             }
 
             return texture;
-
         }
-
     }
 
     return null;
 }
 
-
 //to tools
-function downloadURI(name:string, dataUri:string) {
-    const link = document.createElement("a");
+function downloadURI(name: string, dataUri: string) {
+    const link = document.createElement('a');
     link.download = name;
     link.href = dataUri;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     //delete link;
+}
+
+//------------------------------
+
+//--------------------
+// GET USER MEDIA CODE
+//--------------------
+/*
+todo maybe to polyfill
+navigator.getUserMedia = ( navigator.getUserMedia ||
+navigator.webkitGetUserMedia ||
+navigator.mozGetUserMedia ||
+navigator.msGetUserMedia);
+*/
+//------
+
+let videoElement = document.createElement('video');
+//let webcamStream: MediaStream;
+
+function startWebcam() {
+    if (navigator.getUserMedia) {
+        navigator.getUserMedia(
+            // constraints
+            {
+                video: true,
+                audio: false,
+            },
+
+            // successCallback
+            function(mediaStream) {
+                videoElement.src = window.URL.createObjectURL(mediaStream);
+                //webcamStream = localMediaStream;
+            },
+
+            // errorCallback
+            function(err) {
+                console.log('The following error occured: ' + err);
+            },
+        );
+    } else {
+        console.log('getUserMedia not supported');
+    }
+}
+
+/*function stopWebcam() {
+    webcamStream.stop();
+}*/
+//---------------------
+// TAKE A SNAPSHOT CODE
+//---------------------
+
+const canvasElement = document.createElement('canvas');
+const canvasContext = canvasElement.getContext('2d');
+
+function screenshot() {
+    // Draws current image from the video element into the canvas
+    canvasContext.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+    return canvasElement.toDataURL();
 }

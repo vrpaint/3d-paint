@@ -24,6 +24,11 @@
     "eject": "react-scripts-ts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "deploy-from-cache": "gh-pages -d build"
+    "deploy-from-cache": "gh-pages -d build",
+    "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,tsx,js}\"",
+    "prettier-watch": "onchange \"**/*.{js,ts,tsx,json}\" -- npm run prettier"
+  },
+  "devDependencies": {
+    "prettier": "^1.13.7"
   }
 }
