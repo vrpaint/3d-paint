@@ -11,7 +11,7 @@ export default async function setPlayerAction(player: Player) {
     const drawingTool1 = await drawingToolFactory.createPathTool('#ff0000');
     //const drawingTool2 = await drawingToolFactory.createPathTool('#0000ff');
     const drawingTool2 = await drawingToolFactory.createGridTool(
-        /* 'stone-bricks' */ ':screenshot',
+            /* 'stone-bricks' */ ':screenshot',
         0.2,
     );
 
