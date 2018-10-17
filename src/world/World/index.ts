@@ -1,4 +1,5 @@
 import * as BABYLON from 'babylonjs';
+import 'babylonjs-serializers';
 import MaterialFactory from '../MaterialFactory';
 import WorldGenerator from '../../generator';
 import Player from '../Player';
@@ -50,6 +51,27 @@ export default class World {
 
         this.worldGenerator = new WorldGenerator(this);
         this.worldGenerator.generateWorld();
+
+        //todo better UI
+        document.getElementById('export').addEventListener('click',()=>{
+
+
+            const options = {
+                shouldExportTransformNode: (transformNode:BABYLON.Node)=>{
+
+                    console.log('exporting', transformNode);
+                    return false;
+                    //return transformNode !== this.skyboxMesh && transformNode !== this.player.mesh && transformNode.name !=='ViveWand';
+                }
+            }
+            
+            console.log('---------------------------exporting');
+            BABYLON.GLTF2Export.GLBAsync(this.scene, "fileName", options).then((glb) => {
+                glb.downloadFiles();
+            });
+            
+        });
+
     }
 
     pick(left: number = 0.5, top: number = 0.5): BABYLON.PickingInfo {

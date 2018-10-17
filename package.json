@@ -10,6 +10,7 @@
     "@types/superagent": "^3.5.7",
     "babylonjs": "^3.2.0",
     "babylonjs-post-process": "^3.2.0",
+    "babylonjs-serializers": "^3.3.0",
     "gh-pages": "^1.0.0",
     "gridbuilding": "^0.1.0",
     "lodash": "^4.17.4",
