@@ -23,7 +23,9 @@ export default class MaterialFactory {
         this._structuresCache = [];
     }
 
-    /*getStructureSync(materialId: string): IStructure {
+    getStructureSync(materialId: string): IStructure {
+
+        //todo check - not working with screenshots
 
         const cashedMaterial = this._structuresCache.find((material) => material.id === materialId) || null;
 
@@ -55,7 +57,7 @@ export default class MaterialFactory {
             return structure;
 
         }
-    }*/
+    }
 
     async createTexture(
         textureId: string,

@@ -46,7 +46,7 @@ export default class World {
         this.materialFactory = new MaterialFactory(this);
         this.player = new Player(this);
         this.skyboxMesh = createSkyboxMesh(this.scene);
-        this.groundMesh = createGroundMesh(this.scene,this.materialFactory);
+        //todo this.groundMesh = createGroundMesh(this.scene,this.materialFactory);
 
         this.worldGenerator = new WorldGenerator(this);
         this.worldGenerator.generateWorld();

@@ -9,11 +9,13 @@ export default async function setPlayerAction(player: Player) {
     //const tubeDrawingTool = await drawingToolFactory.createPathTool();
     //const brickDrawingTool = await drawingToolFactory.createPathTool();
     const drawingTool1 = await drawingToolFactory.createPathTool('#ff0000');
-    //const drawingTool2 = await drawingToolFactory.createPathTool('#0000ff');
+    const drawingTool2 = await drawingToolFactory.createPathTool('#0000ff');
+    /*
     const drawingTool2 = await drawingToolFactory.createGridTool(
-            /* 'stone-bricks' */ ':screenshot',
+             ':screenshot',
         0.2,
     );
+    */
 
     //todo remove
     //drawingTool1.setMaterial((await player.world.materialFactory.getStructure('#ff0000')).babylonMaterial);
@@ -32,12 +34,12 @@ export default async function setPlayerAction(player: Player) {
                     return drawingTool1;
                 case 2:
                     //todo remove and make palette
-                    player.world.materialFactory
+                    /*player.world.materialFactory
                         .getStructure(':webcam')
                         .then((structure) => {
                             drawingTool2.options.material =
                                 structure.babylonMaterial;
-                        });
+                        });*/
                     return drawingTool2;
                 default:
                     return drawingTool1;
@@ -141,7 +143,8 @@ export default async function setPlayerAction(player: Player) {
 
                     const hex = rgbToHex(r, g, b);
 
-                    //todo drawingTool.setMaterial(player.world.materialFactory.getStructureSync(hex).babylonMaterial);
+                    //todo
+                    drawingTool.setMaterial(player.world.materialFactory.getStructureSync(hex).babylonMaterial);
 
                     /*drawingTool
 
@@ -173,14 +176,14 @@ export default async function setPlayerAction(player: Player) {
                         if (gamepadButton.pressed) {
                             setTimeout(() => {
                                 //todo remove and make palette
-                                if (drawingTool2 === drawingTool) {
+                                /*if (drawingTool2 === drawingTool) {
                                     player.world.materialFactory
                                         .getStructure(':screenshot')
                                         .then((structure) => {
                                             drawingTool2.options.material =
                                                 structure.babylonMaterial;
                                         });
-                                }
+                                }*/
 
                                 drawingTool.start();
                             }, 50);
