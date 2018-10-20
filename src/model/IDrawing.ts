@@ -1,5 +1,5 @@
-import { IDrawingTool } from "./IDrawingTool";
-import { IFrame } from "./IFrame";
+import { IDrawingTool } from './IDrawingTool';
+import { IFrame } from './IFrame';
 
 export interface IDrawing {
     id: string;

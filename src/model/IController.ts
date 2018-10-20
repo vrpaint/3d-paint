@@ -1,8 +1,15 @@
 import { IDrawingTool } from './IDrawingTool';
-import { IFrame } from './IAppState';
+import { IFrame } from './IFrame';
 
-export type TWheelChangingOptions = 'SIZE'|'COLOR_HUE'|'COLOR_SATURATION'|'COLOR_LIGHT';
-export const WHEEL_CHANGING_OPTIONS:TWheelChangingOptions[]  = ['SIZE','COLOR_HUE'/*,'COLOR_SATURATION','COLOR_LIGHT'*/];
+export type TWheelChangingOptions =
+    | 'SIZE'
+    | 'COLOR_HUE'
+    | 'COLOR_SATURATION'
+    | 'COLOR_LIGHT';
+export const WHEEL_CHANGING_OPTIONS: TWheelChangingOptions[] = [
+    'SIZE',
+    'COLOR_HUE' /*,'COLOR_SATURATION','COLOR_LIGHT'*/,
+];
 
 export interface IController {
     id: string;
@@ -10,4 +17,3 @@ export interface IController {
     drawingTool: IDrawingTool;
     currentFrame: null | IFrame;
 }
-

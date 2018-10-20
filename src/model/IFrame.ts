@@ -1,4 +1,4 @@
-import { IVector3 } from "./IVectors";
+import { IVector3 } from './IVectors';
 
 export interface IFrame {
     time: number;
@@ -7,11 +7,11 @@ export interface IFrame {
     intensity: number;
 }
 
-export function cloneFrame(frame:IFrame):IFrame{
-    return({
+export function cloneFrame(frame: IFrame): IFrame {
+    return {
         time: frame.time,
         position: frame.position,
         rotation: frame.rotation,
-        intensity: frame.intensity
-    });
+        intensity: frame.intensity,
+    };
 }

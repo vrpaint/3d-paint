@@ -21,8 +21,7 @@ export default class {
             //modifySurfacePoint: (point: BABYLON.Vector3, center: IFrame, tool: PathDrawingTool) => point,
             tessalationInLength: 0.02,
             tessalationInRadius: 7,
-            countFrameRadius: (center: IFrame) =>
-                center.intensity / 40 + 0.01,
+            countFrameRadius: (center: IFrame) => center.intensity / 40 + 0.01,
             material: (await this._world.materialFactory.getStructure(
                 materialName,
             )).babylonMaterial,

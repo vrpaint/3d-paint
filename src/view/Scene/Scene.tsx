@@ -13,27 +13,29 @@ interface ISceneProps {
     wallRenderer: WallRenderer;
 }
 
-export const Scene = observer(({ appState, situationState, wallRenderer }: ISceneProps) => {
-    return (
-        <div className="Scene">
-            <canvas
-                ref={(canvasElement) => {
-                    if (canvasElement) {
-                        console.log(
-                            'Canvas element for 3D scene:',
-                            canvasElement,
-                        );
+export const Scene = observer(
+    ({ appState, situationState, wallRenderer }: ISceneProps) => {
+        return (
+            <div className="Scene">
+                <canvas
+                    ref={(canvasElement) => {
+                        if (canvasElement) {
+                            console.log(
+                                'Canvas element for 3D scene:',
+                                canvasElement,
+                            );
 
-                        situationState.world = new World(
-                            canvasElement,
-                            appState,
-                            situationState,
-                            wallRenderer
-                        );
-                        situationState.world.run();
-                    }
-                }}
-            />
-        </div>
-    );
-});
+                            situationState.world = new World(
+                                canvasElement,
+                                appState,
+                                situationState,
+                                wallRenderer,
+                            );
+                            situationState.world.run();
+                        }
+                    }}
+                />
+            </div>
+        );
+    },
+);

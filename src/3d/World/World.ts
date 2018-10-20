@@ -10,7 +10,6 @@ import { createSkybox } from './createSkybox';
 import { controllerLoad } from './controllerLoad';
 
 import { ISituationState } from '../../model/ISituationState';
-import { cleanVectorToBabylon } from '../../tools/vectors';
 
 export class World {
     public engine: BABYLON.Engine;
@@ -33,7 +32,7 @@ export class World {
         public canvasElement: HTMLCanvasElement,
         public appState: IAppState & IObservableObject,
         public situationState: ISituationState & IObservableObject,
-        public wallRenderer: WallRenderer
+        public wallRenderer: WallRenderer,
     ) {}
 
     run() {
@@ -64,26 +63,15 @@ export class World {
         );
         const wallTextureContext = this.wallTexture.getContext();
 
-        this.scene.registerBeforeRender(() => {
-            if (this.appState.corners && this.wallMesh) {
-                /*
-                this.wallRenderer.addContext(wallTextureContext);
-                setInterval(()=>{
-                    this.wallTexture.update();
-                },1000);
-                */
-                //this.wallRenderer.subscribe(()=>this.wallTexture.update());
-            }
-        });
-
         this.wallMaterial = new BABYLON.StandardMaterial(
             'wallMaterial',
             this.scene,
         );
         this.wallMaterial.emissiveTexture = this.wallTexture;
-        this.wallMaterial.diffuseColor = BABYLON.Color3.FromHexString('#000000');
+        this.wallMaterial.diffuseColor = BABYLON.Color3.FromHexString(
+            '#000000',
+        );
         this.wallMaterial.backFaceCulling = false;
-        this.renderWallMesh();
 
         this.VRHelper = this.scene.createDefaultVRExperience();
 
@@ -96,38 +84,6 @@ export class World {
 
     //todo set controlls
     //todo create world
-
-    renderWallMesh() {
-        if (!this.appState.corners) {
-            return; //todo maybe throw Error
-        }
-
-        if (this.wallMesh) {
-            this.wallMesh.dispose();
-        }
-
-        const {
-            topLeft,
-            topRight,
-            bottomLeft,
-            bottomRight,
-        } = this.appState.corners;
-        const pathArray = [
-            [
-                cleanVectorToBabylon(bottomLeft),
-                cleanVectorToBabylon(bottomRight),
-            ],
-            [cleanVectorToBabylon(topLeft), cleanVectorToBabylon(topRight)],
-        ];
-        this.wallMesh = BABYLON.MeshBuilder.CreateRibbon(
-            'ribbon',
-            { pathArray },
-            this.scene,
-        );
-        this.wallMesh.material = this.wallMaterial;
-        //console.log('material', this.wallMaterial);
-        //console.log('texture', this.wallMaterial.ambientTexture);
-    }
 
     dispose() {
         this.scene.dispose(); //todo is it all?

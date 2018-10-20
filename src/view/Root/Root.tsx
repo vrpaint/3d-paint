@@ -6,7 +6,6 @@ import { IAppState } from '../../model/IAppState';
 import { IObservableObject } from 'mobx';
 import { ISaveState } from '../../controller/saver/ISaveState';
 import { Scene } from '../Scene/Scene';
-import { Wall } from '../Wall/Wall';
 import { ISituationState } from '../../model/ISituationState';
 import { CanvasParticlesRenderer as WallRenderer } from 'touchcontroller';
 
@@ -21,13 +20,11 @@ export const Root = observer(
     ({ appState, saveState, situationState, wallRenderer }: IAppProps) => {
         return (
             <div className="Root">
-                <Message {...{ appState }} />
-
-                {saveState.saved && (
-                    <div>Saved at {saveState.saved.toString()}</div>
-                )}
-
-                <div>
+                <div className="Heading">
+                    <Message {...{ appState }} />
+                    {saveState.saved && (
+                        <div>Saved at {saveState.saved.toString()}</div>
+                    )}
                     Controllers:
                     {situationState.controllers.map((controller) => (
                         <div className="Controller" key={controller.id}>
@@ -82,26 +79,8 @@ export const Root = observer(
                     ))}
                 </div>
 
-                <Wall {...{ appState, situationState, wallRenderer }} />
-
                 <div className="Tools">
-                {appState.corners ? (
-                    <button
-                        onClick={() => {
-                            appState.corners = null;
-                            //appState.calibrationProgress = [];
-                        }}
-                    >
-                        ReCalibrate
-                    </button>
-                ) : (
-                    <div>
-                        Calibrating {appState.calibrationProgress.length + 1}.
-                        corner.
-                    </div>
-                )}
-
-                {/*
+                    {/*
                 <div>
                     Wall contains {appState.drawings.length} drawings.
                     <button

@@ -13,3 +13,12 @@ body{
     bottom: 10px;
     left: 10px;
 }
+
+.Heading{
+    z-index: 20;
+    position: fixed;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px;
+    top: 10px;
+    left: 10px;
+}

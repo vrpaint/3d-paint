@@ -23,7 +23,9 @@ export class App {
         this.saveState = saveAppStateAfterChange(this.appState);
         this.situationState = observable(createDefaultSituationState());
         //console.log(window.innerWidth,window.innerHeight);
-        this.wallRenderer = new TC.CanvasParticlesRenderer(new TC.Vector2(window.innerWidth,window.innerHeight));//todo do sizes better
+        this.wallRenderer = new TC.CanvasParticlesRenderer(
+            new TC.Vector2(window.innerWidth, window.innerHeight),
+        ); //todo do sizes better
 
         ReactDOM.render(
             <Root

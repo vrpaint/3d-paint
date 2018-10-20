@@ -1,15 +1,6 @@
-import * as TC from 'touchcontroller';
-import { ControlWheel } from '../../tools/ControlWheel';
-import { ControllerVibrations } from './../../tools/ControllerVibrations';
-import { IVector3 } from './../../model/IVectors';
-import { CONTROLLER_SPRAY_DIRECTION } from './../../config';
 import * as uuidv4 from 'uuid/v4';
-import { IDrawing } from './../../model/IDrawing';
 import * as BABYLON from 'babylonjs';
-import { babylonToCleanVector } from '../../tools/vectors';
-import { positionOnWallToPositionOnSquare } from '../../tools/positionOnWallToPositionOnSquare';
 import { World } from './World';
-import * as Color from 'color';
 import { WHEEL_CHANGING_OPTIONS } from '../../model/IController';
 
 export function controllerLoad(
@@ -38,13 +29,6 @@ export function controllerLoad(
         (controller) => controller.id == controllerId,
     )!; //todo maybe better name
 
-    const controllerMeshOnWall = BABYLON.Mesh.CreateSphere(
-        'controllerMeshOnWall',
-        5,
-        0.03,
-        world.scene,
-    );
-
     const controllerMeshOnSpace = BABYLON.Mesh.CreateSphere(
         'controllerMeshOnWall',
         5,
@@ -53,12 +37,21 @@ export function controllerLoad(
     );
     controllerMeshOnSpace.position = controller.devicePosition;
 
+    /*
+    const controllerMeshOnWall = BABYLON.Mesh.CreateSphere(
+        'controllerMeshOnWall',
+        5,
+        0.03,
+        world.scene,
+    );
     const ray = new BABYLON.Ray(
         BABYLON.Vector3.Zero(),
         BABYLON.Vector3.One(),
         100,
     );
 
+   
+    
     world.scene.registerAfterRender(() => {
         let positionOnWall: IVector3 | null = null;
         if (world.wallMesh) {
@@ -286,4 +279,6 @@ export function controllerLoad(
         console.log('onMainButtonStateChangedObservable', gamepadButton);
         //todo undo
     });
+
+    */
 }

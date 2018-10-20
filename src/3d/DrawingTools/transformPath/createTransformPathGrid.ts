@@ -1,4 +1,3 @@
-
 import ITransformPath from './ITransformPath';
 import { IFrame, cloneFrame } from '../../../model/IFrame';
 

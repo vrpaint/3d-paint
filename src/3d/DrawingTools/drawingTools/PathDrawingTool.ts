@@ -40,7 +40,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
 
     back() {
         if (this.lastDrawingMeshes.length) {
-            const drawingMeshes = this.lastDrawingMeshes.pop()||[];
+            const drawingMeshes = this.lastDrawingMeshes.pop() || [];
             if (drawingMeshes.length) {
                 console.log('removing', drawingMeshes);
                 for (const drawingMesh of drawingMeshes) {
@@ -72,7 +72,6 @@ export default class PathDrawingTool extends AbstractDrawingTool {
 
             if (
                 this.drawingFrames.length === 0 ||
-
                 true
                 /*todo
                 this.drawingFrames[this.drawingFrames.length - 1].position
@@ -171,8 +170,8 @@ export default class PathDrawingTool extends AbstractDrawingTool {
         const ribbonMesh = BABYLON.MeshBuilder.CreateTube(
             'tube' + Math.random(),
             {
-                path: transformedPath.map(
-                    (drawingFrame) => cleanVectorToBabylon(drawingFrame.position),
+                path: transformedPath.map((drawingFrame) =>
+                    cleanVectorToBabylon(drawingFrame.position),
                 ),
                 //radius: .05,
                 radiusFunction: (i, distance) =>
@@ -188,7 +187,9 @@ export default class PathDrawingTool extends AbstractDrawingTool {
             { diameter: this.options.countFrameRadius(transformedPath[0]) * 2 },
             this.world.scene,
         );
-        sphere1Mesh.position = cleanVectorToBabylon(transformedPath[0].position);
+        sphere1Mesh.position = cleanVectorToBabylon(
+            transformedPath[0].position,
+        );
         sphere1Mesh.material = this.options.material;
 
         const last = transformedPath.length - 1;
@@ -200,7 +201,9 @@ export default class PathDrawingTool extends AbstractDrawingTool {
             },
             this.world.scene,
         );
-        sphere2Mesh.position = cleanVectorToBabylon(transformedPath[last].position);
+        sphere2Mesh.position = cleanVectorToBabylon(
+            transformedPath[last].position,
+        );
         sphere2Mesh.material = this.options.material;
 
         return [ribbonMesh, sphere1Mesh, sphere2Mesh];

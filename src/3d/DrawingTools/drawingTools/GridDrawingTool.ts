@@ -29,7 +29,7 @@ export default class GridDrawingTool extends AbstractDrawingTool {
             const currentGridFrame = this._gridFrame(frame); //todo or use point???
 
             if (
-                true// todo !this.lastGridFrame.position.equals(currentGridFrame.position)
+                true // todo !this.lastGridFrame.position.equals(currentGridFrame.position)
             ) {
                 this.lastGridFrame = currentGridFrame;
                 this._drawMesh(currentGridFrame);
