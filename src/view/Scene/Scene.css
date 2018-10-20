@@ -1,0 +1,17 @@
+/*todo scss*/
+
+.Scene canvas{
+    z-index: 20;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 117px;
+    height: 100px;
+    /*border: 2px solid red;*/
+    box-shadow: black 0 0 10px;
+} 
+
+#babylonVRiconbtn{
+    z-index: 30;
+    /*margin-top: calc( -600px + 100px) ;*/
+}

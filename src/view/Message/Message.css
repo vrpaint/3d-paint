@@ -1,0 +1,10 @@
+/*todo scss*/
+
+.Message textarea{
+    width: 100%;
+    height: 250px;
+    border: 2px solid #cccccc;
+    font-size: 1.5em;
+
+} 
+

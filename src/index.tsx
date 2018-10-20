@@ -1,8 +1,5 @@
-import World from './world/World';
-import './index.css';
+import { App } from './App';
 
-const canvasElement = document.getElementById('scene') as HTMLCanvasElement;
-
-const world = new World(canvasElement);
-world.run();
-console.log(world);
+const app = new App(document.getElementById('root') as HTMLDivElement);
+app.run();
+console.log(app);

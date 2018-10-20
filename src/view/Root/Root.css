@@ -1,0 +1,15 @@
+body{
+    background-color: #cccccc2a
+}
+
+
+.Root{
+    text-align: center;
+}
+
+.Tools{
+    z-index: 20;
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+}
