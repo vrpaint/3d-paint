@@ -10,6 +10,7 @@ import { createSkybox } from './createSkybox';
 import { controllerLoad } from './controllerLoad';
 
 import { ISituationState } from '../../model/ISituationState';
+import { setPlayerActionsOnMouse } from './setPlayerActionsOnMouse';
 
 export class World {
     public engine: BABYLON.Engine;
@@ -73,13 +74,23 @@ export class World {
         );
         this.wallMaterial.backFaceCulling = false;
 
+
         this.VRHelper = this.scene.createDefaultVRExperience();
+        //this.VRHelper.currentVRCamera
 
         //todo it should work with only one controller
         //todo make also on unload
         this.VRHelper.onControllerMeshLoadedObservable.add((controller) =>
             controllerLoad(controller, this),
         );
+
+        setPlayerActionsOnMouse(this);
+
+
+        window.addEventListener("keypress", (event)=>{
+            console.log(`Pressed ${event.keyCode}.`);
+            event.preventDefault();
+        });
     }
 
     //todo set controlls
