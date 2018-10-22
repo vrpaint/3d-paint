@@ -36,6 +36,7 @@ export default class AbstractDrawingTool {
 
     back() {}
 
+    //todo maybe rename to move
     update(frame: IFrame) {
         this.currentFrame = frame;
 

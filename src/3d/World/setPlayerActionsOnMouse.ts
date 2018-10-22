@@ -44,17 +44,17 @@ export async function setPlayerActionsOnMouse(world: World) {
 
     world.canvasElement.addEventListener('pointerdown', (event) => {
         // todo more elegant drawingToolFromEvent(event).update(getDrawingFrame());
-        console.log(`pointerdown`);
+        //console.log(`pointerdown`);
         drawingToolFromEvent(event).start();
     });
     world.canvasElement.addEventListener('pointermove', (event) => {
 
         //todo not only on pointer move
-        console.log(`pointermove`);
+        //console.log(`pointermove`);
         drawingToolFromEvent(event).update(getDrawingFrame());
     });
     world.canvasElement.addEventListener('pointerup', (event) => {
-        console.log(`pointerup`);
+        //console.log(`pointerup`);
         drawingToolFromEvent(event).end();
     });
 
