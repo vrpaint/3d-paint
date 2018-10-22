@@ -105,6 +105,20 @@ export class World {
         });
     }
 
+    get position(): BABYLON.Vector3 {
+        return this.VRHelper.currentVRCamera!.position;
+    }
+
+    get direction(): BABYLON.Vector3 {
+        const point1 = this.position;
+        const point2 = this.scene.pick(
+            this.canvasElement.width / 2,
+            this.canvasElement.height / 2,
+            (mesh) => mesh === this.skyboxMesh,
+        )!.pickedPoint!;
+        return point2.subtract(point1).normalize();
+    }
+
     //todo set controlls
     //todo create world
 

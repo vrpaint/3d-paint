@@ -27,10 +27,11 @@ export async function setPlayerActionsOnMouse(world: World) {
         }
     };
 
+
     const getDrawingFrame:()=>IFrame = () =>
         ({
             time: new Date().getTime()/*todo better*/,
-            position: babylonToCleanVector(world.VRHelper.position),
+            position: babylonToCleanVector(world.position.add(world.direction.scale(1.5))),
             rotation: babylonToCleanVector(BABYLON.Vector3.Zero()/*todo real rotation*/),
             intensity: .5
         })
@@ -47,6 +48,8 @@ export async function setPlayerActionsOnMouse(world: World) {
         drawingToolFromEvent(event).start();
     });
     world.canvasElement.addEventListener('pointermove', (event) => {
+
+        //todo not only on pointer move
         console.log(`pointermove`);
         drawingToolFromEvent(event).update(getDrawingFrame());
     });
