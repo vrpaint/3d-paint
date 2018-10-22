@@ -80,10 +80,10 @@ export class World {
         
         const camera = this.VRHelper.deviceOrientationCamera;
         if(camera){
-        camera.keysUp = [Key.W, Key.UpArrow];
-        camera.keysDown = [Key.S, Key.DownArrow];
-        camera.keysLeft = [Key.A, Key.LeftArrow];
-        camera.keysRight = [Key.D, Key.RightArrow];
+            camera.keysUp = [Key.W, Key.UpArrow];
+            camera.keysDown = [Key.S, Key.DownArrow];
+            camera.keysLeft = [Key.A, Key.LeftArrow];
+            camera.keysRight = [Key.D, Key.RightArrow];
         }else{
             console.warn(`VRHelper.deviceOrientationCamera is null!`);
         }
