@@ -45,7 +45,9 @@ export async function setPlayerActionsOnMouse(world: World) {
     world.canvasElement.addEventListener('pointerdown', (event) => {
         // todo more elegant drawingToolFromEvent(event).update(getDrawingFrame());
         //console.log(`pointerdown`);
-        drawingToolFromEvent(event).start();
+        if(event.button === 0){
+            drawingToolFromEvent(event).start();
+        }
     });
     world.canvasElement.addEventListener('pointermove', (event) => {
 
@@ -55,11 +57,15 @@ export async function setPlayerActionsOnMouse(world: World) {
     });
     world.canvasElement.addEventListener('pointerup', (event) => {
         //console.log(`pointerup`);
-        drawingToolFromEvent(event).end();
+        if(event.button === 0){
+            drawingToolFromEvent(event).end();
+        }
     });
 
     world.canvasElement.addEventListener('contextmenu', (event) => {
         event.preventDefault();
+        //todo this should be controlled better
+        drawingToolFromEvent(event).back();
     });
 
 }

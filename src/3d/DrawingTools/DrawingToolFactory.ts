@@ -62,6 +62,12 @@ export default class {
             updateInner.call(drawingTool,frame);
         }
 
+        const backInner = drawingTool.back;
+        drawingTool.back = ()=>{
+            console.log('back spy');
+            backInner.call(drawingTool);
+        }
+
         return drawingTool;
     }
 
