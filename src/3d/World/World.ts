@@ -8,6 +8,7 @@ import { createLights } from './createLights';
 import { createGround } from './createGround';
 import { createSkybox } from './createSkybox';
 import { controllerLoad } from './controllerLoad';
+import { Key } from 'ts-keycode-enum';
 
 import { ISituationState } from '../../model/ISituationState';
 import { setPlayerActionsOnMouse } from './setPlayerActionsOnMouse';
@@ -76,8 +77,16 @@ export class World {
 
 
         this.VRHelper = this.scene.createDefaultVRExperience();
-        //this.VRHelper.currentVRCamera
+        /*
+        todo
+        const camera = this.VRHelper;
+        camera.keysUp = [Key.W, Key.UpArrow];
+        camera.keysDown = [Key.S, Key.DownArrow];
+        camera.keysLeft = [Key.A, Key.LeftArrow];
+        camera.keysRight = [Key.D, Key.RightArrow];
+        */
 
+        
         //todo it should work with only one controller
         //todo make also on unload
         this.VRHelper.onControllerMeshLoadedObservable.add((controller) =>

@@ -8,9 +8,8 @@ import { babylonToCleanVector } from '../../tools/vectors';
 
 export async function setPlayerActionsOnMouse(world: World) {
     
-
+    //todo DI drawind tools
     const drawingToolFactory = new DrawingToolFactory(world);
-
     const drawingTool1 = await drawingToolFactory.createPathTool('#ff0000');
     const drawingTool2 = await drawingToolFactory.createPathTool('#0000ff');
     
@@ -43,7 +42,7 @@ export async function setPlayerActionsOnMouse(world: World) {
     );*/
 
     world.canvasElement.addEventListener('mousedown', (event) => {
-        drawingToolFromEvent(event).update(getDrawingFrame());
+        // todo more elegant drawingToolFromEvent(event).update(getDrawingFrame());
         drawingToolFromEvent(event).start();
     });
     world.canvasElement.addEventListener('mousemove', (event) => {
