@@ -77,16 +77,19 @@ export class World {
 
 
         this.VRHelper = this.scene.createDefaultVRExperience();
-        /*
-        todo
-        const camera = this.VRHelper;
+        
+        const camera = this.VRHelper.deviceOrientationCamera;
+        if(camera){
         camera.keysUp = [Key.W, Key.UpArrow];
         camera.keysDown = [Key.S, Key.DownArrow];
         camera.keysLeft = [Key.A, Key.LeftArrow];
         camera.keysRight = [Key.D, Key.RightArrow];
-        */
-
+        }else{
+            console.warn(`VRHelper.deviceOrientationCamera is null!`);
+        }
         
+
+
         //todo it should work with only one controller
         //todo make also on unload
         this.VRHelper.onControllerMeshLoadedObservable.add((controller) =>
