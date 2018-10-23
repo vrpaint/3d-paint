@@ -7,11 +7,12 @@ import { babylonToCleanVector } from '../../tools/vectors';
 export async function setPlayerActionsOnMouse(world: World) {
     //todo DI drawind tools
     const drawingToolFactory = new DrawingToolFactory(world);
-    const drawingTool1 = await drawingToolFactory.createDrawingTool({
+    drawingToolFactory.replayState();
+    const drawingTool1 = await drawingToolFactory.getDrawingTool({
         color: '#ff0000',
         size: 1,
     });
-    const drawingTool2 = await drawingToolFactory.createDrawingTool({
+    const drawingTool2 = await drawingToolFactory.getDrawingTool({
         color: '#0000ff',
         size: 1,
     });

@@ -99,7 +99,6 @@ export class World {
             //console.log(`Pressed ${event.keyCode}.`);
             //console.log(event.target);
             event.preventDefault();
-            
         });
     }
 

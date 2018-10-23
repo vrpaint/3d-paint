@@ -3,6 +3,6 @@ import { IFrame } from './IFrame';
 
 export interface IDrawing {
     id: string;
-    drawingTool: IDrawingTool;
+    drawingTool: IDrawingTool; //todo better naming
     frames: IFrame[];
 }
