@@ -25,37 +25,39 @@ export const Root = observer(
                     {saveState.saved && (
                         <div>Saved at {saveState.saved.toString()}</div>
                     )}
-                    Controllers:
-                    {situationState.controllers.map((controller) => (
-                        <div className="Controller" key={controller.id}>
-                            <div className="field">
-                                <label>Size:</label>
-                                <input
-                                    type="range"
-                                    min={1}
-                                    max={100}
-                                    step={1}
-                                    value={controller.drawingTool.size}
-                                    onChange={(e) =>
-                                        (controller.drawingTool.size = parseInt(
-                                            e.target.value,
-                                        ))
-                                    }
-                                />
-                            </div>
-                            <div className="field">
-                                <label>Color:</label>
-                                <input
-                                    type="color"
-                                    value={controller.drawingTool.color}
-                                    onChange={(e) =>
-                                        (controller.drawingTool.color =
-                                            e.target.value)
-                                    }
-                                />
-                            </div>
 
-                            {/*
+                    <div>
+                        Controllers:
+                        {situationState.controllers.map((controller) => (
+                            <div className="Controller" key={controller.id}>
+                                <div className="field">
+                                    <label>Size:</label>
+                                    <input
+                                        type="range"
+                                        min={1}
+                                        max={100}
+                                        step={1}
+                                        value={controller.drawingTool.size}
+                                        onChange={(e) =>
+                                            (controller.drawingTool.size = parseInt(
+                                                e.target.value,
+                                            ))
+                                        }
+                                    />
+                                </div>
+                                <div className="field">
+                                    <label>Color:</label>
+                                    <input
+                                        type="color"
+                                        value={controller.drawingTool.color}
+                                        onChange={(e) =>
+                                            (controller.drawingTool.color =
+                                                e.target.value)
+                                        }
+                                    />
+                                </div>
+
+                                {/*
                             <b>{controller.id}:</b>
                             {controller.currentFrame && (
                                 <i>
@@ -75,24 +77,22 @@ export const Root = observer(
                                 </i>
                             )}
                             */}
-                        </div>
-                    ))}
-                </div>
+                            </div>
+                        ))}
+                    </div>
 
-                <div className="Tools">
-                    {/*
-                <div>
-                    Wall contains {appState.drawings.length} drawings.
-                    <button
-                        onClick={() => {
-                            if (confirm('Are you sure?')) {
-                                appState.drawings = [];
-                            }
-                        }}
-                    >
-                        clean
-                    </button>
-                </div>*/}
+                    <div>
+                        Wall contains {appState.drawings.length} drawings.
+                        <button
+                            onClick={() => {
+                                if (confirm('Are you sure?')) {
+                                    appState.drawings = [];
+                                }
+                            }}
+                        >
+                            clean
+                        </button>
+                    </div>
                 </div>
 
                 <Scene {...{ appState, situationState, wallRenderer }} />

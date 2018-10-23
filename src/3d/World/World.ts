@@ -75,20 +75,17 @@ export class World {
         );
         this.wallMaterial.backFaceCulling = false;
 
-
         this.VRHelper = this.scene.createDefaultVRExperience();
-        
+
         const camera = this.VRHelper.deviceOrientationCamera;
-        if(camera){
+        if (camera) {
             camera.keysUp = [Key.W, Key.UpArrow];
             camera.keysDown = [Key.S, Key.DownArrow];
             camera.keysLeft = [Key.A, Key.LeftArrow];
             camera.keysRight = [Key.D, Key.RightArrow];
-        }else{
+        } else {
             console.warn(`VRHelper.deviceOrientationCamera is null!`);
         }
-        
-
 
         //todo it should work with only one controller
         //todo make also on unload
@@ -98,10 +95,11 @@ export class World {
 
         setPlayerActionsOnMouse(this);
 
-
-        window.addEventListener("keypress", (event)=>{
-            console.log(`Pressed ${event.keyCode}.`);
+        this.canvasElement.addEventListener('keypress', (event) => {
+            //console.log(`Pressed ${event.keyCode}.`);
+            //console.log(event.target);
             event.preventDefault();
+            
         });
     }
 

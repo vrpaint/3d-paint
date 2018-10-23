@@ -1,3 +1,4 @@
+import { IDrawing } from './../../model/IDrawing';
 import PathDrawingTool from './drawingTools/PathDrawingTool';
 import { World } from '../World/World';
 import ITranformPath from './transformPath/ITransformPath';
@@ -14,27 +15,36 @@ function compose<T>(...funcs: ((input: T) => T)[]): (input: T) => T {
 export default class {
     constructor(private world: World) {}
 
-    async createDrawingTool(config: IDrawingTool): Promise<AbstractDrawingTool>{
+    async createDrawingTool(
+        config: IDrawingTool,
+    ): Promise<AbstractDrawingTool> {
         const transformPath: ITranformPath = compose();
         //todo createGridTool
         //createTransformPathGrid(1),
         //createTransformPathIntensity()
 
-        return this.spyOnTool(new PathDrawingTool(this.world, {
-            transformPath,
-            //modifySurfacePoint: (point: BABYLON.Vector3, center: IFrame, tool: PathDrawingTool) => point,
-            tessalationInLength: 0.02,
-            tessalationInRadius: 7,
-            countFrameRadius: (center: IFrame) => center.intensity / 40 + 0.01,
-            material: (await this.world.materialFactory.getStructure(
-                config.color,
-            )).babylonMaterial,
-        }),config);
+        return this.spyOnTool(
+            new PathDrawingTool(this.world, {
+                transformPath,
+                //modifySurfacePoint: (point: BABYLON.Vector3, center: IFrame, tool: PathDrawingTool) => point,
+                tessalationInLength: 0.02,
+                tessalationInRadius: 7,
+                countFrameRadius: (center: IFrame) =>
+                    center.intensity / 40 + 0.01,
+                material: (await this.world.materialFactory.getStructure(
+                    config.color,
+                )).babylonMaterial,
+            }),
+            config,
+        );
     }
 
     //todo maybe as decorator
-    private spyOnTool(drawingTool:AbstractDrawingTool,drawingToolConfig:IDrawingTool/*todo better naming*/):AbstractDrawingTool{
-
+    private spyOnTool(
+        drawingTool: AbstractDrawingTool,
+        drawingToolConfig: IDrawingTool /*todo better naming*/,
+    ): AbstractDrawingTool {
+        let currentDrawing: null | IDrawing = null;
         /*
         todo
         this.world.appState.drawings.push(
@@ -47,37 +57,42 @@ export default class {
         */
 
         const startInner = drawingTool.start;
-        drawingTool.start = ()=>{
+        drawingTool.start = () => {
             console.log('start spy');
+            currentDrawing = {
+                id: 'abc',
+                frames: [],
+                drawingTool: drawingToolConfig,
+            };
             startInner.call(drawingTool);
-        }
+        };
 
         const endInner = drawingTool.end;
-        drawingTool.end = ()=>{
-            console.log('end spy');
-            endInner.call(drawingTool);
-
-
-            
-        }
+        drawingTool.end = () => {
+            if (currentDrawing /*todo or drawingTool.drawing*/) {
+                console.log('end spy');
+                this.world.appState.drawings.push(currentDrawing);
+                currentDrawing = null;
+                endInner.call(drawingTool);
+            }
+        };
 
         const updateInner = drawingTool.update;
-        drawingTool.update = (frame: IFrame)=>{
-            if(drawingTool.drawing){
+        drawingTool.update = (frame: IFrame) => {
+            //todo maybe save in every frame or debounce
+            if (currentDrawing /*todo or drawingTool.drawing*/) {
                 console.log('update spy');
+                currentDrawing.frames.push(frame);
             }
-            updateInner.call(drawingTool,frame);
-        }
+            updateInner.call(drawingTool, frame);
+        };
 
         const backInner = drawingTool.back;
-        drawingTool.back = ()=>{
+        drawingTool.back = () => {
             console.log('back spy');
             backInner.call(drawingTool);
-        }
+        };
 
         return drawingTool;
     }
-
 }
-
-
