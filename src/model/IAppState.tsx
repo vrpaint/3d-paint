@@ -1,6 +1,6 @@
-import { IDrawingTool } from './IDrawingTool';
+import { IDrawing } from './IDrawing';
 
 export interface IAppState {
     name: string;
-    drawings: IDrawingTool[];
+    drawings: IDrawing[];
 }
