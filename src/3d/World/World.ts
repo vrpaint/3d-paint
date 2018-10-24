@@ -3,6 +3,7 @@ import { IObservableObject } from 'mobx';
 import { IAppState } from './../../model/IAppState';
 import { MaterialFactory } from './../MaterialFactory';
 import * as BABYLON from 'babylonjs';
+import 'babylonjs-serializers';
 import { createScene } from './createScene';
 import { createLights } from './createLights';
 import { createGround } from './createGround';
@@ -121,5 +122,23 @@ export class World {
 
     dispose() {
         this.scene.dispose(); //todo is it all?
+    }
+
+    //todo file
+    export() {
+        const options = {
+            shouldExportTransformNode: (transformNode: BABYLON.Node) => {
+                console.log('exporting', transformNode);
+                return false;
+                //return transformNode !== this.skyboxMesh && transformNode !== this.player.mesh && transformNode.name !=='ViveWand';
+            },
+        };
+
+        console.log('---------------------------exporting');
+        BABYLON.GLTF2Export.GLBAsync(this.scene, 'fileName', options).then(
+            (glb) => {
+                glb.downloadFiles();
+            },
+        );
     }
 }

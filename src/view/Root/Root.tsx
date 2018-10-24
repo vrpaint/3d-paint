@@ -93,6 +93,12 @@ export const Root = observer(
                             clean
                         </button>
                     </div>
+
+                    <div>
+                        <button onClick={() => situationState.world!.export()}>
+                            Export to .glb
+                        </button>
+                    </div>
                 </div>
 
                 <Scene {...{ appState, situationState, wallRenderer }} />

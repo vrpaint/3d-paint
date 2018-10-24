@@ -12,10 +12,16 @@ export function saveAppStateAfterChange(
         saved: null,
     });
 
-    observeDeep(appState, debounce(() => {
-        localStorage.setItem(LOCALSTORAGE_SAVE_KEY, JSON.stringify(appState));
-        saveState.saved = new Date();
-    }, 500));
+    observeDeep(
+        appState,
+        debounce(() => {
+            localStorage.setItem(
+                LOCALSTORAGE_SAVE_KEY,
+                JSON.stringify(appState),
+            );
+            saveState.saved = new Date();
+        }, 500),
+    );
 
     return saveState;
 }
