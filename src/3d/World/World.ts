@@ -125,20 +125,23 @@ export class World {
     }
 
     //todo file
-    export() {
+    async export() {
         const options = {
             shouldExportTransformNode: (transformNode: BABYLON.Node) => {
                 console.log('exporting', transformNode);
                 return false;
                 //return transformNode !== this.skyboxMesh && transformNode !== this.player.mesh && transformNode.name !=='ViveWand';
             },
+            exportWithoutWaitingForScene: false
         };
 
-        console.log('---------------------------exporting');
-        BABYLON.GLTF2Export.GLBAsync(this.scene, 'fileName', options).then(
-            (glb) => {
-                glb.downloadFiles();
-            },
-        );
+        console.groupCollapsed('Exporting');
+        const glb = await BABYLON.GLTF2Export.GLBAsync(this.scene, 'fileName', options);
+          
+        glb.downloadFiles();
+
+        console.log(glb);
+        console.groupEnd();
+
     }
 }
