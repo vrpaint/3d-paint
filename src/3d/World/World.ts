@@ -9,6 +9,7 @@ import { createLights } from './createLights';
 import { createGround } from './createGround';
 import { createSkybox } from './createSkybox';
 import { controllerLoad } from './controllerLoad';
+import * as downloadjs from 'downloadjs';
 import { Key } from 'ts-keycode-enum';
 
 import { ISituationState } from '../../model/ISituationState';
@@ -126,22 +127,27 @@ export class World {
 
     //todo file
     async export() {
+        
+        //console.groupCollapsed('Exporting');
+
         const options = {
             shouldExportTransformNode: (transformNode: BABYLON.Node) => {
-                console.log('exporting', transformNode);
-                return false;
-                //return transformNode !== this.skyboxMesh && transformNode !== this.player.mesh && transformNode.name !=='ViveWand';
+                const shouldExport = transformNode !== this.skyboxMesh && transformNode !== this.groundMesh && transformNode.name !=='ViveWand';
+                console.log(shouldExport?'Exporting':'Not exporting', transformNode);
+                return shouldExport;
             },
             exportWithoutWaitingForScene: false
         };
 
-        console.groupCollapsed('Exporting');
-        const glb = await BABYLON.GLTF2Export.GLBAsync(this.scene, 'fileName', options);
+        const glb = await BABYLON.GLTF2Export.GLBAsync(this.scene, 'model', options);
           
-        glb.downloadFiles();
+        //glb.downloadFiles();
 
         console.log(glb);
-        console.groupEnd();
+        downloadjs(glb.glTFFiles['model.glb'/*todo via keys*/],'model.glb');
+
+        
+        //console.groupEnd();
 
     }
 }
