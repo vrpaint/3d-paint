@@ -5,6 +5,8 @@ import { World } from '../../World/World';
 import { IFrame, cloneFrame } from '../../../model/IFrame';
 import { cleanVectorToBabylon } from '../../../tools/vectors';
 
+
+//todo in options there can not be a functions, just pure types
 interface IPathDrawingToolOptions {
     tessalationInLength: number;
     tessalationInRadius: number;
