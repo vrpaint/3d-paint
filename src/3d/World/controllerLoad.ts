@@ -19,9 +19,9 @@ export function controllerLoad(
     world.situationState.controllers.push({
         id: controllerId,
         wheelChanging: WHEEL_CHANGING_OPTIONS[0],
-        drawingTool: {
-            size: 10,
-            color: '#ff0000',
+        drawingToolConfig: {
+            toolId: 'path',
+            options: {}//todo
         },
         currentFrame: null,
     });

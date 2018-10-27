@@ -30,6 +30,8 @@ export const Root = observer(
                         Controllers:
                         {situationState.controllers.map((controller) => (
                             <div className="Controller" key={controller.id}>
+                                {/*
+                                todo
                                 <div className="field">
                                     <label>Size:</label>
                                     <input
@@ -37,7 +39,7 @@ export const Root = observer(
                                         min={1}
                                         max={100}
                                         step={1}
-                                        value={controller.drawingTool.size}
+                                        value={controller.drawingToolConfig.toolId}
                                         onChange={(e) =>
                                             (controller.drawingTool.size = parseInt(
                                                 e.target.value,
@@ -56,6 +58,7 @@ export const Root = observer(
                                         }
                                     />
                                 </div>
+                                */}
 
                                 {/*
                             <b>{controller.id}:</b>
