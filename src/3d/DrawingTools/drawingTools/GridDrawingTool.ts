@@ -1,4 +1,9 @@
-import AbstractDrawingTool from '../AbstractDrawingTool';
+/*
+
+todo
+
+
+import { IDrawingTool } from '../IDrawingTool';
 import * as BABYLON from 'babylonjs';
 import { World } from '../../World/World';
 import { IFrame, cloneFrame } from '../../../model/IFrame';
@@ -9,7 +14,7 @@ interface IGridDrawingToolOptions {
     material: BABYLON.Material; //todo here should be structure
 }
 
-export default class GridDrawingTool extends AbstractDrawingTool {
+export default class GridDrawingTool implements IDrawingTool {
     public lastGridFrame: IFrame;
 
     constructor(world: World, public options: IGridDrawingToolOptions) {
@@ -83,5 +88,6 @@ export default class GridDrawingTool extends AbstractDrawingTool {
         }
 
 
-    }*/
+    }* /
 }
+*/

@@ -1,33 +1,38 @@
 import { IFrame } from '.oldsrc/model/IAppState';
 import { World } from './World';
 import DrawingToolFactory from '../DrawingTools/DrawingToolFactory';
-import AbstractDrawingTool from '../DrawingTools/AbstractDrawingTool';
 import { babylonToCleanVector } from '../../tools/vectors';
+import { compose } from '../../tools/compose';
+import ITransformPath from '../DrawingTools/transformPath/ITransformPath';
+import { IDrawingTool } from '../DrawingTools/IDrawingTool';
 
 export async function setPlayerActionsOnMouse(world: World) {
     //todo DI drawind tools
     const drawingToolFactory = new DrawingToolFactory(world);
     drawingToolFactory.replayState();
     const drawingTool1 = await drawingToolFactory.getDrawingTool({
-        color: '#ff0000',
-        size: 1,
-    });
-    const drawingTool2 = await drawingToolFactory.getDrawingTool({
-        color: '#0000ff',
-        size: 1,
+        toolId: 'path',
+        options: {
+            transformPath: compose(),
+            tessalationInLength: 0.02,
+            tessalationInRadius: 7,
+            countFrameRadius: (center: IFrame) => center.intensity / 40 + 0.01,
+            material: '#ff0000',
+        },
     });
 
     const drawingToolFromEvent: (
         event: { button: number },
-    ) => AbstractDrawingTool = (event: { button: number }) => {
-        switch (event.button) {
+    ) => IDrawingTool = (event: { button: number }) => {
+        return drawingTool1;
+        /*switch (event.button) {
             case 0:
                 return drawingTool1;
             case 2:
-                return drawingTool2;
+                return drawingTool1;
             default:
                 return drawingTool1;
-        }
+        }*/
     };
 
     const getDrawingFrame: () => IFrame = () => ({

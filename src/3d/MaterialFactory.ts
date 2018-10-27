@@ -118,16 +118,16 @@ export class MaterialFactory {
         }
     }
 
-    async createStructure(materialId: string): Promise<IStructure> {
-        console.log(`Creating structure "${materialId}".`);
+    private async createStructure(structureId: string): Promise<IStructure> {
+        console.log(`Creating structure "${structureId}".`);
 
         const babylonMaterial = new BABYLON.StandardMaterial(
-            materialId,
+            structureId,
             this.world.scene,
         );
         babylonMaterial.backFaceCulling = false; //todo repair mesh builder
 
-        const colorOrTexture = await this.createTexture(materialId);
+        const colorOrTexture = await this.createTexture(structureId);
 
         if (colorOrTexture instanceof BABYLON.Texture)
             babylonMaterial.emissiveTexture = colorOrTexture;
@@ -177,19 +177,19 @@ export class MaterialFactory {
         }*/
 
         return {
-            id: materialId,
+            id: structureId,
             babylonMaterial,
             /*physicsOptions: Object.assign({},DEFAULT_PHYSICS_OPTIONS)*/
         };
     }
 
-    async getStructure(materialId: string): Promise<IStructure> {
+    async getStructure(structureId: string): Promise<IStructure> {
         const cashedMaterial: IStructure | null = null; //this._structuresCache.find((material) => material.id === materialId) || null;
 
         if (cashedMaterial) {
             return cashedMaterial;
         } else {
-            const structure = await this.createStructure(materialId);
+            const structure = await this.createStructure(structureId);
             this._structuresCache.push(structure);
             return structure;
         }

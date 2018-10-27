@@ -1,8 +1,8 @@
-import { IDrawingTool } from './IDrawingTool';
+import { IDrawingToolConfig } from './IDrawingToolConfig';
 import { IFrame } from './IFrame';
 
 export interface IDrawing {
     id: string;
-    drawingTool: IDrawingTool; //todo better naming
+    drawingToolConfig: IDrawingToolConfig; //todo better naming
     frames: IFrame[];
 }

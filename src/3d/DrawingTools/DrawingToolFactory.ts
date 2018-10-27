@@ -1,51 +1,53 @@
+import { IDrawingTool } from './IDrawingTool';
 import { IDrawing } from './../../model/IDrawing';
 import PathDrawingTool from './drawingTools/PathDrawingTool';
 import { World } from '../World/World';
 import ITranformPath from './transformPath/ITransformPath';
-import GridDrawingTool from './drawingTools/GridDrawingTool';
 import { IFrame } from '../../model/IFrame';
-import AbstractDrawingTool from './AbstractDrawingTool';
-import { IDrawingTool } from '../../model/IDrawingTool';
-
-//todo to separate file to tools
-function compose<T>(...funcs: ((input: T) => T)[]): (input: T) => T {
-    return (input: T) => funcs.reduce((input, func) => func(input), input);
-}
+import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
+import { compose } from '../../tools/compose';
 
 export default class {
     constructor(private world: World) {}
 
     //todo split get and create
-    async getDrawingTool(config: IDrawingTool): Promise<AbstractDrawingTool> {
-        return this.spyOnTool(await this.createRawDrawingTool(config), config);
+    async getDrawingTool(
+        drawingToolConfig: IDrawingToolConfig,
+    ): Promise<IDrawingTool> {
+        return this.spyOnTool(
+            await this.createRawDrawingTool(drawingToolConfig),
+            drawingToolConfig,
+        );
     }
 
     //todo split get and create
     private async createRawDrawingTool(
-        config: IDrawingTool,
-    ): Promise<AbstractDrawingTool> {
+        drawingToolConfig: IDrawingToolConfig,
+    ): Promise<IDrawingTool> {
         const transformPath: ITranformPath = compose();
         //todo createGridTool
         //createTransformPathGrid(1),
         //createTransformPathIntensity()
 
-        return new PathDrawingTool(this.world, {
+        return new PathDrawingTool(this.world, drawingToolConfig.options);
+
+        /*{
             transformPath,
             //modifySurfacePoint: (point: BABYLON.Vector3, center: IFrame, tool: PathDrawingTool) => point,
             tessalationInLength: 0.02,
             tessalationInRadius: 7,
             countFrameRadius: (center: IFrame) => center.intensity / 40 + 0.01,
             material: (await this.world.materialFactory.getStructure(
-                config.color,
+                drawingToolConfig.color,
             )).babylonMaterial,
-        });
+        }*/
     }
 
     //todo maybe as decorator
     private spyOnTool(
-        drawingTool: AbstractDrawingTool,
-        drawingToolConfig: IDrawingTool /*todo better naming*/,
-    ): AbstractDrawingTool {
+        drawingTool: IDrawingTool,
+        drawingToolConfig: IDrawingToolConfig /*todo better naming*/,
+    ): IDrawingTool {
         let currentDrawing: null | IDrawing = null;
         /*
         todo
@@ -64,7 +66,7 @@ export default class {
             currentDrawing = {
                 id: 'abc',
                 frames: [],
-                drawingTool: drawingToolConfig,
+                drawingToolConfig,
             };
             startInner.call(drawingTool);
         };
@@ -101,7 +103,7 @@ export default class {
     async replayState() {
         for (const drawing of this.world.appState.drawings) {
             const drawingTool = await this.createRawDrawingTool(
-                drawing.drawingTool,
+                drawing.drawingToolConfig,
             );
             drawingTool.start();
             for (const frame of drawing.frames) {

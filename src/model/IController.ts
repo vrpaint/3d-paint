@@ -1,4 +1,4 @@
-import { IDrawingTool } from './IDrawingTool';
+import { IDrawingToolConfig } from './IDrawingToolConfig';
 import { IFrame } from './IFrame';
 
 export type TWheelChangingOptions =
@@ -14,6 +14,6 @@ export const WHEEL_CHANGING_OPTIONS: TWheelChangingOptions[] = [
 export interface IController {
     id: string;
     wheelChanging: TWheelChangingOptions;
-    drawingTool: IDrawingTool;
+    drawingToolConfig: IDrawingToolConfig;
     currentFrame: null | IFrame;
 }

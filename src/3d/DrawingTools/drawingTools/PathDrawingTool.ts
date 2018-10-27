@@ -1,4 +1,4 @@
-import AbstractDrawingTool from '../AbstractDrawingTool';
+import { IDrawingTool } from '../IDrawingTool';
 import ITranformPath from '../transformPath/ITransformPath';
 import * as BABYLON from 'babylonjs';
 import { World } from '../../World/World';
@@ -8,24 +8,37 @@ import { cleanVectorToBabylon } from '../../../tools/vectors';
 interface IPathDrawingToolOptions {
     tessalationInLength: number;
     tessalationInRadius: number;
-    material: BABYLON.Material; //todo here should be structure
-    transformPath: ITranformPath;
+    structureId: string;
+    transformPath: ITranformPath; //todo this should be optional
 
     //modifySurfacePoint(point: BABYLON.Vector3, center: DrawingPoint, tool: PathDrawingTool): BABYLON.Vector3;
 
     countFrameRadius(center: IFrame): number;
 }
 
-export default class PathDrawingTool extends AbstractDrawingTool {
-    public lastDrawingMeshes: BABYLON.Mesh[][] = [];
-    public drawingFrames: IFrame[];
-    public drawingMeshes: BABYLON.Mesh[]; //this should be only counted from lastDrawingMeshes
-    private _toolMesh: BABYLON.Mesh;
+export default class PathDrawingTool implements IDrawingTool {
+    public drawing: boolean = false;
+    public currentFrame: IFrame;
 
-    constructor(world: World, public options: IPathDrawingToolOptions) {
-        super(world);
-        this._toolMesh = this.createToolMesh();
-        this._toolMesh.scaling = BABYLON.Vector3.Zero();
+    private lastDrawingMeshes: BABYLON.Mesh[][] = [];
+    private drawingFrames: IFrame[];
+    private drawingMeshes: BABYLON.Mesh[]; //this should be only counted from lastDrawingMeshes
+    private toolMesh: BABYLON.Mesh;
+
+    constructor(
+        private world: World,
+        private options: IPathDrawingToolOptions,
+    ) {
+        this.init();
+    }
+
+    private async init() {
+        //super(world);
+        this.toolMesh = this.createToolMesh();
+        this.toolMesh.scaling = BABYLON.Vector3.Zero();
+        this.toolMesh.material = (await this.world.materialFactory.getStructure(
+            this.options.structureId,
+        )).babylonMaterial;
     }
 
     createToolMesh(): BABYLON.Mesh {
@@ -33,9 +46,16 @@ export default class PathDrawingTool extends AbstractDrawingTool {
         //return BABYLON.Mesh.CreateBox("sphere", 2, this.world.scene);
     }
 
-    setMaterial(material: BABYLON.Material) {
-        this.options.material = material;
-        this._toolMesh.material = material;
+    start() {
+        if (this.drawing === false) {
+            //todo is it best solution?
+            this.restart();
+        }
+    }
+
+    end() {
+        this.drawing = false;
+        //console.log('Drawed ', this.drawingMesh);
     }
 
     back() {
@@ -53,20 +73,22 @@ export default class PathDrawingTool extends AbstractDrawingTool {
     }
 
     restart() {
-        super.restart();
+        //super.restart();
+        this.drawing = true;
         this.drawingFrames = [];
         this.drawingMeshes = [];
         this.lastDrawingMeshes.push(this.drawingMeshes);
     }
 
     update(frame: IFrame) {
-        super.update(frame);
+        //super.update(frame);
+        this.currentFrame = frame;
 
-        this._toolMesh.position = cleanVectorToBabylon(frame.position);
-        this._toolMesh.rotation = cleanVectorToBabylon(frame.rotation);
+        this.toolMesh.position = cleanVectorToBabylon(frame.position);
+        this.toolMesh.rotation = cleanVectorToBabylon(frame.rotation);
 
         if (this.drawing) {
-            this._toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(
+            this.toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(
                 this.options.countFrameRadius(frame),
             );
 
@@ -80,12 +102,12 @@ export default class PathDrawingTool extends AbstractDrawingTool {
                     */
             ) {
                 this.drawingFrames.push(cloneFrame(frame));
-                this._redrawMesh();
+                this.redrawMesh();
             }
         }
     }
 
-    private _redrawMesh() {
+    private redrawMesh() {
         if (this.drawingFrames.length > 1) {
             for (const drawingMesh of this.drawingMeshes) {
                 drawingMesh.dispose();
@@ -99,7 +121,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
         }
     }
 
-    public createDrawingMesh(): BABYLON.Mesh[] {
+    private createDrawingMesh(): BABYLON.Mesh[] {
         /*const pathArray: BABYLON.Vector3[][] = this.options.transformPath(this.drawingPath).map((drawingPoint) => {
 
 
@@ -180,7 +202,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
             this.world.scene,
         );
 
-        ribbonMesh.material = this.options.material;
+        ribbonMesh.material = this.toolMesh.material; //todo better
 
         const sphere1Mesh = BABYLON.MeshBuilder.CreateSphere(
             'sphere',
@@ -190,7 +212,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
         sphere1Mesh.position = cleanVectorToBabylon(
             transformedPath[0].position,
         );
-        sphere1Mesh.material = this.options.material;
+        sphere1Mesh.material = this.toolMesh.material; //todo better
 
         const last = transformedPath.length - 1;
         const sphere2Mesh = BABYLON.MeshBuilder.CreateSphere(
@@ -204,7 +226,7 @@ export default class PathDrawingTool extends AbstractDrawingTool {
         sphere2Mesh.position = cleanVectorToBabylon(
             transformedPath[last].position,
         );
-        sphere2Mesh.material = this.options.material;
+        sphere2Mesh.material = this.toolMesh.material; //todo better
 
         return [ribbonMesh, sphere1Mesh, sphere2Mesh];
     }

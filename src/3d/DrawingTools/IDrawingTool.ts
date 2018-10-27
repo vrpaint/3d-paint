@@ -1,3 +1,22 @@
+import { IFrame } from '../../model/IFrame';
+import * as BABYLON from 'babylonjs';
+
+//todo decide what is needed and what not
+export interface IDrawingTool {
+    drawing: boolean;
+    currentFrame: IFrame;
+    start: () => void;
+    restart: () => void; //todo is it needed?
+    end: () => void;
+    back: () => void;
+    update: (frame: IFrame) => void;
+
+    createToolMesh: () => BABYLON.Mesh;
+    //todo tool mesh shoud create cosumer
+}
+
+/*
+todo delete
 import * as BABYLON from 'babylonjs';
 import { World } from '../World/World';
 import { IFrame } from '../../model/IFrame';
@@ -44,3 +63,4 @@ export default class AbstractDrawingTool {
         //todo this._toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(this.intensityToRadius(point.intensity));
     }
 }
+*/
