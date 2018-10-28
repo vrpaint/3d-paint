@@ -18,9 +18,13 @@ interface IPathDrawingToolOptions {
     countFrameRadius(center: IFrame): number;
 }
 
-export default class PathDrawingTool implements IDrawingTool {
-    public drawing: boolean = false;
-    public currentFrame: IFrame;
+
+
+
+
+export default class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions>{
+    private drawing: boolean = false;
+    private currentFrame: IFrame;
 
     private lastDrawingMeshes: BABYLON.Mesh[][] = [];
     private drawingFrames: IFrame[];
@@ -29,7 +33,7 @@ export default class PathDrawingTool implements IDrawingTool {
 
     constructor(
         private world: World,
-        private options: IPathDrawingToolOptions,
+        private options: IPathDrawingToolOptions
     ) {
         this.init();
     }
@@ -43,7 +47,7 @@ export default class PathDrawingTool implements IDrawingTool {
         )).babylonMaterial;
     }
 
-    createToolMesh(): BABYLON.Mesh {
+    private createToolMesh(): BABYLON.Mesh {
         return BABYLON.Mesh.CreateSphere('sphere', 16, 2, this.world.scene);
         //return BABYLON.Mesh.CreateBox("sphere", 2, this.world.scene);
     }
@@ -57,6 +61,7 @@ export default class PathDrawingTool implements IDrawingTool {
 
     end() {
         this.drawing = false;
+        return [];//todo
         //console.log('Drawed ', this.drawingMesh);
     }
 
@@ -74,7 +79,7 @@ export default class PathDrawingTool implements IDrawingTool {
         }
     }
 
-    restart() {
+    private restart() {
         //super.restart();
         this.drawing = true;
         this.drawingFrames = [];

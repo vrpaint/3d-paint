@@ -1,3 +1,5 @@
+/*
+todo delete
 import { IDrawingTool } from './IDrawingTool';
 import { IDrawing } from './../../model/IDrawing';
 import PathDrawingTool from './drawingTools/PathDrawingTool';
@@ -40,13 +42,13 @@ export default class {
             material: (await this.world.materialFactory.getStructure(
                 drawingToolConfig.color,
             )).babylonMaterial,
-        }*/
+        }* /
     }
 
     //todo maybe as decorator
     private spyOnTool(
         drawingTool: IDrawingTool,
-        drawingToolConfig: IDrawingToolConfig /*todo better naming*/,
+        drawingToolConfig: IDrawingToolConfig /*todo better naming* /,
     ): IDrawingTool {
         let currentDrawing: null | IDrawing = null;
         /*
@@ -58,7 +60,7 @@ export default class {
                 drawingTool: drawingToolConfig
             }
         );
-        */
+        * /
 
         const startInner = drawingTool.start;
         drawingTool.start = () => {
@@ -73,7 +75,7 @@ export default class {
 
         const endInner = drawingTool.end;
         drawingTool.end = () => {
-            if (currentDrawing /*todo or drawingTool.drawing*/) {
+            if (currentDrawing /*todo or drawingTool.drawing* /) {
                 console.log('end spy');
                 this.world.appState.drawings.push(currentDrawing);
                 currentDrawing = null;
@@ -84,7 +86,7 @@ export default class {
         const updateInner = drawingTool.update;
         drawingTool.update = (frame: IFrame) => {
             //todo maybe save in every frame or debounce
-            if (currentDrawing /*todo or drawingTool.drawing*/) {
+            if (currentDrawing /*todo or drawingTool.drawing* /) {
                 console.log('update spy');
                 currentDrawing.frames.push(frame);
             }
@@ -113,3 +115,4 @@ export default class {
         }
     }
 }
+*/
