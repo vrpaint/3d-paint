@@ -5,7 +5,6 @@ import { World } from '../../World/World';
 import { IFrame, cloneFrame } from '../../../model/IFrame';
 import { cleanVectorToBabylon } from '../../../tools/vectors';
 
-
 //todo in options there can not be a functions, just pure types
 interface IPathDrawingToolOptions {
     tessalationInLength: number;
@@ -18,11 +17,7 @@ interface IPathDrawingToolOptions {
     countFrameRadius(center: IFrame): number;
 }
 
-
-
-
-
-export default class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions>{
+export default class PathDrawingTool implements IDrawingTool {
     private drawing: boolean = false;
     private currentFrame: IFrame;
 
@@ -33,7 +28,7 @@ export default class PathDrawingTool implements IDrawingTool<IPathDrawingToolOpt
 
     constructor(
         private world: World,
-        private options: IPathDrawingToolOptions
+        private options: IPathDrawingToolOptions,
     ) {
         this.init();
     }
@@ -61,7 +56,7 @@ export default class PathDrawingTool implements IDrawingTool<IPathDrawingToolOpt
 
     end() {
         this.drawing = false;
-        return [];//todo
+        return []; //todo
         //console.log('Drawed ', this.drawingMesh);
     }
 

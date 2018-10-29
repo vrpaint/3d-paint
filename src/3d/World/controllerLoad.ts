@@ -21,7 +21,7 @@ export function controllerLoad(
         wheelChanging: WHEEL_CHANGING_OPTIONS[0],
         drawingToolConfig: {
             toolId: 'path',
-            options: {}//todo
+            options: {}, //todo
         },
         currentFrame: null,
     });

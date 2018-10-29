@@ -1,16 +1,16 @@
 import { IFrame } from '.oldsrc/model/IAppState';
 import { World } from './World';
-import DrawingToolFactory from '../DrawingTools/DrawingToolFactory';
+import { DrawingToolFactory } from '../DrawingTools/DrawingToolFactory';
 import { babylonToCleanVector } from '../../tools/vectors';
 import { compose } from '../../tools/compose';
-import ITransformPath from '../DrawingTools/transformPath/ITransformPath';
 import { IDrawingTool } from '../DrawingTools/IDrawingTool';
+import { DrawingToolAdapter } from '../DrawingTools/DrawingToolAdapter';
 
 export async function setPlayerActionsOnMouse(world: World) {
     //todo DI drawind tools
     const drawingToolFactory = new DrawingToolFactory(world);
     drawingToolFactory.replayState();
-    const drawingTool1 = await drawingToolFactory.getDrawingTool({
+    const drawingTool1 = drawingToolFactory.getDrawingTool({
         toolId: 'path',
         options: {
             transformPath: compose(),
@@ -23,7 +23,7 @@ export async function setPlayerActionsOnMouse(world: World) {
 
     const drawingToolFromEvent: (
         event: { button: number },
-    ) => IDrawingTool = (event: { button: number }) => {
+    ) => DrawingToolAdapter = (event: { button: number }) => {
         return drawingTool1;
         /*switch (event.button) {
             case 0:
