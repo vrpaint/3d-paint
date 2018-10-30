@@ -5,13 +5,13 @@ import { DrawingToolAdapter } from '../../DrawingTools/DrawingToolAdapter';
 
 export async function setPlayerActionsOnMouse(world: World) {
     //todo DI drawind tools
-   
+
     const drawingTool1 = world.drawingToolFactory.getDrawingTool({
         toolId: 'path',
+        structureId: '#ff0000',
         options: {
             tessalationInLength: 0.02,
             tessalationInRadius: 7,
-            material: '#ff0000',
         },
     });
 

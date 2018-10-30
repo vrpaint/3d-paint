@@ -25,7 +25,11 @@ export function setPlayerActionOnVRController(
         wheelChanging: WHEEL_CHANGING_OPTIONS[0],
         drawingToolConfig: {
             toolId: 'path',
-            options: {}, //todo
+            structureId: '#00ff00',
+            options: {
+                tessalationInLength: 0.02,
+                tessalationInRadius: 7,
+            },
         },
         currentFrame: null,
     });
@@ -41,36 +45,25 @@ export function setPlayerActionOnVRController(
     );
     controllerMeshOnSpace.position = controller.devicePosition;*/
 
-
-    const drawingTool = world.drawingToolFactory.getDrawingTool({
-        toolId: 'path',
-        options: {
-            tessalationInLength: 0.02,
-            tessalationInRadius: 7,
-            material: '#ff0000',
-        },
-    });
-
+    const drawingTool = world.drawingToolFactory.getDrawingTool(
+        controllerState.drawingToolConfig,
+    );
 
     controller.onTriggerStateChangedObservable.add((gamepadButton) => {
-        if(gamepadButton.value){
+        if (gamepadButton.value) {
             drawingTool.start();
             drawingTool.update({
                 time: new Date().getTime() /*todo better*/,
-                position: babylonToCleanVector(
-                    controller.devicePosition,
-                ),
+                position: babylonToCleanVector(controller.devicePosition),
                 rotation: babylonToCleanVector(
                     controller.deviceRotationQuaternion.toEulerAngles(),
                 ),
                 intensity: gamepadButton.value,
             });
-        }else{
+        } else {
             drawingTool.end();
         }
     });
-
-
 
     const controlWheel = new ControlWheel();
     const controllerWheelVibrations = new ControllerVibrations(
@@ -95,14 +88,13 @@ export function setPlayerActionOnVRController(
                 break;
         }*/
 
-
         let hue = Color(drawingTool.options.material).hue();
-        hue+=value;
-        drawingTool.options.color = Color(drawingTool.options.material).hue(hue).hex().toString();
+        hue += value;
+        drawingTool.options.color = Color(drawingTool.options.material)
+            .hue(hue)
+            .hex()
+            .toString();
         console.log(drawingTool.options.material);
-
-
-
     });
 
     controller.onPadValuesChangedObservable.add((gamepadButton) => {
@@ -118,9 +110,6 @@ export function setPlayerActionOnVRController(
             
         }
     });*/
-
-
-
 
     /*
     const controllerMeshOnWall = BABYLON.Mesh.CreateSphere(

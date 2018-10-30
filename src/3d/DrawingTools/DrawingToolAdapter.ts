@@ -20,27 +20,32 @@ export class DrawingToolAdapter<TOptions> implements IDrawingTool<TOptions> {
         //todo create tool here with config
         //todo other tools
 
-
         this.drawingTool = new PathDrawingTool(
             world,
+            drawingToolConfig.structureId,
             drawingToolConfig.options as any,
         ) as any;
-
-
     }
 
-    get options():TOptions{
+    get options(): TOptions {
         return this.drawingTool.options;
     }
-    set options(options:TOptions){
-        this.drawingTool.options =options;
+    set options(options: TOptions) {
+        this.drawingTool.options = options;
+    }
+
+    get structureId(): string {
+        return this.drawingTool.structureId;
+    }
+    set structureId(structureId: string) {
+        this.drawingTool.structureId = structureId;
     }
 
     private currentDrawing: null | IDrawing<TOptions> = null;
 
     start() {
         //console.log('start spy');
-        if(this.currentDrawing){
+        if (this.currentDrawing) {
             console.warn(`Drawing should be ended before starting new.`);
             return;
         }
@@ -66,11 +71,10 @@ export class DrawingToolAdapter<TOptions> implements IDrawingTool<TOptions> {
             this.world.appState.drawings.push(this.currentDrawing);
             this.currentDrawing = null;
             return this.drawingTool.end();
-        }else{
+        } else {
             console.warn(`There is no started drawing to end.`);
             return [];
         }
-        
     }
 
     back() {

@@ -129,9 +129,8 @@ export class World {
         this.scene.dispose(); //todo is it all?
     }
 
-
-    getNameForMesh(label?: string):string{
-        return `${label}-world-export`;//todo uuid of world
+    getNameForMesh(label?: string): string {
+        return `${label}-world-export`; //todo uuid of world
     }
 
     //todo file
@@ -140,11 +139,12 @@ export class World {
 
         const options = {
             shouldExportTransformNode: (transformNode: BABYLON.Node) => {
-                const shouldExport =
-                    transformNode.name.includes('world-export')
-                    //transformNode !== this.skyboxMesh &&
-                    //transformNode !== this.groundMesh &&
-                    //transformNode.name !== 'ViveWand';
+                const shouldExport = transformNode.name.includes(
+                    'world-export',
+                );
+                //transformNode !== this.skyboxMesh &&
+                //transformNode !== this.groundMesh &&
+                //transformNode.name !== 'ViveWand';
                 console.log(
                     shouldExport ? 'Exporting' : 'Not exporting',
                     transformNode,

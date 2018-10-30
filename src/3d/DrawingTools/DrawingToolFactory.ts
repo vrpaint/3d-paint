@@ -6,7 +6,9 @@ export class DrawingToolFactory {
     constructor(private world: World) {}
 
     //todo cache
-    getDrawingTool(drawingToolConfig: IDrawingToolConfig<any>): DrawingToolAdapter<any> {
+    getDrawingTool(
+        drawingToolConfig: IDrawingToolConfig<any>,
+    ): DrawingToolAdapter<any> {
         return new DrawingToolAdapter(this.world, drawingToolConfig);
     }
 

@@ -10,14 +10,14 @@ import { compose } from '../../../tools/compose';
 interface IPathDrawingToolOptions {
     tessalationInLength: number;
     tessalationInRadius: number;
-    structureId: string;
 }
 
 //todo do not hardcode this - to IPathDrawingToolOptions
 const transformPath = compose<IFrame[]>();
 const countFrameRadius = (center: IFrame) => center.intensity / 40 + 0.01;
 
-export default class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
+export default class PathDrawingTool
+    implements IDrawingTool<IPathDrawingToolOptions> {
     private drawing: boolean = false;
     private currentFrame: IFrame;
 
@@ -28,18 +28,30 @@ export default class PathDrawingTool implements IDrawingTool<IPathDrawingToolOpt
 
     constructor(
         private world: World,
+        private _structureId: string,
         public options: IPathDrawingToolOptions,
     ) {
         this.init();
+        this.structureId = _structureId;
     }
 
     private async init() {
         //super(world);
         this.toolMesh = this.createToolMesh();
         this.toolMesh.scaling = BABYLON.Vector3.Zero();
-        this.toolMesh.material = (await this.world.materialFactory.getStructure(
-            this.options.structureId,
-        )).babylonMaterial;
+    }
+
+    get structureId(): string {
+        return this._structureId;
+    }
+    set structureId(structureId: string) {
+        this._structureId = structureId;
+        this.world.materialFactory
+            .getStructure(structureId)
+            .then(
+                (structure) =>
+                    (this.toolMesh.material = structure.babylonMaterial),
+            );
     }
 
     private createToolMesh(): BABYLON.Mesh {
