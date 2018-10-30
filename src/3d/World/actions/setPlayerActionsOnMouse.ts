@@ -1,7 +1,8 @@
-import { IFrame } from '.oldsrc/model/IAppState';
+
 import { World } from '../World';
 import { babylonToCleanVector } from '../../../tools/vectors';
 import { DrawingToolAdapter } from '../../DrawingTools/DrawingToolAdapter';
+import { IFrame } from '../../../model/IFrame';
 
 export async function setPlayerActionsOnMouse(world: World) {
     //todo DI drawind tools

@@ -41,6 +41,7 @@ export default class PathDrawingTool
         this.toolMesh.scaling = BABYLON.Vector3.Zero();
     }
 
+    //todo to Adapter
     get structureId(): string {
         return this._structureId;
     }
