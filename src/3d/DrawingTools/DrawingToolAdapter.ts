@@ -29,7 +29,11 @@ export class DrawingToolAdapter implements IDrawingTool {
     private currentDrawing: null | IDrawing = null;
 
     start() {
-        console.log('start spy');
+        //console.log('start spy');
+        if(this.currentDrawing){
+            console.warn(`Drawing should be ended before starting new.`);
+            return;
+        }
         this.currentDrawing = {
             id: 'abc',
             frames: [],
@@ -40,7 +44,7 @@ export class DrawingToolAdapter implements IDrawingTool {
     update(frame: IFrame) {
         //todo maybe save in every frame or debounce
         if (this.currentDrawing /*todo or drawingTool.drawing*/) {
-            console.log('update spy');
+            //console.log('update spy');
             this.currentDrawing.frames.push(frame);
         }
         this.drawingTool.update(frame);
@@ -48,15 +52,19 @@ export class DrawingToolAdapter implements IDrawingTool {
 
     end(): BABYLON.Mesh[] {
         if (this.currentDrawing /*todo or drawingTool.drawing*/) {
-            console.log('end spy');
+            //console.log('end spy');
             this.world.appState.drawings.push(this.currentDrawing);
             this.currentDrawing = null;
+            return this.drawingTool.end();
+        }else{
+            console.warn(`There is no started drawing to end.`);
+            return [];
         }
-        return this.drawingTool.end();
+        
     }
 
     back() {
-        console.log('back spy');
+        //console.log('back spy');
         //todo implement
     }
 

@@ -1,7 +1,8 @@
 import * as uuidv4 from 'uuid/v4';
 import * as BABYLON from 'babylonjs';
-import { World } from './World';
-import { WHEEL_CHANGING_OPTIONS } from '../../model/IController';
+import { World } from '../World';
+import { WHEEL_CHANGING_OPTIONS } from '../../../model/IController';
+import { babylonToCleanVector } from '../../../tools/vectors';
 
 export function controllerLoad(
     controller: BABYLON.WebVRController,
@@ -29,13 +30,43 @@ export function controllerLoad(
         (controller) => controller.id == controllerId,
     )!; //todo maybe better name
 
-    const controllerMeshOnSpace = BABYLON.Mesh.CreateSphere(
+    /*const controllerMeshOnSpace = BABYLON.Mesh.CreateSphere(
         'controllerMeshOnWall',
         5,
         0.03,
         world.scene,
     );
-    controllerMeshOnSpace.position = controller.devicePosition;
+    controllerMeshOnSpace.position = controller.devicePosition;*/
+
+
+    const drawingTool = world.drawingToolFactory.getDrawingTool({
+        toolId: 'path',
+        options: {
+            tessalationInLength: 0.02,
+            tessalationInRadius: 7,
+            material: '#ff0000',
+        },
+    });
+
+
+    controller.onTriggerStateChangedObservable.add((gamepadButton) => {
+        if(gamepadButton.value){
+            drawingTool.start();
+            drawingTool.update({
+                time: new Date().getTime() /*todo better*/,
+                position: babylonToCleanVector(
+                    controller.devicePosition,
+                ),
+                rotation: babylonToCleanVector(
+                    controller.deviceRotationQuaternion.toEulerAngles(),
+                ),
+                intensity: gamepadButton.value,
+            });
+        }else{
+            drawingTool.end();
+        }
+    });
+
 
     /*
     const controllerMeshOnWall = BABYLON.Mesh.CreateSphere(

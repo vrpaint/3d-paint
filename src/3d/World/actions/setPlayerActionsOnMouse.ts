@@ -1,16 +1,15 @@
 import { IFrame } from '.oldsrc/model/IAppState';
-import { World } from './World';
-import { DrawingToolFactory } from '../DrawingTools/DrawingToolFactory';
-import { babylonToCleanVector } from '../../tools/vectors';
-import { compose } from '../../tools/compose';
-import { IDrawingTool } from '../DrawingTools/IDrawingTool';
-import { DrawingToolAdapter } from '../DrawingTools/DrawingToolAdapter';
+import { World } from '../World';
+import { DrawingToolFactory } from '../../DrawingTools/DrawingToolFactory';
+import { babylonToCleanVector } from '../../../tools/vectors';
+import { compose } from '../../../tools/compose';
+import { IDrawingTool } from '../../DrawingTools/IDrawingTool';
+import { DrawingToolAdapter } from '../../DrawingTools/DrawingToolAdapter';
 
 export async function setPlayerActionsOnMouse(world: World) {
     //todo DI drawind tools
-    const drawingToolFactory = new DrawingToolFactory(world);
-    drawingToolFactory.replayState();
-    const drawingTool1 = drawingToolFactory.getDrawingTool({
+   
+    const drawingTool1 = world.drawingToolFactory.getDrawingTool({
         toolId: 'path',
         options: {
             tessalationInLength: 0.02,

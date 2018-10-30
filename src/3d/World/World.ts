@@ -1,3 +1,4 @@
+import { DrawingToolFactory } from './../DrawingTools/DrawingToolFactory';
 import { CanvasParticlesRenderer as WallRenderer } from 'touchcontroller';
 import { IObservableObject } from 'mobx';
 import { IAppState } from './../../model/IAppState';
@@ -8,12 +9,12 @@ import { createScene } from './createScene';
 import { createLights } from './createLights';
 import { createGround } from './createGround';
 import { createSkybox } from './createSkybox';
-import { controllerLoad } from './controllerLoad';
+import { controllerLoad } from './actions/controllerLoad';
 import * as downloadjs from 'downloadjs';
 import { Key } from 'ts-keycode-enum';
 
 import { ISituationState } from '../../model/ISituationState';
-import { setPlayerActionsOnMouse } from './setPlayerActionsOnMouse';
+import { setPlayerActionsOnMouse } from './actions/setPlayerActionsOnMouse';
 
 export class World {
     public engine: BABYLON.Engine;
@@ -31,6 +32,7 @@ export class World {
 
     public materialFactory: MaterialFactory;
     public VRHelper: BABYLON.VRExperienceHelper;
+    public drawingToolFactory: DrawingToolFactory;
 
     constructor(
         public canvasElement: HTMLCanvasElement,
@@ -88,6 +90,9 @@ export class World {
         } else {
             console.warn(`VRHelper.deviceOrientationCamera is null!`);
         }
+
+        this.drawingToolFactory = new DrawingToolFactory(this);
+        this.drawingToolFactory.replayState();
 
         //todo it should work with only one controller
         //todo make also on unload
