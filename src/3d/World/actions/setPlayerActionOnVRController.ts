@@ -1,5 +1,5 @@
-import { ControllerVibrations } from './../../../tools/ControllerVibrations';
-import { ControlWheel } from './../../../tools/ControlWheel';
+import { ControllerVibrations } from '../../../tools/ControllerVibrations';
+import { ControlWheel } from '../../../tools/ControlWheel';
 import * as uuidv4 from 'uuid/v4';
 import * as BABYLON from 'babylonjs';
 import { World } from '../World';
@@ -7,7 +7,7 @@ import { WHEEL_CHANGING_OPTIONS } from '../../../model/IController';
 import { babylonToCleanVector } from '../../../tools/vectors';
 import * as Color from 'color';
 
-export function controllerLoad(
+export function setPlayerActionOnVRController(
     controller: BABYLON.WebVRController,
     world: World,
 ) {
@@ -96,10 +96,10 @@ export function controllerLoad(
         }*/
 
 
-        let hue = Color(drawingTool.options.color).hue();
+        let hue = Color(drawingTool.options.material).hue();
         hue+=value;
-        drawingTool.options.color = Color(drawingTool.options.color).hue(hue).hex().toString();
-  
+        drawingTool.options.color = Color(drawingTool.options.material).hue(hue).hex().toString();
+        console.log(drawingTool.options.material);
 
 
 

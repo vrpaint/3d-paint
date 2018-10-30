@@ -9,7 +9,7 @@ import { createScene } from './createScene';
 import { createLights } from './createLights';
 import { createGround } from './createGround';
 import { createSkybox } from './createSkybox';
-import { controllerLoad } from './actions/controllerLoad';
+import { setPlayerActionOnVRController } from './actions/setPlayerActionOnVRController';
 import * as downloadjs from 'downloadjs';
 import { Key } from 'ts-keycode-enum';
 
@@ -94,10 +94,9 @@ export class World {
         this.drawingToolFactory = new DrawingToolFactory(this);
         this.drawingToolFactory.replayState();
 
-        //todo it should work with only one controller
         //todo make also on unload
         this.VRHelper.onControllerMeshLoadedObservable.add((controller) =>
-            controllerLoad(controller, this),
+            setPlayerActionOnVRController(controller, this),
         );
 
         setPlayerActionsOnMouse(this);
@@ -130,6 +129,11 @@ export class World {
         this.scene.dispose(); //todo is it all?
     }
 
+
+    getNameForMesh(label?: string):string{
+        return `${label}-world-export`;//todo uuid of world
+    }
+
     //todo file
     async export() {
         console.groupCollapsed('Exporting');
@@ -137,9 +141,10 @@ export class World {
         const options = {
             shouldExportTransformNode: (transformNode: BABYLON.Node) => {
                 const shouldExport =
-                    transformNode !== this.skyboxMesh &&
-                    transformNode !== this.groundMesh &&
-                    transformNode.name !== 'ViveWand';
+                    transformNode.name.includes('world-export')
+                    //transformNode !== this.skyboxMesh &&
+                    //transformNode !== this.groundMesh &&
+                    //transformNode.name !== 'ViveWand';
                 console.log(
                     shouldExport ? 'Exporting' : 'Not exporting',
                     transformNode,

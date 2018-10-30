@@ -192,7 +192,7 @@ export default class PathDrawingTool implements IDrawingTool<IPathDrawingToolOpt
 
         //todo this.options.tessalationInRadius
         const ribbonMesh = BABYLON.MeshBuilder.CreateTube(
-            'tube' + Math.random(),
+            this.world.getNameForMesh(),
             {
                 path: transformedPath.map((drawingFrame) =>
                     cleanVectorToBabylon(drawingFrame.position),
