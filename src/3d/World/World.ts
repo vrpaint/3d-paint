@@ -57,7 +57,7 @@ export class World {
         this.scene = createScene(this.engine);
         this.lights = createLights(this.scene);
         this.materialFactory = new MaterialFactory(this);
-        this.groundMesh = createGround(this.scene, this.materialFactory);
+        //this.groundMesh = createGround(this.scene, this.materialFactory);
         this.skyboxMesh = createSkybox(this.scene);
 
         //todo to separate file
