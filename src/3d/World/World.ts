@@ -1,3 +1,4 @@
+import { DrawingToolAdapter } from './../DrawingTools/DrawingToolAdapter';
 import { DrawingToolFactory } from './../DrawingTools/DrawingToolFactory';
 import { CanvasParticlesRenderer as WallRenderer } from 'touchcontroller';
 import { IObservableObject } from 'mobx';
@@ -12,8 +13,6 @@ import { createSkybox } from './createSkybox';
 import { setPlayerActionOnVRController } from './actions/setPlayerActionOnVRController';
 import * as downloadjs from 'downloadjs';
 import { Key } from 'ts-keycode-enum';
-
-import { ISituationState } from '../../model/ISituationState';
 import { setPlayerActionsOnMouse } from './actions/setPlayerActionsOnMouse';
 
 export class World {
@@ -32,16 +31,16 @@ export class World {
 
     public materialFactory: MaterialFactory;
     public VRHelper: BABYLON.VRExperienceHelper;
-    public drawingToolFactory: DrawingToolFactory;
+    private drawingToolFactory: DrawingToolFactory;
 
     constructor(
-        public canvasElement: HTMLCanvasElement,
         public appState: IAppState & IObservableObject,
-        public situationState: ISituationState & IObservableObject,
-        public wallRenderer: WallRenderer,
     ) {}
 
-    run() {
+    public canvasElement: HTMLCanvasElement;//todo what if canvas is null?
+    run(canvasElement: HTMLCanvasElement) {
+        //todo prevent multiple runs
+        this.canvasElement = canvasElement;
         this.engine = new BABYLON.Engine(this.canvasElement, true, {
             //preserveDrawingBuffer: true,
         });
@@ -106,6 +105,23 @@ export class World {
             //console.log(event.target);
             event.preventDefault();
         });
+    }
+
+    public drawingTools: DrawingToolAdapter[] = [];
+    getDrawingTool(deviceId: string): DrawingToolAdapter{
+        //todo deviceId
+        const drawingTool = this.drawingToolFactory.getDrawingTool(
+            {
+                toolId: 'path',
+                structureId: '#00ff00',
+                options: {
+                    tessalationInLength: 0.02,
+                    tessalationInRadius: 7,
+                },
+            },
+        );
+        this.drawingTools.push(drawingTool);
+        return drawingTool;
     }
 
     get position(): BABYLON.Vector3 {

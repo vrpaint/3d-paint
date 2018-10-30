@@ -2,13 +2,14 @@ import { DrawingToolAdapter } from './DrawingToolAdapter';
 import { World } from '../World/World';
 import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
 
+//is this needed?
 export class DrawingToolFactory {
     constructor(private world: World) {}
 
     //todo cache
     getDrawingTool(
         drawingToolConfig: IDrawingToolConfig<any>,
-    ): DrawingToolAdapter<any> {
+    ): DrawingToolAdapter {
         return new DrawingToolAdapter(this.world, drawingToolConfig);
     }
 

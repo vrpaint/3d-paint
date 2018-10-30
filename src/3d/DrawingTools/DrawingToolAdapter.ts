@@ -8,14 +8,14 @@ import { IFrame } from '../../model/IFrame';
 import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
 import PathDrawingTool from './drawingTools/PathDrawingTool';
 
-export class DrawingToolAdapter<TOptions> implements IDrawingTool<TOptions> {
+export class DrawingToolAdapter implements IDrawingTool<any> {
     //todo TOptions is it needed?
 
-    private drawingTool: IDrawingTool<TOptions>;
+    private drawingTool: IDrawingTool<any>;
 
     constructor(
         private world: World,
-        private drawingToolConfig: IDrawingToolConfig<TOptions>,
+        private drawingToolConfig: IDrawingToolConfig<any>,
     ) {
         //todo create tool here with config
         //todo other tools
@@ -27,10 +27,10 @@ export class DrawingToolAdapter<TOptions> implements IDrawingTool<TOptions> {
         ) as any;
     }
 
-    get options(): TOptions {
+    get options(): any {
         return this.drawingTool.options;
     }
-    set options(options: TOptions) {
+    set options(options: any) {
         this.drawingTool.options = options;
     }
 
@@ -41,7 +41,7 @@ export class DrawingToolAdapter<TOptions> implements IDrawingTool<TOptions> {
         this.drawingTool.structureId = structureId;
     }
 
-    private currentDrawing: null | IDrawing<TOptions> = null;
+    private currentDrawing: null | IDrawing<any> = null;
 
     start() {
         //console.log('start spy');
@@ -82,7 +82,11 @@ export class DrawingToolAdapter<TOptions> implements IDrawingTool<TOptions> {
         //todo implement
     }
 
-    async replayState(drawing: IDrawing<TOptions>) {
+    renderToolbar(){
+        return this.drawingTool.renderToolbar;
+    }
+
+    async replayState(drawing: IDrawing<any>) {
         //for (const drawing of this.world.appState.drawings) {
 
         this.drawingTool.start();

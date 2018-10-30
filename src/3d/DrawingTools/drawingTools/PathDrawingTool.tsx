@@ -1,5 +1,5 @@
+import * as React from 'react';
 import { IDrawingTool } from '../IDrawingTool';
-import ITranformPath from '../transformPath/ITransformPath';
 import * as BABYLON from 'babylonjs';
 import { World } from '../../World/World';
 import { IFrame, cloneFrame } from '../../../model/IFrame';
@@ -53,6 +53,14 @@ export default class PathDrawingTool
                 (structure) =>
                     (this.toolMesh.material = structure.babylonMaterial),
             );
+    }
+
+    renderToolbar(){
+        return(
+            <div>
+                <button onClick={()=>alert(1)}></button>    
+            </div>
+        )
     }
 
     private createToolMesh(): BABYLON.Mesh {

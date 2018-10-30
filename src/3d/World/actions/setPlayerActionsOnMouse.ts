@@ -7,18 +7,11 @@ import { IFrame } from '../../../model/IFrame';
 export async function setPlayerActionsOnMouse(world: World) {
     //todo DI drawind tools
 
-    const drawingTool1 = world.drawingToolFactory.getDrawingTool({
-        toolId: 'path',
-        structureId: '#ff0000',
-        options: {
-            tessalationInLength: 0.02,
-            tessalationInRadius: 7,
-        },
-    });
+    const drawingTool1 = world.getDrawingTool('pointer');
 
     const drawingToolFromEvent: (
         event: { button: number },
-    ) => DrawingToolAdapter<{}> = (event: { button: number }) => {
+    ) => DrawingToolAdapter = (event: { button: number }) => {
         return drawingTool1;
         /*switch (event.button) {
             case 0:

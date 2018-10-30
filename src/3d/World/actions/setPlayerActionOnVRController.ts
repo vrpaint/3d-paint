@@ -21,38 +21,8 @@ export function setPlayerActionOnVRController(
         } and id "${controllerId}" loaded.`,
         controller,
     );
-    world.situationState.controllers.push({
-        id: controllerId,
-        wheelChanging: WHEEL_CHANGING_OPTIONS[0],
-        drawingToolConfig: {
-            toolId: 'path',
-            structureId: '#00ff00',
-            options: {
-                tessalationInLength: 0.02,
-                tessalationInRadius: 7,
-            },
-        },
-        currentFrame: null,
-    });
-    const controllerState = world.situationState.controllers.find(
-        (controller) => controller.id == controllerId,
-    )!; //todo maybe better name
-
-    /*const controllerMeshOnSpace = BABYLON.Mesh.CreateSphere(
-        'controllerMeshOnWall',
-        5,
-        0.03,
-        world.scene,
-    );
-    controllerMeshOnSpace.position = controller.devicePosition;*/
-
-
     
-
-
-    const drawingTool = world.drawingToolFactory.getDrawingTool(
-        controllerState.drawingToolConfig,
-    );
+    const drawingTool = world.getDrawingTool(controllerId);
 
     controller.onTriggerStateChangedObservable.add((gamepadButton) => {
         if (gamepadButton.value) {

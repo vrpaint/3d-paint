@@ -6,18 +6,16 @@ import { IAppState } from '../../model/IAppState';
 import { IObservableObject } from 'mobx';
 import { ISaveState } from '../../controller/saver/ISaveState';
 import { Scene } from '../Scene/Scene';
-import { ISituationState } from '../../model/ISituationState';
-import { CanvasParticlesRenderer as WallRenderer } from 'touchcontroller';
+import { World } from '../../3d/World/World';
 
 interface IAppProps {
     appState: IAppState & IObservableObject;
     saveState: ISaveState & IObservableObject;
-    situationState: ISituationState & IObservableObject;
-    wallRenderer: WallRenderer;
+    world: World;
 }
 
 export const Root = observer(
-    ({ appState, saveState, situationState, wallRenderer }: IAppProps) => {
+    ({ appState, saveState, world }: IAppProps) => {
         return (
             <div className="Root">
                 <div className="Heading">
@@ -28,60 +26,7 @@ export const Root = observer(
 
                     <div>
                         Controllers:
-                        {situationState.controllers.map((controller) => (
-                            <div className="Controller" key={controller.id}>
-                                {/*
-                                todo
-                                <div className="field">
-                                    <label>Size:</label>
-                                    <input
-                                        type="range"
-                                        min={1}
-                                        max={100}
-                                        step={1}
-                                        value={controller.drawingToolConfig.toolId}
-                                        onChange={(e) =>
-                                            (controller.drawingTool.size = parseInt(
-                                                e.target.value,
-                                            ))
-                                        }
-                                    />
-                                </div>
-                                <div className="field">
-                                    <label>Color:</label>
-                                    <input
-                                        type="color"
-                                        value={controller.drawingTool.color}
-                                        onChange={(e) =>
-                                            (controller.drawingTool.color =
-                                                e.target.value)
-                                        }
-                                    />
-                                </div>
-                                */}
-
-                                {/*
-                            <b>{controller.id}:</b>
-                            {controller.currentFrame && (
-                                <i>
-                                    [
-                                    {controller.currentFrame.positionInSpace.x.toFixed(
-                                        2,
-                                    )}
-                                    ,
-                                    {controller.currentFrame.positionInSpace.y.toFixed(
-                                        2,
-                                    )}
-                                    ,
-                                    {controller.currentFrame.positionInSpace.z.toFixed(
-                                        2,
-                                    )}
-                                    ]
-                                </i>
-                            )}
-                            */}
-                            </div>
-                        ))}
+                        todo
                     </div>
 
                     <div>
@@ -98,13 +43,13 @@ export const Root = observer(
                     </div>
 
                     <div>
-                        <button onClick={() => situationState.world!.export()}>
+                        <button onClick={() => world.export()}>
                             Export to .glb
                         </button>
                     </div>
                 </div>
 
-                <Scene {...{ appState, situationState, wallRenderer }} />
+                <Scene {...{ world }} />
             </div>
         );
     },

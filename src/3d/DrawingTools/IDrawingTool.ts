@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { IFrame } from '../../model/IFrame';
 import * as BABYLON from 'babylonjs';
 
@@ -8,4 +9,5 @@ export interface IDrawingTool<TOptions> {
     start: () => void;
     update: (frame: IFrame) => void;
     end: () => BABYLON.Mesh[];
+    renderToolbar: ()=>any;//todo
 }
