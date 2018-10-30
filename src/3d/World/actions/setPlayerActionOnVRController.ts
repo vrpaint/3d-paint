@@ -4,7 +4,7 @@ import { ControlWheel } from '../../../tools/ControlWheel';
 import * as uuidv4 from 'uuid/v4';
 import * as BABYLON from 'babylonjs';
 import { World } from '../World';
-import { WHEEL_CHANGING_OPTIONS } from '../../../model/IController';
+import * as html2canvas from 'html2canvas';
 import { babylonToCleanVector } from '../../../tools/vectors';
 import * as Color from 'color';
 
@@ -21,7 +21,7 @@ export function setPlayerActionOnVRController(
         } and id "${controllerId}" loaded.`,
         controller,
     );
-    
+
     const drawingTool = world.getDrawingTool(controllerId);
 
     controller.onTriggerStateChangedObservable.add((gamepadButton) => {
@@ -76,20 +76,61 @@ export function setPlayerActionOnVRController(
         controlWheel.impulse(gamepadButton);
     });
 
+    {
+        //Toolbar
 
+        const controllerToolbarMesh = BABYLON.Mesh.CreatePlane(
+            'plane',
+            1,
+            world.scene,
+        );
+        //todo maybe factory for dynamic textures
+        const material = new BABYLON.StandardMaterial('material', world.scene);
+        material.backFaceCulling = false;
+        const textureOptions = { width: 1024, height: 1024 };
+        const texture = new BABYLON.DynamicTexture(
+            'texture',
+            textureOptions,
+            world.scene,
+            false,
+        );
+        texture.uScale = 1;
+        texture.vScale = 1;
+        material.diffuseColor = BABYLON.Color3.FromHexString('#000000');
+        material.ambientColor = BABYLON.Color3.FromHexString('#000000');
+        material.specularColor = BABYLON.Color3.FromHexString('#000000');
+        material.emissiveTexture = texture;
+        const ctx = texture.getContext();
 
+        let r = true;
+        world.scene.registerBeforeRender(async () => {
+            if (drawingTool.toolbarElement && r) {
+                r = false;
+                const canvas = await html2canvas(drawingTool.toolbarElement);
 
-    const controllerToolbarMesh = BABYLON.Mesh.CreatePlane("plane", 1, world.scene);
-    world.materialFactory
-            .getStructure('#555599')
-            .then(
-                (structure) =>
-                    (controllerToolbarMesh.material = structure.babylonMaterial),
-            );
-    controllerToolbarMesh.scaling.x = 0.3;
-    controllerToolbarMesh.scaling.y = 0.7;
-    controllerToolbarMesh.visibility = 0;
-    /*controllerToolbar.rotation = new BABYLON.Vector3(
+                controllerToolbarMesh.scaling.x = canvas.width * 0.002; //todo const
+                controllerToolbarMesh.scaling.y = canvas.height * 0.002; //todo const
+                //drawingTool.toolbarElement.appendChild(canvas);
+
+                //setImmediate(()=>{
+                ctx.drawImage(
+                    canvas,
+                    0,
+                    0,
+                    textureOptions.width,
+                    textureOptions.height,
+                );
+                texture.update();
+                //});
+            }
+        });
+
+        controllerToolbarMesh.material = material;
+
+        controllerToolbarMesh.scaling.x = 0.3;
+        controllerToolbarMesh.scaling.y = 0.7;
+        controllerToolbarMesh.visibility = 0;
+        /*controllerToolbar.rotation = new BABYLON.Vector3(
         Math.PI/2,
         0,
         0
@@ -97,72 +138,79 @@ export function setPlayerActionOnVRController(
     controllerToolbar.parent = controller.mesh;
     */
 
-
-
-    const controllerToolbarRay = new BABYLON.Ray(
-        controller.devicePosition,
-        BABYLON.Vector3.One(),
-        100,
-    );
-    const controllerToolbarRayPickedMesh = BABYLON.Mesh.CreateSphere(
-        'controllerToolbarRayPickedMesh',
-        5,
-        0.03,
-        world.scene,
-    );
-    controllerToolbarRayPickedMesh.visibility = 0;
-    world.scene.registerBeforeRender(()=>{
-
-        const matrix = new BABYLON.Matrix(); //todo can it be as a global const
-        controller.deviceRotationQuaternion.toRotationMatrix(matrix);
-        controllerToolbarRay.direction  = BABYLON.Vector3.TransformCoordinates(
-            CONTROLLER_SPRAY_DIRECTION,
-            matrix,
+        const controllerToolbarRay = new BABYLON.Ray(
+            controller.devicePosition,
+            BABYLON.Vector3.One(),
+            100,
         );
-        const hit = world.scene.pickWithRay(controllerToolbarRay, (mesh) => mesh === controllerToolbarMesh);
-        if (hit) {
-            if (hit.pickedPoint) {
-                controllerToolbarRayPickedMesh.visibility = 1;
-                controllerToolbarRayPickedMesh.position = hit.pickedPoint;
-            } else {
-                controllerToolbarRayPickedMesh.visibility = 0;
+        const controllerToolbarRayPickedMesh = BABYLON.Mesh.CreateSphere(
+            'controllerToolbarRayPickedMesh',
+            5,
+            0.008,
+            world.scene,
+        );
+        world.materialFactory
+        .getStructure('#ff0000')
+        .then(
+            (structure) =>
+                (controllerToolbarRayPickedMesh.material = structure.babylonMaterial),
+        );
+        
+        
+        controllerToolbarRayPickedMesh.visibility = 0;
+        world.scene.registerBeforeRender(() => {
+            const matrix = new BABYLON.Matrix(); //todo can it be as a global const
+            controller.deviceRotationQuaternion.toRotationMatrix(matrix);
+            controllerToolbarRay.direction = BABYLON.Vector3.TransformCoordinates(
+                CONTROLLER_SPRAY_DIRECTION,
+                matrix,
+            );
+            const hit = world.scene.pickWithRay(
+                controllerToolbarRay,
+                (mesh) => mesh === controllerToolbarMesh,
+            );
+            if (hit) {
+                if (hit.pickedPoint) {
+                    controllerToolbarRayPickedMesh.visibility = 1;
+                    controllerToolbarRayPickedMesh.position = hit.pickedPoint;
+                } else {
+                    controllerToolbarRayPickedMesh.visibility = 0;
+                }
             }
-        }
+        });
 
-
-    });
-   
-
-    controller.onSecondaryButtonStateChangedObservable.add((gamepadButton) => {
-        console.log('onSecondaryButtonStateChangedObservable',gamepadButton);
-        if(gamepadButton.value){
-            controllerToolbarMesh.visibility = controllerToolbarMesh.visibility?0:1;
-            if(controllerToolbarMesh.visibility){
-                controllerToolbarMesh.position = controller.devicePosition.clone();
-                
-
-                const matrix = new BABYLON.Matrix();
-                controller.deviceRotationQuaternion.toRotationMatrix(matrix);
-                   controllerToolbarMesh.position.addInPlace(
-                    BABYLON.Vector3.TransformCoordinates(
-                        CONTROLLER_SPRAY_DIRECTION.scale(0.1),
-                        matrix,
-                    )
+        controller.onSecondaryButtonStateChangedObservable.add(
+            (gamepadButton) => {
+                console.log(
+                    'onSecondaryButtonStateChangedObservable',
+                    gamepadButton,
                 );
+                if (gamepadButton.value) {
+                    controllerToolbarMesh.visibility = controllerToolbarMesh.visibility
+                        ? 0
+                        : 1;
+                    if (controllerToolbarMesh.visibility) {
+                        controllerToolbarMesh.position = controller.devicePosition.clone();
 
+                        const matrix = new BABYLON.Matrix();
+                        controller.deviceRotationQuaternion.toRotationMatrix(
+                            matrix,
+                        );
+                        controllerToolbarMesh.position.addInPlace(
+                            BABYLON.Vector3.TransformCoordinates(
+                                CONTROLLER_SPRAY_DIRECTION.scale(0.1),
+                                matrix,
+                            ),
+                        );
 
-                controllerToolbarMesh.rotationQuaternion = controller.deviceRotationQuaternion.clone();
-                controllerToolbarMesh.rotation.x += Math.PI/2;
-                
-            }
-        }
-    });
-
-
-
-    
-
-
+                        controllerToolbarMesh.rotationQuaternion = controller.deviceRotationQuaternion.clone();
+                        controllerToolbarMesh.rotation.x += Math.PI / 2;
+                        controllerToolbarMesh.rotation.y += Math.PI;
+                    }
+                }
+            },
+        );
+    }
 
     /*
     const controllerMeshOnWall = BABYLON.Mesh.CreateSphere(

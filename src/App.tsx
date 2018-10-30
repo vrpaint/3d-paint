@@ -19,9 +19,7 @@ export class App {
     run() {
         this.appState = restoreAppState();
         this.saveState = saveAppStateAfterChange(this.appState);
-        this.world = new World(
-            this.appState
-                );//todo is it pretty?
+        this.world = new World(this.appState); //todo is it pretty?
 
         ReactDOM.render(
             <Root

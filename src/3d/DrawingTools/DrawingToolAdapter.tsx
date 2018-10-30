@@ -1,12 +1,12 @@
-import { World } from './../World/World';
-import { IObservableObject } from 'mobx';
-import { IAppState } from './../../model/IAppState';
+import * as React from 'react';
+import { World } from '../World/World';
 import { IDrawingTool } from './IDrawingTool';
 import * as BABYLON from 'babylonjs';
 import { IDrawing } from '../../model/IDrawing';
 import { IFrame } from '../../model/IFrame';
 import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
 import PathDrawingTool from './drawingTools/PathDrawingTool';
+import './DrawingToolAdapter.css';
 
 export class DrawingToolAdapter implements IDrawingTool<any> {
     //todo TOptions is it needed?
@@ -82,8 +82,18 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
         //todo implement
     }
 
-    renderToolbar(){
-        return this.drawingTool.renderToolbar;
+    public toolbarElement: HTMLDivElement | null = null;
+    renderToolbar() {
+        return (
+            <div
+                className="DrawingToolAdapterToolbar"
+                ref={(element) => {
+                    if (element) this.toolbarElement = element;
+                }}
+            >
+                {this.drawingTool.renderToolbar()}
+            </div>
+        );
     }
 
     async replayState(drawing: IDrawing<any>) {

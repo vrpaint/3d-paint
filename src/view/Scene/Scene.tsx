@@ -7,22 +7,20 @@ interface ISceneProps {
     world: World;
 }
 
-export const Scene = observer(
-    ({ world }: ISceneProps) => {
-        return (
-            <div className="Scene">
-                <canvas
-                    ref={(canvasElement) => {
-                        if (canvasElement) {
-                            console.log(
-                                'Canvas element for 3D scene:',
-                                canvasElement,
-                            );
-                            world.run(canvasElement);
-                        }
-                    }}
-                />
-            </div>
-        );
-    },
-);
+export const Scene = observer(({ world }: ISceneProps) => {
+    return (
+        <div className="Scene">
+            <canvas
+                ref={(canvasElement) => {
+                    if (canvasElement) {
+                        console.log(
+                            'Canvas element for 3D scene:',
+                            canvasElement,
+                        );
+                        world.run(canvasElement);
+                    }
+                }}
+            />
+        </div>
+    );
+});

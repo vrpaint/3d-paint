@@ -14,43 +14,48 @@ interface IAppProps {
     world: World;
 }
 
-export const Root = observer(
-    ({ appState, saveState, world }: IAppProps) => {
-        return (
-            <div className="Root">
-                <div className="Heading">
-                    <Message {...{ appState }} />
-                    {saveState.saved && (
-                        <div>Saved at {saveState.saved.toString()}</div>
+export const Root = observer(({ appState, saveState, world }: IAppProps) => {
+    return (
+        <div className="Root">
+            <div className="Heading">
+                <Message {...{ appState }} />
+                {saveState.saved && (
+                    <div>Saved at {saveState.saved.toString()}</div>
+                )}
+
+                <div>
+                    Controllers:
+                    {world.drawingTools.map(
+                        (drawingTool, drawingToolIterator) => (
+                            <div key={drawingToolIterator}>
+                                xxx
+                                {drawingTool.renderToolbar()}
+                            </div>
+                        ),
                     )}
-
-                    <div>
-                        Controllers:
-                        todo
-                    </div>
-
-                    <div>
-                        Wall contains {appState.drawings.length} drawings.
-                        <button
-                            onClick={() => {
-                                if (confirm('Are you sure?')) {
-                                    appState.drawings = [];
-                                }
-                            }}
-                        >
-                            clean
-                        </button>
-                    </div>
-
-                    <div>
-                        <button onClick={() => world.export()}>
-                            Export to .glb
-                        </button>
-                    </div>
                 </div>
 
-                <Scene {...{ world }} />
+                <div>
+                    Wall contains {appState.drawings.length} drawings.
+                    <button
+                        onClick={() => {
+                            if (confirm('Are you sure?')) {
+                                appState.drawings = [];
+                            }
+                        }}
+                    >
+                        clean
+                    </button>
+                </div>
+
+                <div>
+                    <button onClick={() => world.export()}>
+                        Export to .glb
+                    </button>
+                </div>
             </div>
-        );
-    },
-);
+
+            <Scene {...{ world }} />
+        </div>
+    );
+});

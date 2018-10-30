@@ -33,11 +33,9 @@ export class World {
     public VRHelper: BABYLON.VRExperienceHelper;
     private drawingToolFactory: DrawingToolFactory;
 
-    constructor(
-        public appState: IAppState & IObservableObject,
-    ) {}
+    constructor(public appState: IAppState & IObservableObject) {}
 
-    public canvasElement: HTMLCanvasElement;//todo what if canvas is null?
+    public canvasElement: HTMLCanvasElement; //todo what if canvas is null?
     run(canvasElement: HTMLCanvasElement) {
         //todo prevent multiple runs
         this.canvasElement = canvasElement;
@@ -108,18 +106,16 @@ export class World {
     }
 
     public drawingTools: DrawingToolAdapter[] = [];
-    getDrawingTool(deviceId: string): DrawingToolAdapter{
+    getDrawingTool(deviceId: string): DrawingToolAdapter {
         //todo deviceId
-        const drawingTool = this.drawingToolFactory.getDrawingTool(
-            {
-                toolId: 'path',
-                structureId: '#00ff00',
-                options: {
-                    tessalationInLength: 0.02,
-                    tessalationInRadius: 7,
-                },
+        const drawingTool = this.drawingToolFactory.getDrawingTool({
+            toolId: 'path',
+            structureId: '#00ff00',
+            options: {
+                tessalationInLength: 0.02,
+                tessalationInRadius: 7,
             },
-        );
+        });
         this.drawingTools.push(drawingTool);
         return drawingTool;
     }

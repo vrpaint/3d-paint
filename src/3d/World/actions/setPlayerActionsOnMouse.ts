@@ -1,4 +1,3 @@
-
 import { World } from '../World';
 import { babylonToCleanVector } from '../../../tools/vectors';
 import { DrawingToolAdapter } from '../../DrawingTools/DrawingToolAdapter';

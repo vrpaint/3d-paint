@@ -55,12 +55,12 @@ export default class PathDrawingTool
             );
     }
 
-    renderToolbar(){
-        return(
+    renderToolbar() {
+        return (
             <div>
-                <button onClick={()=>alert(1)}></button>    
+                <button onClick={() => alert(1)}>aa</button>
             </div>
-        )
+        );
     }
 
     private createToolMesh(): BABYLON.Mesh {

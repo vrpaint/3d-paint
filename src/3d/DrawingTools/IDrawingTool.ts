@@ -9,5 +9,5 @@ export interface IDrawingTool<TOptions> {
     start: () => void;
     update: (frame: IFrame) => void;
     end: () => BABYLON.Mesh[];
-    renderToolbar: ()=>any;//todo
+    renderToolbar: () => any; //todo
 }
