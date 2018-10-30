@@ -13,10 +13,8 @@ export async function setPlayerActionsOnMouse(world: World) {
     const drawingTool1 = drawingToolFactory.getDrawingTool({
         toolId: 'path',
         options: {
-            transformPath: compose(),
             tessalationInLength: 0.02,
             tessalationInRadius: 7,
-            countFrameRadius: (center: IFrame) => center.intensity / 40 + 0.01,
             material: '#ff0000',
         },
     });

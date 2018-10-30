@@ -4,18 +4,18 @@ import * as BABYLON from 'babylonjs';
 import { World } from '../../World/World';
 import { IFrame, cloneFrame } from '../../../model/IFrame';
 import { cleanVectorToBabylon } from '../../../tools/vectors';
+import { compose } from '../../../tools/compose';
 
 //todo in options there can not be a functions, just pure types
 interface IPathDrawingToolOptions {
     tessalationInLength: number;
     tessalationInRadius: number;
     structureId: string;
-    transformPath: ITranformPath; //todo this should be optional
-
-    //modifySurfacePoint(point: BABYLON.Vector3, center: DrawingPoint, tool: PathDrawingTool): BABYLON.Vector3;
-
-    countFrameRadius(center: IFrame): number;
 }
+
+//todo do not hardcode this - to IPathDrawingToolOptions
+const transformPath = compose<IFrame[]>();
+const countFrameRadius = (center: IFrame) => center.intensity / 40 + 0.01;
 
 export default class PathDrawingTool implements IDrawingTool {
     private drawing: boolean = false;
@@ -91,7 +91,7 @@ export default class PathDrawingTool implements IDrawingTool {
 
         if (this.drawing) {
             this.toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(
-                this.options.countFrameRadius(frame),
+                countFrameRadius(frame),
             );
 
             if (
@@ -188,7 +188,7 @@ export default class PathDrawingTool implements IDrawingTool {
 
         const mesh = BABYLON.MeshBuilder.CreateRibbon("ribbon", {pathArray}, this.world.scene);*/
 
-        const transformedPath = this.options.transformPath(this.drawingFrames);
+        const transformedPath = transformPath(this.drawingFrames);
 
         //todo this.options.tessalationInRadius
         const ribbonMesh = BABYLON.MeshBuilder.CreateTube(
@@ -199,7 +199,7 @@ export default class PathDrawingTool implements IDrawingTool {
                 ),
                 //radius: .05,
                 radiusFunction: (i, distance) =>
-                    this.options.countFrameRadius(transformedPath[i]),
+                    countFrameRadius(transformedPath[i]),
             },
             this.world.scene,
         );
@@ -208,7 +208,7 @@ export default class PathDrawingTool implements IDrawingTool {
 
         const sphere1Mesh = BABYLON.MeshBuilder.CreateSphere(
             'sphere',
-            { diameter: this.options.countFrameRadius(transformedPath[0]) * 2 },
+            { diameter: countFrameRadius(transformedPath[0]) * 2 },
             this.world.scene,
         );
         sphere1Mesh.position = cleanVectorToBabylon(
@@ -220,8 +220,7 @@ export default class PathDrawingTool implements IDrawingTool {
         const sphere2Mesh = BABYLON.MeshBuilder.CreateSphere(
             'sphere',
             {
-                diameter:
-                    this.options.countFrameRadius(transformedPath[last]) * 2,
+                diameter: countFrameRadius(transformedPath[last]) * 2,
             },
             this.world.scene,
         );
