@@ -17,7 +17,7 @@ interface IPathDrawingToolOptions {
 const transformPath = compose<IFrame[]>();
 const countFrameRadius = (center: IFrame) => center.intensity / 40 + 0.01;
 
-export default class PathDrawingTool implements IDrawingTool {
+export default class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
     private drawing: boolean = false;
     private currentFrame: IFrame;
 
@@ -28,7 +28,7 @@ export default class PathDrawingTool implements IDrawingTool {
 
     constructor(
         private world: World,
-        private options: IPathDrawingToolOptions,
+        public options: IPathDrawingToolOptions,
     ) {
         this.init();
     }

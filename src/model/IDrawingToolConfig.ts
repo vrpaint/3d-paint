@@ -1,6 +1,6 @@
-export interface IDrawingToolConfig {
+export interface IDrawingToolConfig<TOptions> {
     //size: number;
     //color: string;
     toolId: string;
-    options: any; //todo better
+    options: TOptions;
 }

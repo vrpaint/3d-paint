@@ -1,8 +1,11 @@
+import { ControllerVibrations } from './../../../tools/ControllerVibrations';
+import { ControlWheel } from './../../../tools/ControlWheel';
 import * as uuidv4 from 'uuid/v4';
 import * as BABYLON from 'babylonjs';
 import { World } from '../World';
 import { WHEEL_CHANGING_OPTIONS } from '../../../model/IController';
 import { babylonToCleanVector } from '../../../tools/vectors';
+import * as Color from 'color';
 
 export function controllerLoad(
     controller: BABYLON.WebVRController,
@@ -66,6 +69,57 @@ export function controllerLoad(
             drawingTool.end();
         }
     });
+
+
+
+    const controlWheel = new ControlWheel();
+    const controllerWheelVibrations = new ControllerVibrations(
+        controller,
+        0.1,
+        10,
+    );
+
+    controlWheel.values.subscribe((value) => {
+        controllerWheelVibrations.start();
+        /*switch(controllerState.wheelChanging){
+            case 'SIZE':
+                controllerState.drawingTool.size = Math.max(1,Math.min(controllerState.drawingTool.size+value,100));//todo range
+                console.log( controllerState.drawingTool.size );
+                break;
+
+            case 'COLOR_HUE':
+                let hue = Color(controllerState.drawingTool.color).hue();
+                hue+=value;
+                controllerState.drawingTool.color = Color(controllerState.drawingTool.color).hue(hue).hex().toString();
+                console.log(controllerState.drawingTool.color);
+                break;
+        }*/
+
+
+        let hue = Color(drawingTool.options.color).hue();
+        hue+=value;
+        drawingTool.options.color = Color(drawingTool.options.color).hue(hue).hex().toString();
+  
+
+
+
+    });
+
+    controller.onPadValuesChangedObservable.add((gamepadButton) => {
+        controlWheel.impulse(gamepadButton);
+    });
+
+    /*controller.onPadStateChangedObservable.add((gamepadButton) => {
+        console.log('onPadStateChangedObservable',gamepadButton);
+        if(gamepadButton.pressed){
+            const i = WHEEL_CHANGING_OPTIONS.indexOf(controllerState.wheelChanging)
+            controllerState.wheelChanging = WHEEL_CHANGING_OPTIONS[(i+1)%4];
+            console.log(controllerState.wheelChanging);
+            
+        }
+    });*/
+
+
 
 
     /*

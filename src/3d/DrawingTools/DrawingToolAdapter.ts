@@ -8,25 +8,35 @@ import { IFrame } from '../../model/IFrame';
 import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
 import PathDrawingTool from './drawingTools/PathDrawingTool';
 
-export class DrawingToolAdapter implements IDrawingTool {
+export class DrawingToolAdapter<TOptions> implements IDrawingTool<TOptions> {
     //todo TOptions is it needed?
 
-    private drawingTool: IDrawingTool;
+    private drawingTool: IDrawingTool<TOptions>;
 
     constructor(
         private world: World,
-        private drawingToolConfig: IDrawingToolConfig,
+        private drawingToolConfig: IDrawingToolConfig<TOptions>,
     ) {
         //todo create tool here with config
         //todo other tools
 
+
         this.drawingTool = new PathDrawingTool(
             world,
-            drawingToolConfig.options,
-        );
+            drawingToolConfig.options as any,
+        ) as any;
+
+
     }
 
-    private currentDrawing: null | IDrawing = null;
+    get options():TOptions{
+        return this.drawingTool.options;
+    }
+    set options(options:TOptions){
+        this.drawingTool.options =options;
+    }
+
+    private currentDrawing: null | IDrawing<TOptions> = null;
 
     start() {
         //console.log('start spy');
@@ -68,7 +78,7 @@ export class DrawingToolAdapter implements IDrawingTool {
         //todo implement
     }
 
-    async replayState(drawing: IDrawing) {
+    async replayState(drawing: IDrawing<TOptions>) {
         //for (const drawing of this.world.appState.drawings) {
 
         this.drawingTool.start();

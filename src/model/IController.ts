@@ -14,6 +14,6 @@ export const WHEEL_CHANGING_OPTIONS: TWheelChangingOptions[] = [
 export interface IController {
     id: string;
     wheelChanging: TWheelChangingOptions;
-    drawingToolConfig: IDrawingToolConfig;
+    drawingToolConfig: IDrawingToolConfig<{}>;
     currentFrame: null | IFrame;
 }
