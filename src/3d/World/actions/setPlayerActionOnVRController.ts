@@ -26,7 +26,7 @@ export function setPlayerActionOnVRController(
     const drawingTool = world.getDrawingTool(controllerId);
 
     controller.onTriggerStateChangedObservable.add((gamepadButton) => {
-        if(!focusOnToolbar){
+        if (!focusOnToolbar) {
             if (gamepadButton.value) {
                 drawingTool.start();
                 drawingTool.update({
@@ -105,7 +105,7 @@ export function setPlayerActionOnVRController(
         material.emissiveTexture = texture;
         const ctx = texture.getContext();
 
-        let r = true;//todo better naming
+        let r = true; //todo better naming
         world.scene.registerBeforeRender(async () => {
             if (drawingTool.toolbarElement && r) {
                 r = false;
@@ -113,7 +113,7 @@ export function setPlayerActionOnVRController(
 
                 controllerToolbarMesh.scaling.x = canvas.width * 0.002; //todo const
                 controllerToolbarMesh.scaling.y = canvas.height * 0.002; //todo const
-    
+
                 ctx.drawImage(
                     canvas,
                     0,
@@ -122,7 +122,6 @@ export function setPlayerActionOnVRController(
                     textureOptions.height,
                 );
                 texture.update();
-                
             }
         });
 
@@ -151,14 +150,14 @@ export function setPlayerActionOnVRController(
             world.scene,
         );
         world.materialFactory
-        .getStructure('#ff0000')
-        .then(
-            (structure) =>
-                (controllerToolbarRayPickedMesh.material = structure.babylonMaterial),
-        );
-        
-        
-        let controllerToolbarRayLastPickingInfo: BABYLON.PickingInfo|null = null;
+            .getStructure('#ff0000')
+            .then(
+                (structure) =>
+                    (controllerToolbarRayPickedMesh.material =
+                        structure.babylonMaterial),
+            );
+
+        let controllerToolbarRayLastPickingInfo: BABYLON.PickingInfo | null = null;
         controllerToolbarRayPickedMesh.visibility = 0;
         world.scene.registerBeforeRender(() => {
             const matrix = new BABYLON.Matrix(); //todo can it be as a global const
@@ -174,7 +173,8 @@ export function setPlayerActionOnVRController(
             if (pickingInfo) {
                 if (pickingInfo.pickedPoint) {
                     controllerToolbarRayPickedMesh.visibility = 1;
-                    controllerToolbarRayPickedMesh.position = pickingInfo.pickedPoint;
+                    controllerToolbarRayPickedMesh.position =
+                        pickingInfo.pickedPoint;
                     focusOnToolbar = true;
                     controllerToolbarRayLastPickingInfo = pickingInfo;
                 } else {
@@ -216,43 +216,52 @@ export function setPlayerActionOnVRController(
             },
         );
 
-        
-
         controller.onTriggerStateChangedObservable.add((gamepadButton) => {
-            if(controllerToolbarRayLastPickingInfo && focusOnToolbar && !gamepadButton.value && drawingTool.toolbarElement){
-                
+            if (
+                controllerToolbarRayLastPickingInfo &&
+                focusOnToolbar &&
+                !gamepadButton.value &&
+                drawingTool.toolbarElement
+            ) {
                 //controllerToolbarRayPickedMesh.position
                 const boundingRect = drawingTool.toolbarElement.getBoundingClientRect();
                 //const el = document.elementFromPoint(boundingRect.left+boundingRect.width/2,boundingRect.top+boundingRect.height/2);
                 //console.log('Picking from toolbar',el);
 
-
                 const textureCoords = controllerToolbarRayLastPickingInfo.getTextureCoordinates()!;
+                textureCoords.y = 1 - textureCoords.y;
 
-
-                click(boundingRect.left+boundingRect.width*textureCoords.x,boundingRect.top+boundingRect.height*textureCoords.y);
-                r=true;
-
+                click(
+                    boundingRect.left + boundingRect.width * textureCoords.x,
+                    boundingRect.top + boundingRect.height * textureCoords.y,
+                );
+                r = true;
             }
         });
     }
-
-    
 }
 
-
-function click(x:number,y:number){
-    const event = document.createEvent("MouseEvent");//todo pointer event
-    const element = document.elementFromPoint(x,y);
+function click(x: number, y: number) {
+    const event = document.createEvent('MouseEvent'); //todo pointer event
+    const element = document.elementFromPoint(x, y);
     event.initMouseEvent(
-        "click",
-        true /* bubble */, true /* cancelable */,
-        window, 0,
-        x, y, 0, 0, /* coordinates */
-        false, false, false, false, /* modifier keys */
-        0 /*left*/, null
+        'click',
+        true /* bubble */,
+        true /* cancelable */,
+        window,
+        0,
+        x,
+        y,
+        0,
+        0 /* coordinates */,
+        false,
+        false,
+        false,
+        false /* modifier keys */,
+        0 /*left*/,
+        null,
     );
-    if(element){
+    if (element) {
         element.dispatchEvent(event);
-    }//todo else
+    } //todo else
 }

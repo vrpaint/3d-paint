@@ -58,9 +58,24 @@ export default class PathDrawingTool
     renderToolbar() {
         return (
             <div>
-                <button onClick={(event) => (event.target as any).style.backgroundColor = (event.target as any).style.backgroundColor==='red'?'blue':'red'}>aa</button>
-                <button onClick={(event) => (event.target as any).style.backgroundColor = (event.target as any).style.backgroundColor==='red'?'blue':'red'}>bb</button>
-                <button onClick={(event) => (event.target as any).style.backgroundColor = (event.target as any).style.backgroundColor==='red'?'blue':'red'}>cc</button>
+                {'bcf8ec-aed9e0-9fa0c3-8b687f-7b435b'
+                    .split('-')
+                    .map((c) => `#${c}`)
+                    .map((color) => (
+                        <div
+                            key={color}
+                            style={{
+                                display: 'inline-block',
+                                width: 40,
+                                height: 40,
+                                backgroundColor: color,
+                                border: `5px solid ${
+                                    color === this.structureId ? 'black' : color
+                                }`,
+                            }}
+                            onClick={() => (this.structureId = color)}
+                        />
+                    ))}
             </div>
         );
     }

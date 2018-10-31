@@ -7,6 +7,7 @@ import { IObservableObject } from 'mobx';
 import { ISaveState } from '../../controller/saver/ISaveState';
 import { Scene } from '../Scene/Scene';
 import { World } from '../../3d/World/World';
+import { Toolbars } from '../Toolbars/Toolbars';
 
 interface IAppProps {
     appState: IAppState & IObservableObject;
@@ -23,17 +24,7 @@ export const Root = observer(({ appState, saveState, world }: IAppProps) => {
                     <div>Saved at {saveState.saved.toString()}</div>
                 )}
 
-                <div>
-                    Controllers:
-                    {world.drawingTools.map(
-                        (drawingTool, drawingToolIterator) => (
-                            <div key={drawingToolIterator}>
-                                xxx
-                                {drawingTool.renderToolbar()}
-                            </div>
-                        ),
-                    )}
-                </div>
+                <Toolbars {...{ world }} />
 
                 <div>
                     Wall contains {appState.drawings.length} drawings.
