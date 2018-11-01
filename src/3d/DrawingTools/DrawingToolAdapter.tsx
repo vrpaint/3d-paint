@@ -15,7 +15,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
 
     constructor(
         private world: World,
-        private drawingToolConfig: IDrawingToolConfig<any>,
+        drawingToolConfig: IDrawingToolConfig<any>,
     ) {
         //todo create tool here with config
         //todo other tools
@@ -41,6 +41,10 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
         this.drawingTool.structureId = structureId;
     }
 
+    get config() {
+        return this.drawingTool.config;
+    }
+
     private currentDrawing: null | IDrawing<any> = null;
 
     start() {
@@ -52,7 +56,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
         this.currentDrawing = {
             id: 'abc',
             frames: [],
-            drawingToolConfig: this.drawingToolConfig,
+            drawingToolConfig: this.config,
         };
         this.drawingTool.start();
     }
@@ -67,8 +71,11 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
 
     end(): BABYLON.Mesh[] {
         if (this.currentDrawing /*todo or drawingTool.drawing*/) {
+            //console.log('drawed',JSON.parse(JSON.stringify(this.currentDrawing)));
             //console.log('end spy');
-            this.world.appState.drawings.push(this.currentDrawing);
+            this.world.appState.drawings.push(
+                JSON.parse(JSON.stringify(this.currentDrawing)),
+            ); //todo better
             this.currentDrawing = null;
             return this.drawingTool.end();
         } else {
@@ -91,26 +98,27 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
                     if (element) this.toolbarElement = element;
                 }}
             >
-
                 <div className="field color">
-                {'bcf8ec-aed9e0-9fa0c3-8b687f-7b435b'
-                .split('-')
-                .map((c) => `#${c}`)
-                .map((color) => (
-                    <div
-                        key={color}
-                        style={{
-                            display: 'inline-block',
-                            width: 40,
-                            height: 40,
-                            backgroundColor: color,
-                            border: `5px solid ${
-                                color === this.structureId ? 'black' : color
-                            }`,
-                        }}
-                        onClick={() => (this.structureId = color)}
-                    />
-                ))}
+                    {'bcf8ec-aed9e0-9fa0c3-8b687f-7b435b'
+                        .split('-')
+                        .map((c) => `#${c}`)
+                        .map((color) => (
+                            <div
+                                key={color}
+                                style={{
+                                    display: 'inline-block',
+                                    width: 40,
+                                    height: 40,
+                                    backgroundColor: color,
+                                    border: `5px solid ${
+                                        color === this.structureId
+                                            ? 'black'
+                                            : color
+                                    }`,
+                                }}
+                                onClick={() => (this.structureId = color)}
+                            />
+                        ))}
                 </div>
 
                 {this.drawingTool.renderToolbar()}
@@ -120,6 +128,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
 
     async replayState(drawing: IDrawing<any>) {
         //for (const drawing of this.world.appState.drawings) {
+        //console.log('replayState',drawing.drawingToolConfig.structureId);
 
         this.drawingTool.start();
         for (const frame of drawing.frames) {

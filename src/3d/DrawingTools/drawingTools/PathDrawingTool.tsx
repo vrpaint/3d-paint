@@ -16,14 +16,12 @@ interface IPathDrawingToolOptions {
 }
 
 export const PathDrawingToolDefaultOptions = {
-    sizeMin: 1/100,
-    sizeMax: 1/40,
+    sizeMin: 1 / 100,
+    sizeMax: 1 / 40,
     tessalationInLength: 0.02,
     tessalationInRadius: 7,
-}
-
-export class PathDrawingTool
-    implements IDrawingTool<IPathDrawingToolOptions> {
+};
+export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
     private drawing: boolean = false;
     private currentFrame: IFrame;
 
@@ -42,23 +40,27 @@ export class PathDrawingTool
     }
 
     private async init() {
-        //super(world);
         this.toolMesh = this.createToolMesh();
         this.toolMesh.scaling = BABYLON.Vector3.Zero();
     }
 
-    //todo to Adapter
     get structureId(): string {
         return this._structureId;
     }
     set structureId(structureId: string) {
         this._structureId = structureId;
-        this.world.materialFactory
-            .getStructure(structureId)
-            .then(
-                (structure) =>
-                    (this.toolMesh.material = structure.babylonMaterial),
-            );
+        this.world.materialFactory.applyStructureOnMesh(
+            structureId,
+            this.toolMesh,
+        );
+    }
+
+    get config() {
+        return {
+            toolId: 'path',
+            structureId: this.structureId,
+            options: this.options,
+        };
     }
 
     /*
@@ -67,33 +69,36 @@ export class PathDrawingTool
         return compose<IFrame[]>(...x);
     }
     */
-    private countFrameRadius(center: IFrame):number{
-        return center.intensity * (this.options.sizeMax-this.options.sizeMin) + this.options.sizeMin;
+    private countFrameRadius(center: IFrame): number {
+        return (
+            center.intensity * (this.options.sizeMax - this.options.sizeMin) +
+            this.options.sizeMin
+        );
     }
 
     renderToolbar() {
         return (
             <div>
                 <div className="field size">
-                {[1/100,1/60,1/40,1/20,1/10]
-                    .map((size) => (
+                    {[1 / 100, 1 / 60, 1 / 40, 1 / 20, 1 / 10].map((size) => (
                         <div
                             key={size}
                             style={{
                                 display: 'inline-block',
-                                width: size*400,
-                                height: size*400,
+                                width: size * 400,
+                                height: size * 400,
                                 borderRadius: 400,
                                 margin: 2,
                                 backgroundColor: 'black',
                                 border: `5px solid ${
-                                    size === this.options.sizeMax ? 'red' : 'black'
+                                    size === this.options.sizeMax
+                                        ? 'red'
+                                        : 'black'
                                 }`,
                             }}
                             onClick={() => (this.options.sizeMax = size)}
                         />
                     ))}
-
                 </div>
             </div>
         );
@@ -245,7 +250,7 @@ export class PathDrawingTool
 
         const mesh = BABYLON.MeshBuilder.CreateRibbon("ribbon", {pathArray}, this.world.scene);*/
 
-        const transformedPath = this.drawingFrames;//transformPath(this.drawingFrames);
+        const transformedPath = this.drawingFrames; //transformPath(this.drawingFrames);
 
         //todo this.options.tessalationInRadius
         const ribbonMesh = BABYLON.MeshBuilder.CreateTube(
@@ -261,7 +266,10 @@ export class PathDrawingTool
             this.world.scene,
         );
 
-        ribbonMesh.material = this.toolMesh.material; //todo better
+        this.world.materialFactory.applyStructureOnMesh(
+            this.structureId,
+            ribbonMesh,
+        );
 
         const sphere1Mesh = BABYLON.MeshBuilder.CreateSphere(
             'sphere',
@@ -271,7 +279,10 @@ export class PathDrawingTool
         sphere1Mesh.position = cleanVectorToBabylon(
             transformedPath[0].position,
         );
-        sphere1Mesh.material = this.toolMesh.material; //todo better
+        this.world.materialFactory.applyStructureOnMesh(
+            this.structureId,
+            sphere1Mesh,
+        );
 
         const last = transformedPath.length - 1;
         const sphere2Mesh = BABYLON.MeshBuilder.CreateSphere(
@@ -284,7 +295,10 @@ export class PathDrawingTool
         sphere2Mesh.position = cleanVectorToBabylon(
             transformedPath[last].position,
         );
-        sphere2Mesh.material = this.toolMesh.material; //todo better
+        this.world.materialFactory.applyStructureOnMesh(
+            this.structureId,
+            sphere2Mesh,
+        );
 
         return [ribbonMesh, sphere1Mesh, sphere2Mesh];
     }

@@ -194,6 +194,11 @@ export class MaterialFactory {
             return structure;
         }
     }
+
+    async applyStructureOnMesh(structureId: string, mesh: BABYLON.Mesh) {
+        const structure = await this.getStructure(structureId);
+        mesh.material = structure.babylonMaterial;
+    }
 }
 
 function parseTextureConfig(

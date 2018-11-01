@@ -11,17 +11,20 @@ export class DrawingToolFactory {
     getDrawingTool(
         drawingToolConfig: IDrawingToolConfig<any>,
     ): DrawingToolAdapter {
+        if (drawingToolConfig.toolId === 'path') {
+            drawingToolConfig.options = Object.assign(
+                {},
+                PathDrawingToolDefaultOptions,
+                drawingToolConfig.options,
+            );
+            drawingToolConfig.structureId = drawingToolConfig.structureId;
 
+            //console.log('creating tool',JSON.parse(JSON.stringify(drawingToolConfig)));
 
-        if(drawingToolConfig.toolId==='path'){
-
-            drawingToolConfig.options = Object.assign({},PathDrawingToolDefaultOptions,drawingToolConfig.options);
             return new DrawingToolAdapter(this.world, drawingToolConfig);
-
-        }else{
+        } else {
             throw new Error(`Not path`);
         }
-
     }
 
     replayState() {
