@@ -9,18 +9,25 @@ export function saveAppStateAfterChange(
     appState: IAppState & IObservableObject,
 ): ISaveState & IObservableObject {
     const saveState: ISaveState & IObservableObject = observable({
-        saved: null,
+        saved: true,
     });
+
+
+    const save = debounce(() => {
+        localStorage.setItem(
+            LOCALSTORAGE_SAVE_KEY,
+            JSON.stringify(appState),
+        );
+        saveState.saved = true;
+    }, 5000);
+
 
     observeDeep(
         appState,
-        debounce(() => {
-            localStorage.setItem(
-                LOCALSTORAGE_SAVE_KEY,
-                JSON.stringify(appState),
-            );
-            saveState.saved = new Date();
-        }, 500),
+        ()=>{
+            saveState.saved = false;
+            save();
+        },
     );
 
     return saveState;

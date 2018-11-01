@@ -34,6 +34,7 @@ export const Toolbars = observer(
                     {this.props.world.drawingTools.map(
                         (drawingTool, drawingToolIterator) => (
                             <div
+                                draggable
                                 className="Toolbar"
                                 key={drawingToolIterator}
                                 onClick={() => this.newVersion()}

@@ -1,3 +1,3 @@
 export interface ISaveState {
-    saved: Date | null;
+    saved: boolean;
 }

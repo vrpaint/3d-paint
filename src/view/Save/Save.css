@@ -1,0 +1,10 @@
+.Save{
+    z-index: 20;
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    pointer-events: none;
+    color: white;
+    text-shadow: black 0 0 5px; 
+}
