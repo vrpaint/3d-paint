@@ -9,10 +9,15 @@ interface ISaveProps {
 }
 
 export const Save = observer(({ saveState }: ISaveProps) => {
+    if (!saveState.saved) {
+        window.onbeforeunload = () =>
+            'Your drawing is currently saving, do you want to loose changes?';
+    } else {
+        window.onbeforeunload = null;
+    }
+
     return (
-        <div className="Save">
-                {saveState.saved ? 'Saved' : 'Saving'}
-        </div>
+        <div className="Save">{saveState.saved ? 'Saved' : 'Saving'}</div>
         //todo spinning wheel
     );
 });

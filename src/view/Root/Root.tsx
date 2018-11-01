@@ -19,10 +19,10 @@ interface IAppProps {
 export const Root = observer(({ appState, saveState, world }: IAppProps) => {
     return (
         <div className="Root">
-            <Menu  {...{ appState,world }} />
+            <Menu {...{ appState, world }} />
             <Toolbars {...{ world }} />
             <Scene {...{ world }} />
-            <Save {...{ saveState }}/>
+            <Save {...{ saveState }} />
         </div>
     );
 });

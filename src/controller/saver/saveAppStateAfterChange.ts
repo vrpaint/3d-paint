@@ -12,23 +12,15 @@ export function saveAppStateAfterChange(
         saved: true,
     });
 
-
     const save = debounce(() => {
-        localStorage.setItem(
-            LOCALSTORAGE_SAVE_KEY,
-            JSON.stringify(appState),
-        );
+        localStorage.setItem(LOCALSTORAGE_SAVE_KEY, JSON.stringify(appState));
         saveState.saved = true;
-    }, 5000);
+    }, 1000);
 
-
-    observeDeep(
-        appState,
-        ()=>{
-            saveState.saved = false;
-            save();
-        },
-    );
+    observeDeep(appState, () => {
+        saveState.saved = false;
+        save();
+    });
 
     return saveState;
 }
