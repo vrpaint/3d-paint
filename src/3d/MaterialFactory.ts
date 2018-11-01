@@ -1,3 +1,4 @@
+import { CacheAsyncSource } from './../tools/CacheAsyncSource';
 //import * as superagent from 'superagent';
 import * as BABYLON from 'babylonjs';
 import { IStructure } from './IStructure';
@@ -16,11 +17,7 @@ soundSettings
 
 //todo rename to StructuresFactory
 export class MaterialFactory {
-    private _structuresCache: IStructure[];
-
-    constructor(private world: World) {
-        this._structuresCache = [];
-    }
+    constructor(private world: World) {}
 
     /*getStructureSync(materialId: string): IStructure {
 
@@ -183,16 +180,15 @@ export class MaterialFactory {
         };
     }
 
-    async getStructure(structureId: string): Promise<IStructure> {
-        const cashedMaterial: IStructure | null = null; //this._structuresCache.find((material) => material.id === materialId) || null;
-
-        if (cashedMaterial) {
-            return cashedMaterial;
-        } else {
-            const structure = await this.createStructure(structureId);
-            this._structuresCache.push(structure);
-            return structure;
+    private cache: CacheAsyncSource<
+        string,
+        IStructure
+    > = new CacheAsyncSource();
+    getStructure(structureId: string): Promise<IStructure> {
+        if (!this.cache.hasItem(structureId)) {
+            this.cache.setItem(structureId, this.createStructure(structureId));
         }
+        return this.cache.getItem(structureId) as Promise<IStructure>;
     }
 
     async applyStructureOnMesh(structureId: string, mesh: BABYLON.Mesh) {
