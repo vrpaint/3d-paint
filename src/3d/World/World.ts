@@ -111,10 +111,7 @@ export class World {
         const drawingTool = this.drawingToolFactory.getDrawingTool({
             toolId: 'path',
             structureId: '#00ff00',
-            options: {
-                tessalationInLength: 0.02,
-                tessalationInRadius: 7,
-            },
+            options: {},
         });
         this.drawingTools.push(drawingTool);
         return drawingTool;

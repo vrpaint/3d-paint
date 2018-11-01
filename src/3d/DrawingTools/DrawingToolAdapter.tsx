@@ -5,7 +5,7 @@ import * as BABYLON from 'babylonjs';
 import { IDrawing } from '../../model/IDrawing';
 import { IFrame } from '../../model/IFrame';
 import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
-import PathDrawingTool from './drawingTools/PathDrawingTool';
+import { PathDrawingTool } from './drawingTools/PathDrawingTool';
 import './DrawingToolAdapter.css';
 
 export class DrawingToolAdapter implements IDrawingTool<any> {
@@ -91,6 +91,28 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
                     if (element) this.toolbarElement = element;
                 }}
             >
+
+                <div className="field color">
+                {'bcf8ec-aed9e0-9fa0c3-8b687f-7b435b'
+                .split('-')
+                .map((c) => `#${c}`)
+                .map((color) => (
+                    <div
+                        key={color}
+                        style={{
+                            display: 'inline-block',
+                            width: 40,
+                            height: 40,
+                            backgroundColor: color,
+                            border: `5px solid ${
+                                color === this.structureId ? 'black' : color
+                            }`,
+                        }}
+                        onClick={() => (this.structureId = color)}
+                    />
+                ))}
+                </div>
+
                 {this.drawingTool.renderToolbar()}
             </div>
         );

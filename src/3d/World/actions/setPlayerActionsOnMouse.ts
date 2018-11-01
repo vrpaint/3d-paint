@@ -30,7 +30,7 @@ export async function setPlayerActionsOnMouse(world: World) {
         rotation: babylonToCleanVector(
             BABYLON.Vector3.Zero() /*todo real rotation*/,
         ),
-        intensity: 0.5,
+        intensity: 1,
     });
 
     /*new DrawingPoint(

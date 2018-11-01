@@ -14,7 +14,7 @@ interface IGridDrawingToolOptions {
     material: BABYLON.Material; //todo here should be structure
 }
 
-export default class GridDrawingTool implements IDrawingTool {
+export class GridDrawingTool implements IDrawingTool {
     public lastGridFrame: IFrame;
 
     constructor(world: World, public options: IGridDrawingToolOptions) {

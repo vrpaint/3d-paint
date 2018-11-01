@@ -24,8 +24,6 @@ export const Root = observer(({ appState, saveState, world }: IAppProps) => {
                     <div>Saved at {saveState.saved.toString()}</div>
                 )}
 
-                <Toolbars {...{ world }} />
-
                 <div>
                     Wall contains {appState.drawings.length} drawings.
                     <button
@@ -46,6 +44,7 @@ export const Root = observer(({ appState, saveState, world }: IAppProps) => {
                 </div>
             </div>
 
+            <Toolbars {...{ world }} />
             <Scene {...{ world }} />
         </div>
     );

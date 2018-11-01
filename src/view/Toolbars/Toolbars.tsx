@@ -31,10 +31,10 @@ export const Toolbars = observer(
         render() {
             return (
                 <div className="Toolbars">
-                    Controllers:
                     {this.props.world.drawingTools.map(
                         (drawingTool, drawingToolIterator) => (
                             <div
+                                className="Toolbar"
                                 key={drawingToolIterator}
                                 onClick={() => this.newVersion()}
                             >

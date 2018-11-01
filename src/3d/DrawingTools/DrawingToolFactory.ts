@@ -1,3 +1,4 @@
+import { PathDrawingToolDefaultOptions } from './drawingTools/PathDrawingTool';
 import { DrawingToolAdapter } from './DrawingToolAdapter';
 import { World } from '../World/World';
 import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
@@ -10,7 +11,17 @@ export class DrawingToolFactory {
     getDrawingTool(
         drawingToolConfig: IDrawingToolConfig<any>,
     ): DrawingToolAdapter {
-        return new DrawingToolAdapter(this.world, drawingToolConfig);
+
+
+        if(drawingToolConfig.toolId==='path'){
+
+            drawingToolConfig.options = Object.assign({},PathDrawingToolDefaultOptions,drawingToolConfig.options);
+            return new DrawingToolAdapter(this.world, drawingToolConfig);
+
+        }else{
+            throw new Error(`Not path`);
+        }
+
     }
 
     replayState() {
