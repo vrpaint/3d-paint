@@ -14,6 +14,7 @@ export function setPlayerActionOnVRController(
 ) {
     let controllerPressed = false;
     let focusOnToolbar = false;
+    let toolbarToggled = false;
 
     const controllerId = uuidv4();
     console.log(
@@ -24,6 +25,7 @@ export function setPlayerActionOnVRController(
     );
 
     const drawingTool = world.getDrawingTool(controllerId);
+
 
 
     controller.onMainButtonStateChangedObservable.add((gamepadButton) => {
@@ -46,7 +48,7 @@ export function setPlayerActionOnVRController(
 
     controller.onTriggerStateChangedObservable.add((gamepadButton) => {
         if (!focusOnToolbar) {
-            if (gamepadButton.value) {
+            if (gamepadButton.value>.1) {
                 drawingTool.start();
                 drawingTool.update({
                     time: new Date().getTime() /*todo better*/,
@@ -97,6 +99,8 @@ export function setPlayerActionOnVRController(
     controller.onPadValuesChangedObservable.add((gamepadButton) => {
         controlWheel.impulse(gamepadButton);
     });
+
+
 
     {
         //Toolbar
@@ -179,26 +183,28 @@ export function setPlayerActionOnVRController(
         let controllerToolbarRayLastPickingInfo: BABYLON.PickingInfo | null = null;
         controllerToolbarRayPickedMesh.visibility = 0;
         world.scene.registerBeforeRender(() => {
-            const matrix = new BABYLON.Matrix(); //todo can it be as a global const
-            controller.deviceRotationQuaternion.toRotationMatrix(matrix);
-            controllerToolbarRay.direction = BABYLON.Vector3.TransformCoordinates(
-                CONTROLLER_SPRAY_DIRECTION,
-                matrix,
-            );
-            const pickingInfo = world.scene.pickWithRay(
-                controllerToolbarRay,
-                (mesh) => mesh === controllerToolbarMesh,
-            );
-            if (pickingInfo) {
-                if (pickingInfo.pickedPoint) {
-                    controllerToolbarRayPickedMesh.visibility = 1;
-                    controllerToolbarRayPickedMesh.position =
+            if(toolbarToggled){
+                const matrix = new BABYLON.Matrix(); //todo can it be as a global const
+                controller.deviceRotationQuaternion.toRotationMatrix(matrix);
+                controllerToolbarRay.direction = BABYLON.Vector3.TransformCoordinates(
+                    CONTROLLER_SPRAY_DIRECTION,
+                    matrix,
+                );
+                const pickingInfo = world.scene.pickWithRay(
+                    controllerToolbarRay,
+                    (mesh) => mesh === controllerToolbarMesh,
+                );
+                if (pickingInfo) {
+                    if (pickingInfo.pickedPoint) {
+                        controllerToolbarRayPickedMesh.visibility = 1;
+                        controllerToolbarRayPickedMesh.position =
                         pickingInfo.pickedPoint;
-                    focusOnToolbar = true;
-                    controllerToolbarRayLastPickingInfo = pickingInfo;
-                } else {
-                    controllerToolbarRayPickedMesh.visibility = 0;
-                    focusOnToolbar = false;
+                        focusOnToolbar = true;
+                        controllerToolbarRayLastPickingInfo = pickingInfo;
+                    } else {
+                        controllerToolbarRayPickedMesh.visibility = 0;
+                        focusOnToolbar = false;
+                    }
                 }
             }
         });
@@ -210,9 +216,15 @@ export function setPlayerActionOnVRController(
                     gamepadButton,
                 );
                 if (gamepadButton.value) {
-                    controllerToolbarMesh.visibility = controllerToolbarMesh.visibility
-                        ? 0
-                        : 1;
+
+                    toolbarToggled = !toolbarToggled;
+                    if(!toolbarToggled){
+                        focusOnToolbar = false;
+                        controllerToolbarRayPickedMesh.visibility = 0;
+                    }
+                    controllerToolbarMesh.visibility = toolbarToggled
+                        ? 1
+                        : 0;
                     if (controllerToolbarMesh.visibility) {
                         controllerToolbarMesh.position = controller.devicePosition.clone();
 
