@@ -2,7 +2,7 @@
   "name": "3d-project",
   "version": "0.1.0",
   "private": false,
-  "homepage": "./",
+  "homepage": "https://vrpaint.github.io/3d-paint/",
   "dependencies": {
     "@types/html2canvas": "0.0.35",
     "babylonjs": "^3.3.0",
