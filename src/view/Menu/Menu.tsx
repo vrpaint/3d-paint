@@ -4,6 +4,8 @@ import { observer } from 'mobx-react';
 import { IAppState } from '../../model/IAppState';
 import { IObservableObject } from 'mobx';
 import { World } from '../../3d/World/World';
+import * as downloadjs from 'downloadjs';
+import { normalize } from '../../tools/normalize';
 
 interface IMenuProps {
     appState: IAppState & IObservableObject;
@@ -41,10 +43,11 @@ export const Menu = observer(({ appState, world }: IMenuProps) => {
             </ul>
 
             <ul className="export">
-                <li onClick={() => {}}>Export to .json</li>
-                <li onClick={() => world.export()}>Export to .glb</li>
-                <li onClick={() => {}}>Export to .stl</li>
-                <li onClick={() => {}}>Export to .png</li>
+                {['json','glb'].map((format)=>(
+                    <li onClick={async () => downloadjs(await world.export(format as any),`${normalize(appState.name)}.${format}`)}>Export to .{format}</li>
+                ))}
+
+                
             </ul>
         </div>
     );

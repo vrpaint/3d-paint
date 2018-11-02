@@ -1,6 +1,5 @@
 import { DrawingToolAdapter } from './../DrawingTools/DrawingToolAdapter';
 import { DrawingToolFactory } from './../DrawingTools/DrawingToolFactory';
-import { CanvasParticlesRenderer as WallRenderer } from 'touchcontroller';
 import { IObservableObject } from 'mobx';
 import { IAppState } from './../../model/IAppState';
 import { MaterialFactory } from './../MaterialFactory';
@@ -8,10 +7,9 @@ import * as BABYLON from 'babylonjs';
 import 'babylonjs-serializers';
 import { createScene } from './createScene';
 import { createLights } from './createLights';
-import { createGround } from './createGround';
+//import { createGround } from './createGround';
 import { createSkybox } from './createSkybox';
 import { setPlayerActionOnVRController } from './actions/setPlayerActionOnVRController';
-import * as downloadjs from 'downloadjs';
 import { Key } from 'ts-keycode-enum';
 import { setPlayerActionsOnMouse } from './actions/setPlayerActionsOnMouse';
 
@@ -143,37 +141,31 @@ export class World {
     }
 
     //todo file
-    async export() {
-        console.groupCollapsed('Exporting');
+    async export(format: 'json'|'glb'):Promise<Blob|string> {
+        
+        //console.groupCollapsed('Exporting');
+        switch(format){
 
-        const options = {
-            shouldExportTransformNode: (transformNode: BABYLON.Node) => {
-                const shouldExport = transformNode.name.includes(
-                    'world-export',
+            case 'json':
+                return JSON.stringify(this.appState,null,4);
+            case 'glb':
+                const options = {
+                    shouldExportTransformNode: (transformNode: BABYLON.Node) => {
+                        const shouldExport = transformNode.name.includes(
+                            'world-export',
+                        );
+                        return shouldExport;
+                    },
+                    exportWithoutWaitingForScene: false,
+                };
+
+                const glb = await BABYLON.GLTF2Export.GLBAsync(
+                    this.scene,
+                    'model',
+                    options,
                 );
-                //transformNode !== this.skyboxMesh &&
-                //transformNode !== this.groundMesh &&
-                //transformNode.name !== 'ViveWand';
-                console.log(
-                    shouldExport ? 'Exporting' : 'Not exporting',
-                    transformNode,
-                );
-                return shouldExport;
-            },
-            exportWithoutWaitingForScene: false,
-        };
+                return glb.glTFFiles['model.glb' /*todo via keys*/];
 
-        const glb = await BABYLON.GLTF2Export.GLBAsync(
-            this.scene,
-            'model',
-            options,
-        );
-
-        //glb.downloadFiles();
-
-        console.log(glb);
-        downloadjs(glb.glTFFiles['model.glb' /*todo via keys*/], 'model.glb');
-
-        console.groupEnd();
+        } 
     }
 }
