@@ -62,12 +62,27 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
         this.drawingTool.start();
     }
     update(frame: IFrame) {
+
+    
         //todo maybe save in every frame or debounce
         if (this.currentDrawing /*todo or drawingTool.drawing*/) {
+
+         
+
+
             //console.log('update spy');
             this.currentDrawing.frames.push(frame);
         }
         this.drawingTool.update(frame);
+
+
+        //todo is it needed?
+        if(this.currentDrawing && this.currentDrawing.frames.length>50){
+            console.log(`Splitting into more chunks.`);
+            this.end();
+            this.start();
+            this.update(frame);
+        }
     }
 
     //private drawedIds: string[] = [];
@@ -161,6 +176,12 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
             id: drawing.id,
             meshes:  this.drawingTool.end()
         });
+       
         //}
+    }
+
+    dispose(){
+        this.drawingTool.dispose();
+        //todo is it all?
     }
 }

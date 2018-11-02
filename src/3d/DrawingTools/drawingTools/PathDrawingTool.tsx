@@ -117,6 +117,9 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
     }
 
     end() {
+        /*if(this.drawingFrames.length<10){
+            console.warn(`There were too few frames to preserve drawing. Min amount is 10.`);
+        }*/
         this.drawing = false;
         return this.drawingMeshes;
         //console.log('Drawed ', this.drawingMesh);
@@ -273,7 +276,7 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
         );
 
         const sphere1Mesh = BABYLON.MeshBuilder.CreateSphere(
-            'sphere',
+            this.world.getNameForMesh(),
             { diameter: this.countFrameRadius(transformedPath[0]) * 2 },
             this.world.scene,
         );
@@ -287,7 +290,7 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
 
         const last = transformedPath.length - 1;
         const sphere2Mesh = BABYLON.MeshBuilder.CreateSphere(
-            'sphere',
+            this.world.getNameForMesh(),
             {
                 diameter: this.countFrameRadius(transformedPath[last]) * 2,
             },
@@ -302,5 +305,10 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
         );
 
         return [ribbonMesh, sphere1Mesh, sphere2Mesh];
+    }
+
+    dispose(){
+        this.toolMesh.dispose();
+        //todo is it all?
     }
 }

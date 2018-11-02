@@ -27,9 +27,11 @@ export class DrawingToolFactory {
         }
     }
 
-    replayState() {
+    async replayState() {
         for (const drawing of this.world.appState.drawings) {
-            this.getDrawingTool(drawing.drawingToolConfig).replayState(drawing);
+            const drawingTool = this.getDrawingTool(drawing.drawingToolConfig);
+            await drawingTool.replayState(drawing)
+            drawingTool.dispose();
         }
     }
 }

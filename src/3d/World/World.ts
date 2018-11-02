@@ -145,12 +145,22 @@ export class World {
     public drawingsMeshes: {id:string,meshes: BABYLON.Mesh[]}[] = [];
 
     clean(){
+
+        //todo which implementation is better?
+        for(const mesh of this.scene.meshes.filter((mesh)=>mesh.name.includes(
+            'world-export',
+        ))){
+            mesh.dispose();
+        }
+        
+        /*
         //console.log(`Cleaning`,this.drawingsMeshes);
         for(const drawingMeshes of this.drawingsMeshes){
             for(const mesh of drawingMeshes.meshes){
                 mesh.dispose();
             }
-    }
+        
+    }*/
     }
     /*registerDrawingMeshes(id: string, meshes: BABYLON.Mesh){
         this.drawingMeshes.push({id,meshes});
