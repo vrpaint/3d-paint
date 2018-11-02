@@ -12,7 +12,13 @@ export function setPlayerActionOnVRController(
     controller: BABYLON.WebVRController,
     world: World,
 ) {
-    let controllerPressed = false;
+
+
+    const focusOnToolbarVibrations = new ControllerVibrations(
+        controller,
+        0.5,
+        10,
+    );
     let focusOnToolbar = false;
     let toolbarToggled = false;
 
@@ -71,41 +77,29 @@ export function setPlayerActionOnVRController(
         }
     });
 
-    const controlWheel = new ControlWheel();
-    const controllerWheelVibrations = new ControllerVibrations(
-        controller,
-        0.1,
-        10,
-    );
+    /*{
+        const controlWheel = new ControlWheel();
+        const controllerWheelVibrations = new ControllerVibrations(
+            controller,
+            0.1,
+            10,
+        );
 
-    controlWheel.values.subscribe((value) => {
-        controllerWheelVibrations.start();
-        /*switch(controllerState.wheelChanging){
-            case 'SIZE':
-                controllerState.drawingTool.size = Math.max(1,Math.min(controllerState.drawingTool.size+value,100));//todo range
-                console.log( controllerState.drawingTool.size );
-                break;
+        controlWheel.values.subscribe((value) => {
+            controllerWheelVibrations.start();
+            let hue = Color(drawingTool.options.material).hue();
+            hue += value;
+            drawingTool.options.color = Color(drawingTool.options.material)
+                .hue(hue)
+                .hex()
+                .toString();
+            console.log(drawingTool.options.material);
+        });
 
-            case 'COLOR_HUE':
-                let hue = Color(controllerState.drawingTool.color).hue();
-                hue+=value;
-                controllerState.drawingTool.color = Color(controllerState.drawingTool.color).hue(hue).hex().toString();
-                console.log(controllerState.drawingTool.color);
-                break;
-        }*/
-
-        let hue = Color(drawingTool.options.material).hue();
-        hue += value;
-        drawingTool.options.color = Color(drawingTool.options.material)
-            .hue(hue)
-            .hex()
-            .toString();
-        console.log(drawingTool.options.material);
-    });
-
-    controller.onPadValuesChangedObservable.add((gamepadButton) => {
-        controlWheel.impulse(gamepadButton);
-    });
+        controller.onPadValuesChangedObservable.add((gamepadButton) => {
+            controlWheel.impulse(gamepadButton);
+        });
+    }*/
 
 
 
@@ -206,10 +200,12 @@ export function setPlayerActionOnVRController(
                         controllerToolbarRayPickedMesh.visibility = 1;
                         controllerToolbarRayPickedMesh.position =
                         pickingInfo.pickedPoint;
+                        if(!focusOnToolbar)focusOnToolbarVibrations.start();
                         focusOnToolbar = true;
                         controllerToolbarRayLastPickingInfo = pickingInfo;
                     } else {
                         controllerToolbarRayPickedMesh.visibility = 0;
+                        if(focusOnToolbar)focusOnToolbarVibrations.start();
                         focusOnToolbar = false;
                     }
                 }

@@ -151,11 +151,12 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
         this.toolMesh.position = cleanVectorToBabylon(frame.position);
         this.toolMesh.rotation = cleanVectorToBabylon(frame.rotation);
 
-        if (this.drawing) {
-            this.toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(
-                this.countFrameRadius(frame),
-            );
+        this.toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(
+            this.countFrameRadius(frame),
+        );
 
+
+        if (this.drawing) {
             if (
                 this.drawingFrames.length === 0 ||
                 true
