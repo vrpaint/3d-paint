@@ -7,11 +7,29 @@
     top: 0;
     left: 0;
     margin:10px;
-    padding:10px;
+    padding:0;
+    border: 2px solid #ccc;
 }
 
 
+.Menu ul{
+    list-style: none;
+    padding: 0;
+    margin:0;
+}
 
+.Menu ul li{
+    padding: 5px;
+    cursor: pointer;
+}
+
+.Menu ul li:hover{
+    background-color: rgba(204, 204, 204, 0.568);
+}
+
+.Menu ul.export{
+    border-top: 2px solid #ccc;
+}
 /*
 .Name textarea{
     width: 100%;
