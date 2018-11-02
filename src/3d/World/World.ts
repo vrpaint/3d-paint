@@ -143,6 +143,15 @@ export class World {
 
     //todo make public API
     public drawingsMeshes: {id:string,meshes: BABYLON.Mesh[]}[] = [];
+
+    clean(){
+        //console.log(`Cleaning`,this.drawingsMeshes);
+        for(const drawingMeshes of this.drawingsMeshes){
+            for(const mesh of drawingMeshes.meshes){
+                mesh.dispose();
+            }
+    }
+    }
     /*registerDrawingMeshes(id: string, meshes: BABYLON.Mesh){
         this.drawingMeshes.push({id,meshes});
     }

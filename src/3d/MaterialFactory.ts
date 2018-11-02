@@ -191,9 +191,17 @@ export class MaterialFactory {
         return this.cache.getItem(structureId) as Promise<IStructure>;
     }
 
+    getCashedStructureSync(structureId: string): IStructure|null {
+        return this.cache.getCashedItemSync(structureId);
+    }
+
     async applyStructureOnMesh(structureId: string, mesh: BABYLON.Mesh) {
-        const structure = await this.getStructure(structureId);
-        mesh.material = structure.babylonMaterial;
+        const structureSync = this.getCashedStructureSync(structureId);
+        if(structureSync){
+            mesh.material = structureSync.babylonMaterial;
+        }else{
+            mesh.material = (await this.getStructure(structureId)).babylonMaterial;
+        }
     }
 }
 

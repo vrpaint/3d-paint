@@ -34,6 +34,7 @@ export const Menu = observer(({ appState, world }: IMenuProps) => {
                 <li
                     onClick={() => {
                         if (confirm('Are you sure?')) {
+                            world.clean();
                             appState.drawings = [];
                         }
                     }}
