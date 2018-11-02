@@ -8,6 +8,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
 import { PathDrawingTool } from './drawingTools/PathDrawingTool';
 import './DrawingToolAdapter.css';
+import { TOOL_STRUCTURES } from '../../config';
 
 export class DrawingToolAdapter implements IDrawingTool<any> {
     //todo TOptions is it needed?
@@ -136,9 +137,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
                 }}
             >
                 <div className="field color">
-                    {'bcf8ec-aed9e0-9fa0c3-8b687f-7b435b'
-                        .split('-')
-                        .map((c) => `#${c}`)
+                    {TOOL_STRUCTURES
                         .map((color) => (
                             <div
                                 key={color}

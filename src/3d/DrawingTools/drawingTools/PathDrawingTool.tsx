@@ -4,6 +4,7 @@ import * as BABYLON from 'babylonjs';
 import { World } from '../../World/World';
 import { IFrame, cloneFrame } from '../../../model/IFrame';
 import { cleanVectorToBabylon } from '../../../tools/vectors';
+import { TOOL_PATH_SIZES } from '../../../config';
 
 //todo split options into real and quality
 //todo default values
@@ -80,7 +81,7 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
         return (
             <div>
                 <div className="field size">
-                    {[1 / 100, 1 / 60, 1 / 40, 1 / 20, 1 / 10].map((size) => (
+                    {TOOL_PATH_SIZES.map((size) => (
                         <div
                             key={size}
                             style={{
@@ -89,12 +90,10 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
                                 height: size * 400,
                                 borderRadius: 400,
                                 margin: 2,
-                                backgroundColor: 'black',
-                                border: `5px solid ${
-                                    size === this.options.sizeMax
-                                        ? 'red'
-                                        : 'black'
-                                }`,
+                                backgroundColor: size === this.options.sizeMax
+                                ? 'white'
+                                : 'black',
+                                border: `3px solid black`,
                             }}
                             onClick={() => (this.options.sizeMax = size)}
                         />
@@ -190,70 +189,6 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
     }
 
     private createDrawingMesh(): BABYLON.Mesh[] {
-        /*const pathArray: BABYLON.Vector3[][] = this.options.transformPath(this.drawingPath).map((drawingPoint) => {
-
-
-            const radius = this.options.countPointRadius(drawingPoint);
-
-
-            const layer = [];
-
-
-            for (let i = 0; i <= this.options.tessalationInRadius + 1; i++) {
-
-
-                const rotation = i / this.options.tessalationInRadius * Math.PI * 2;
-
-
-
-
-
-
-
-                const surfaceFlatPoint = new BABYLON.Vector2(
-                    Math.cos(rotation) * radius,
-                    Math.sin(rotation) * radius
-                );
-
-
-
-
-                const surfaceVector = new BABYLON.Vector2(
-                    Math.cos(rotation),
-                    Math.sin(rotation)
-                );
-
-
-
-                //surfaceFlatPoint.
-
-
-
-
-
-
-
-
-
-
-
-                layer.push(this.options.modifySurfacePoint(new BABYLON.Vector3(
-                    Math.cos(rotation) * radius,
-                    0,
-                    Math.sin(rotation) * radius,
-                ).addInPlace(drawingPoint.position), drawingPoint, this));
-
-
-            }
-
-            return layer;
-
-
-        });
-
-
-        const mesh = BABYLON.MeshBuilder.CreateRibbon("ribbon", {pathArray}, this.world.scene);*/
-
         const transformedPath = this.drawingFrames; //transformPath(this.drawingFrames);
 
         //todo this.options.tessalationInRadius
