@@ -118,7 +118,7 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
 
     end() {
         this.drawing = false;
-        return []; //todo
+        return this.drawingMeshes;
         //console.log('Drawed ', this.drawingMesh);
     }
 

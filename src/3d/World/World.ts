@@ -136,11 +136,25 @@ export class World {
         this.scene.dispose(); //todo is it all?
     }
 
+    //todo deprecated
     getNameForMesh(label?: string): string {
         return `${label}-world-export`; //todo uuid of world
     }
 
-    //todo file
+    //todo make public API
+    public drawingsMeshes: {id:string,meshes: BABYLON.Mesh[]}[] = [];
+    /*registerDrawingMeshes(id: string, meshes: BABYLON.Mesh){
+        this.drawingMeshes.push({id,meshes});
+    }
+
+    getDrawingMeshes(id?:string){
+        if(id){
+            return 
+        }else{
+
+        }
+    }*/
+
     async export(format: 'json'|'glb'):Promise<Blob|string> {
         
         //console.groupCollapsed('Exporting');

@@ -44,7 +44,7 @@ export const Menu = observer(({ appState, world }: IMenuProps) => {
 
             <ul className="export">
                 {['json','glb'].map((format)=>(
-                    <li onClick={async () => downloadjs(await world.export(format as any),`${normalize(appState.name)}.${format}`)}>Export to .{format}</li>
+                    <li key={format} onClick={async () => downloadjs(await world.export(format as any),`${normalize(appState.name)}.${format}`)}>Export to .{format}</li>
                 ))}
 
                 

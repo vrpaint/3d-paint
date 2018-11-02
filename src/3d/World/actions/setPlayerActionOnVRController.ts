@@ -25,6 +25,25 @@ export function setPlayerActionOnVRController(
 
     const drawingTool = world.getDrawingTool(controllerId);
 
+
+    controller.onMainButtonStateChangedObservable.add((gamepadButton) => {
+       
+        //console.log(world.drawingsMeshes);
+        
+        for(const drawingMeshes of world.drawingsMeshes){
+            if(drawingMeshes.meshes.some((mesh)=>mesh.intersectsPoint(controller.devicePosition))){
+
+                for(const mesh of drawingMeshes.meshes){
+                    mesh.dispose();
+                }
+                
+
+
+
+            }
+        }
+    });
+
     controller.onTriggerStateChangedObservable.add((gamepadButton) => {
         if (!focusOnToolbar) {
             if (gamepadButton.value) {
@@ -220,7 +239,7 @@ export function setPlayerActionOnVRController(
             if (
                 controllerToolbarRayLastPickingInfo &&
                 focusOnToolbar &&
-                !gamepadButton.value &&
+                gamepadButton.value===1 &&
                 drawingTool.toolbarElement
             ) {
                 //controllerToolbarRayPickedMesh.position

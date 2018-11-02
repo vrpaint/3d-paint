@@ -4,6 +4,7 @@ import { IDrawingTool } from './IDrawingTool';
 import * as BABYLON from 'babylonjs';
 import { IDrawing } from '../../model/IDrawing';
 import { IFrame } from '../../model/IFrame';
+import { v4 as uuidV4 } from 'uuid';
 import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
 import { PathDrawingTool } from './drawingTools/PathDrawingTool';
 import './DrawingToolAdapter.css';
@@ -54,7 +55,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
             return;
         }
         this.currentDrawing = {
-            id: 'abc',
+            id: uuidV4(),
             frames: [],
             drawingToolConfig: this.config,
         };
@@ -69,6 +70,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
         this.drawingTool.update(frame);
     }
 
+    //private drawedIds: string[] = [];
     end(): BABYLON.Mesh[] {
         if (this.currentDrawing /*todo or drawingTool.drawing*/) {
             //console.log('drawed',JSON.parse(JSON.stringify(this.currentDrawing)));
@@ -76,17 +78,37 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
             this.world.appState.drawings.push(
                 JSON.parse(JSON.stringify(this.currentDrawing)),
             ); //todo better
+            //this.drawedIds.push(this.currentDrawing.id);
+
+            const createdMeshes = this.drawingTool.end();
+
+            this.world.drawingsMeshes.push({
+                id: this.currentDrawing.id,
+                meshes: createdMeshes
+            });
+
             this.currentDrawing = null;
-            return this.drawingTool.end();
+            return createdMeshes;
         } else {
             console.warn(`There is no started drawing to end.`);
             return [];
         }
     }
 
+    //todo implement
     back() {
-        //console.log('back spy');
-        //todo implement
+
+        /*
+        console.log('back spy');
+        const lastId = this.drawedIds.pop();
+        if(lastId){
+            console.log(`Undo ${lastId}.`);
+            this.world.appState.drawings = this.world.appState.drawings.filter((drawing)=>drawing.id!==lastId);
+        }else{
+            console.log(`There is nothing to undo.`);
+        }*/
+        
+        
     }
 
     public toolbarElement: HTMLDivElement | null = null;
@@ -134,7 +156,11 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
         for (const frame of drawing.frames) {
             this.drawingTool.update(frame);
         }
-        this.drawingTool.end();
+       
+        this.world.drawingsMeshes.push({
+            id: drawing.id,
+            meshes:  this.drawingTool.end()
+        });
         //}
     }
 }
