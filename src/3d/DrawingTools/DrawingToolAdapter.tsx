@@ -51,7 +51,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
     start() {
         //console.log('start spy');
         if (this.currentDrawing) {
-            console.warn(`Drawing should be ended before starting new.`);
+            //console.warn(`Drawing should be ended before starting new.`);
             return;
         }
         this.currentDrawing = {
@@ -90,7 +90,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
             this.currentDrawing = null;
             return createdMeshes;
         } else {
-            console.warn(`There is no started drawing to end.`);
+            //console.warn(`There is no started drawing to end.`);
             return [];
         }
     }

@@ -46,18 +46,25 @@ export function setPlayerActionOnVRController(
         }
     });
 
+    let intensity  = 0;
+
+    world.scene.registerBeforeRender(()=>{
+        drawingTool.update({
+            time: new Date().getTime() /*todo better*/,
+            position: babylonToCleanVector(controller.devicePosition),
+            rotation: babylonToCleanVector(
+                controller.deviceRotationQuaternion.toEulerAngles(),
+            ),
+            intensity: intensity,
+        });
+    })
+
+
     controller.onTriggerStateChangedObservable.add((gamepadButton) => {
         if (!focusOnToolbar) {
             if (gamepadButton.value>.1) {
                 drawingTool.start();
-                drawingTool.update({
-                    time: new Date().getTime() /*todo better*/,
-                    position: babylonToCleanVector(controller.devicePosition),
-                    rotation: babylonToCleanVector(
-                        controller.deviceRotationQuaternion.toEulerAngles(),
-                    ),
-                    intensity: gamepadButton.value,
-                });
+                intensity = gamepadButton.value;
             } else {
                 drawingTool.end();
             }
