@@ -12,20 +12,19 @@ export class CacheAsyncSource<TId, TSource> {
 
     async setItem(id: TId, source: TSource | Promise<TSource>) {
         const item = { id, source };
-        this.storage.push(item)
-        if(item.source instanceof Promise){
+        this.storage.push(item);
+        if (item.source instanceof Promise) {
             item.source = await source;
         }
     }
 
-    getCashedItemSync(id: TId): TSource | null{
-        const item = this.storage.find((item) => item.id === id)||null;
-        if(!item){
+    getCashedItemSync(id: TId): TSource | null {
+        const item = this.storage.find((item) => item.id === id) || null;
+        if (!item) {
             return null;
-        }else
-        if(item.source instanceof Promise){
+        } else if (item.source instanceof Promise) {
             return null;
-        }else{
+        } else {
             return item.source;
         }
     }

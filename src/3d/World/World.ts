@@ -142,17 +142,16 @@ export class World {
     }
 
     //todo make public API
-    public drawingsMeshes: {id:string,meshes: BABYLON.Mesh[]}[] = [];
+    public drawingsMeshes: { id: string; meshes: BABYLON.Mesh[] }[] = [];
 
-    clean(){
-
+    clean() {
         //todo which implementation is better?
-        for(const mesh of this.scene.meshes.filter((mesh)=>mesh.name.includes(
-            'world-export',
-        ))){
+        for (const mesh of this.scene.meshes.filter((mesh) =>
+            mesh.name.includes('world-export'),
+        )) {
             mesh.dispose();
         }
-        
+
         /*
         //console.log(`Cleaning`,this.drawingsMeshes);
         for(const drawingMeshes of this.drawingsMeshes){
@@ -162,6 +161,15 @@ export class World {
         
     }*/
     }
+
+    //todo should it be here?
+    loadAppState(appState: IAppState) {
+        this.appState.name = appState.name;
+        this.appState.drawings = appState.drawings;
+        this.clean();
+        this.drawingToolFactory.replayState();
+    }
+
     /*registerDrawingMeshes(id: string, meshes: BABYLON.Mesh){
         this.drawingMeshes.push({id,meshes});
     }
@@ -174,16 +182,16 @@ export class World {
         }
     }*/
 
-    async export(format: 'json'|'glb'):Promise<Blob|string> {
-        
+    async export(format: 'json' | 'glb'): Promise<Blob | string> {
         //console.groupCollapsed('Exporting');
-        switch(format){
-
+        switch (format) {
             case 'json':
-                return JSON.stringify(this.appState,null,4);
+                return JSON.stringify(this.appState, null, 4);
             case 'glb':
                 const options = {
-                    shouldExportTransformNode: (transformNode: BABYLON.Node) => {
+                    shouldExportTransformNode: (
+                        transformNode: BABYLON.Node,
+                    ) => {
                         const shouldExport = transformNode.name.includes(
                             'world-export',
                         );
@@ -198,7 +206,6 @@ export class World {
                     options,
                 );
                 return glb.glTFFiles['model.glb' /*todo via keys*/];
-
-        } 
+        }
     }
 }

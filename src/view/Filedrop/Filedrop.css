@@ -1,0 +1,19 @@
+
+.Filedrop{
+    z-index: 100;
+    position: fixed;
+    
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom:0;
+
+    pointer-events: none;
+}
+
+
+.Filedrop.drag{
+    background-color: rgba(122, 224, 53, 0.26);
+
+    pointer-events: auto;
+}

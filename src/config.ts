@@ -3,12 +3,11 @@ import * as BABYLON from 'babylonjs';
 export const LOCALSTORAGE_SAVE_KEY = 'app_3d_wall_storage';
 export const CONTROLLER_SPRAY_DIRECTION = new BABYLON.Vector3(0, -1, 0);
 
-
-export const TOOL_PATH_SIZES:number[] = [];
-for(let i=0;i<8;i++){
-    TOOL_PATH_SIZES.push(1/Math.pow(1.6,i+4));
+export const TOOL_PATH_SIZES: number[] = [];
+for (let i = 0; i < 8; i++) {
+    TOOL_PATH_SIZES.push(1 / Math.pow(1.6, i + 4));
 }
-export const TOOL_STRUCTURES:string[] = [
+export const TOOL_STRUCTURES: string[] = [
     '#03A1DA',
     '#86BF28',
     '#CEDA07',
@@ -28,4 +27,3 @@ export const TOOL_STRUCTURES:string[] = [
     '#355C7D',
     */
 ];
-

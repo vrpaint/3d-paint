@@ -12,8 +12,6 @@ export function setPlayerActionOnVRController(
     controller: BABYLON.WebVRController,
     world: World,
 ) {
-
-
     const focusOnToolbarVibrations = new ControllerVibrations(
         controller,
         0.5,
@@ -32,29 +30,25 @@ export function setPlayerActionOnVRController(
 
     const drawingTool = world.getDrawingTool(controllerId);
 
-
-
     controller.onMainButtonStateChangedObservable.add((gamepadButton) => {
-       
         //console.log(world.drawingsMeshes);
-        
-        for(const drawingMeshes of world.drawingsMeshes){
-            if(drawingMeshes.meshes.some((mesh)=>mesh.intersectsPoint(controller.devicePosition))){
 
-                for(const mesh of drawingMeshes.meshes){
+        for (const drawingMeshes of world.drawingsMeshes) {
+            if (
+                drawingMeshes.meshes.some((mesh) =>
+                    mesh.intersectsPoint(controller.devicePosition),
+                )
+            ) {
+                for (const mesh of drawingMeshes.meshes) {
                     mesh.dispose();
                 }
-                
-
-
-
             }
         }
     });
 
-    let intensity  = 0;
+    let intensity = 0;
 
-    world.scene.registerBeforeRender(()=>{
+    world.scene.registerBeforeRender(() => {
         drawingTool.update({
             time: new Date().getTime() /*todo better*/,
             position: babylonToCleanVector(controller.devicePosition),
@@ -63,12 +57,11 @@ export function setPlayerActionOnVRController(
             ),
             intensity: intensity,
         });
-    })
-
+    });
 
     controller.onTriggerStateChangedObservable.add((gamepadButton) => {
         if (!focusOnToolbar) {
-            if (gamepadButton.value>.1) {
+            if (gamepadButton.value > 0.1) {
                 drawingTool.start();
                 intensity = gamepadButton.value;
             } else {
@@ -100,8 +93,6 @@ export function setPlayerActionOnVRController(
             controlWheel.impulse(gamepadButton);
         });
     }*/
-
-
 
     {
         //Toolbar
@@ -184,7 +175,7 @@ export function setPlayerActionOnVRController(
         let controllerToolbarRayLastPickingInfo: BABYLON.PickingInfo | null = null;
         controllerToolbarRayPickedMesh.visibility = 0;
         world.scene.registerBeforeRender(() => {
-            if(toolbarToggled){
+            if (toolbarToggled) {
                 const matrix = new BABYLON.Matrix(); //todo can it be as a global const
                 controller.deviceRotationQuaternion.toRotationMatrix(matrix);
                 controllerToolbarRay.direction = BABYLON.Vector3.TransformCoordinates(
@@ -199,13 +190,13 @@ export function setPlayerActionOnVRController(
                     if (pickingInfo.pickedPoint) {
                         controllerToolbarRayPickedMesh.visibility = 1;
                         controllerToolbarRayPickedMesh.position =
-                        pickingInfo.pickedPoint;
-                        if(!focusOnToolbar)focusOnToolbarVibrations.start();
+                            pickingInfo.pickedPoint;
+                        if (!focusOnToolbar) focusOnToolbarVibrations.start();
                         focusOnToolbar = true;
                         controllerToolbarRayLastPickingInfo = pickingInfo;
                     } else {
                         controllerToolbarRayPickedMesh.visibility = 0;
-                        if(focusOnToolbar)focusOnToolbarVibrations.start();
+                        if (focusOnToolbar) focusOnToolbarVibrations.start();
                         focusOnToolbar = false;
                     }
                 }
@@ -219,15 +210,12 @@ export function setPlayerActionOnVRController(
                     gamepadButton,
                 );
                 if (gamepadButton.value) {
-
                     toolbarToggled = !toolbarToggled;
-                    if(!toolbarToggled){
+                    if (!toolbarToggled) {
                         focusOnToolbar = false;
                         controllerToolbarRayPickedMesh.visibility = 0;
                     }
-                    controllerToolbarMesh.visibility = toolbarToggled
-                        ? 1
-                        : 0;
+                    controllerToolbarMesh.visibility = toolbarToggled ? 1 : 0;
                     if (controllerToolbarMesh.visibility) {
                         controllerToolbarMesh.position = controller.devicePosition.clone();
 
@@ -254,7 +242,7 @@ export function setPlayerActionOnVRController(
             if (
                 controllerToolbarRayLastPickingInfo &&
                 focusOnToolbar &&
-                gamepadButton.value===1 &&
+                gamepadButton.value === 1 &&
                 drawingTool.toolbarElement
             ) {
                 //controllerToolbarRayPickedMesh.position

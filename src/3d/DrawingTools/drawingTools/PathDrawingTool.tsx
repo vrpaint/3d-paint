@@ -90,9 +90,10 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
                                 height: size * 400,
                                 borderRadius: 400,
                                 margin: 2,
-                                backgroundColor: size === this.options.sizeMax
-                                ? 'white'
-                                : 'black',
+                                backgroundColor:
+                                    size === this.options.sizeMax
+                                        ? 'white'
+                                        : 'black',
                                 border: `3px solid black`,
                             }}
                             onClick={() => (this.options.sizeMax = size)}
@@ -156,7 +157,6 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
         this.toolMesh.scaling = BABYLON.Vector3.One().scaleInPlace(
             this.countFrameRadius(frame),
         );
-
 
         if (this.drawing) {
             if (
@@ -242,7 +242,7 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
         return [ribbonMesh, sphere1Mesh, sphere2Mesh];
     }
 
-    dispose(){
+    dispose() {
         this.toolMesh.dispose();
         //todo is it all?
     }

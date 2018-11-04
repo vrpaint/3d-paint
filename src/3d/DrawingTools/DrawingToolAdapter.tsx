@@ -63,22 +63,15 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
         this.drawingTool.start();
     }
     update(frame: IFrame) {
-
-    
         //todo maybe save in every frame or debounce
         if (this.currentDrawing /*todo or drawingTool.drawing*/) {
-
-         
-
-
             //console.log('update spy');
             this.currentDrawing.frames.push(frame);
         }
         this.drawingTool.update(frame);
 
-
         //todo is it needed?
-        if(this.currentDrawing && this.currentDrawing.frames.length>50){
+        if (this.currentDrawing && this.currentDrawing.frames.length > 50) {
             console.log(`Splitting into more chunks.`);
             this.end();
             this.start();
@@ -100,7 +93,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
 
             this.world.drawingsMeshes.push({
                 id: this.currentDrawing.id,
-                meshes: createdMeshes
+                meshes: createdMeshes,
             });
 
             this.currentDrawing = null;
@@ -113,7 +106,6 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
 
     //todo implement
     back() {
-
         /*
         console.log('back spy');
         const lastId = this.drawedIds.pop();
@@ -123,8 +115,6 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
         }else{
             console.log(`There is nothing to undo.`);
         }*/
-        
-        
     }
 
     public toolbarElement: HTMLDivElement | null = null;
@@ -137,24 +127,21 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
                 }}
             >
                 <div className="field color">
-                    {TOOL_STRUCTURES
-                        .map((color) => (
-                            <div
-                                key={color}
-                                style={{
-                                    display: 'inline-block',
-                                    width: 40,
-                                    height: 40,
-                                    backgroundColor: color,
-                                    border: `5px solid ${
-                                        color === this.structureId
-                                            ? 'black'
-                                            : color
-                                    }`,
-                                }}
-                                onClick={() => (this.structureId = color)}
-                            />
-                        ))}
+                    {TOOL_STRUCTURES.map((color) => (
+                        <div
+                            key={color}
+                            style={{
+                                display: 'inline-block',
+                                width: 40,
+                                height: 40,
+                                backgroundColor: color,
+                                border: `5px solid ${
+                                    color === this.structureId ? 'black' : color
+                                }`,
+                            }}
+                            onClick={() => (this.structureId = color)}
+                        />
+                    ))}
                 </div>
 
                 {this.drawingTool.renderToolbar()}
@@ -170,16 +157,16 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
         for (const frame of drawing.frames) {
             this.drawingTool.update(frame);
         }
-       
+
         this.world.drawingsMeshes.push({
             id: drawing.id,
-            meshes:  this.drawingTool.end()
+            meshes: this.drawingTool.end(),
         });
-       
+
         //}
     }
 
-    dispose(){
+    dispose() {
         this.drawingTool.dispose();
         //todo is it all?
     }

@@ -1,3 +1,3 @@
-export function normalize(name:string){
-    return name;//todo implement
+export function normalize(name: string) {
+    return name; //todo implement
 }

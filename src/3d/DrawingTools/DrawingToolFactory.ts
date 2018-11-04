@@ -30,7 +30,7 @@ export class DrawingToolFactory {
     async replayState() {
         for (const drawing of this.world.appState.drawings) {
             const drawingTool = this.getDrawingTool(drawing.drawingToolConfig);
-            await drawingTool.replayState(drawing)
+            await drawingTool.replayState(drawing);
             drawingTool.dispose();
         }
     }

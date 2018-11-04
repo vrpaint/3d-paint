@@ -9,6 +9,7 @@ import { World } from '../../3d/World/World';
 import { Toolbars } from '../Toolbars/Toolbars';
 import { Save } from '../Save/Save';
 import { Menu } from '../Menu/Menu';
+import { Filedrop } from '../Filedrop/Filedrop';
 
 interface IAppProps {
     appState: IAppState & IObservableObject;
@@ -23,6 +24,7 @@ export const Root = observer(({ appState, saveState, world }: IAppProps) => {
             <Toolbars {...{ world }} />
             <Scene {...{ world }} />
             <Save {...{ saveState }} />
+            <Filedrop {...{ appState, world }} />
         </div>
     );
 });
