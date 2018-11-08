@@ -11,7 +11,14 @@
 
   </head>
   <body>
-    <a href="./editor.html">Editor</a><br/>
-    <a href="./viewer.html">Viewer</a>
+    <div id="root"></canvas>
+    <script type="text/javascript" src="/static/js/bundle.js"></script>
+    <script>
+      window.onload = function(){
+        var app = new EditorApp(document.getElementById('root'),'editor-3d');
+        app.run();
+        console.log('app',app);
+      };
+    </script>
   </body>
 </html>

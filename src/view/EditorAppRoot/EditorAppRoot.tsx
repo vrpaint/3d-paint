@@ -1,7 +1,7 @@
-import './Root.css';
+import './EditorAppRoot.css';
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { IAppState } from '../../model/IAppState';
+import { IEditorAppState } from '../../model/IEditorAppState';
 import { IObservableObject } from 'mobx';
 import { ISaveState } from '../../controller/saver/ISaveState';
 import { Scene } from '../Scene/Scene';
@@ -11,15 +11,15 @@ import { Save } from '../Save/Save';
 import { Menu } from '../Menu/Menu';
 import { Filedrop } from '../Filedrop/Filedrop';
 
-interface IAppProps {
-    appState: IAppState & IObservableObject;
+interface IEditorAppRootProps {
+    appState: IEditorAppState & IObservableObject;
     saveState: ISaveState & IObservableObject;
     world: World;
 }
 
-export const Root = observer(({ appState, saveState, world }: IAppProps) => {
+export const EditorAppRoot = observer(({ appState, saveState, world }: IEditorAppRootProps) => {
     return (
-        <div className="Root">
+        <div className="EditorAppRoot">
             <Menu {...{ appState, world }} />
             <Toolbars {...{ world }} />
             <Scene {...{ world }} />

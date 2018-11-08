@@ -84,7 +84,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
         if (this.currentDrawing /*todo or drawingTool.drawing*/) {
             //console.log('drawed',JSON.parse(JSON.stringify(this.currentDrawing)));
             //console.log('end spy');
-            this.world.appState.drawings.push(
+            this.world.appState.openedFile.drawings.push(
                 JSON.parse(JSON.stringify(this.currentDrawing)),
             ); //todo better
             //this.drawedIds.push(this.currentDrawing.id);

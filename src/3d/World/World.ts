@@ -1,7 +1,7 @@
 import { DrawingToolAdapter } from './../DrawingTools/DrawingToolAdapter';
 import { DrawingToolFactory } from './../DrawingTools/DrawingToolFactory';
 import { IObservableObject } from 'mobx';
-import { IAppState } from './../../model/IAppState';
+import { IEditorAppState } from '../../model/IEditorAppState';
 import { MaterialFactory } from './../MaterialFactory';
 import * as BABYLON from 'babylonjs';
 import 'babylonjs-serializers';
@@ -31,7 +31,7 @@ export class World {
     public VRHelper: BABYLON.VRExperienceHelper;
     private drawingToolFactory: DrawingToolFactory;
 
-    constructor(public appState: IAppState & IObservableObject) {}
+    constructor(public appState: IEditorAppState & IObservableObject) {}
 
     public canvasElement: HTMLCanvasElement; //todo what if canvas is null?
     run(canvasElement: HTMLCanvasElement) {
@@ -163,9 +163,9 @@ export class World {
     }
 
     //todo should it be here?
-    loadAppState(appState: IAppState) {
-        this.appState.name = appState.name;
-        this.appState.drawings = appState.drawings;
+    loadAppState(appState: IEditorAppState) {
+        this.appState.openedFile.name = appState.openedFile.name;
+        this.appState.openedFile.drawings = appState.openedFile.drawings;
         this.clean();
         this.drawingToolFactory.replayState();
     }

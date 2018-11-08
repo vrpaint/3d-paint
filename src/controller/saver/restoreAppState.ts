@@ -1,15 +1,13 @@
-import { LOCALSTORAGE_SAVE_KEY } from '../../config';
-import { IAppState } from '../../model/IAppState';
 import { observable, IObservableObject } from 'mobx';
-import { createDefaultAppState } from '../../model/createDefaultAppState';
 
-export function restoreAppState(): IAppState & IObservableObject {
-    let appState: IAppState;
+//todo maybe class saver
+export function restoreAppState<TState>(localStorageSaveKey: string,createNewAppState: ()=>TState): TState & IObservableObject {
+    let appState: TState;
     try {
-        const appModelSerialized = localStorage.getItem(LOCALSTORAGE_SAVE_KEY);
+        const appModelSerialized = localStorage.getItem(localStorageSaveKey);
         if (!appModelSerialized) {
             throw new Error(
-                `In localStorage is not value ${LOCALSTORAGE_SAVE_KEY}.`,
+                `In localStorage is not value ${localStorageSaveKey}.`,
             );
         }
         appState = JSON.parse(appModelSerialized);
@@ -22,7 +20,7 @@ export function restoreAppState(): IAppState & IObservableObject {
         console.warn(error);
         //todo backup
         //todo migrations
-        appState = createDefaultAppState();
+        appState = createNewAppState();
     }
     return observable(appState);
 }

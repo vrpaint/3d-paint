@@ -28,7 +28,7 @@ export class DrawingToolFactory {
     }
 
     async replayState() {
-        for (const drawing of this.world.appState.drawings) {
+        for (const drawing of this.world.appState.openedFile.drawings) {
             const drawingTool = this.getDrawingTool(drawing.drawingToolConfig);
             await drawingTool.replayState(drawing);
             drawingTool.dispose();

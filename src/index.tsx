@@ -1,5 +1,6 @@
-import { App } from './App';
+import { EditorApp } from './EditorApp';
+import { ViewerApp } from './ViewerApp';
 
-const app = new App(document.getElementById('root') as HTMLDivElement);
-app.run();
-console.log(app);
+const windowAny:any = window;
+windowAny.EditorApp = EditorApp;
+windowAny.ViewerApp = ViewerApp;

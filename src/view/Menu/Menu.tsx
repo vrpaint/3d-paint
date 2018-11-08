@@ -1,14 +1,15 @@
 import './Menu.css';
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { IAppState } from '../../model/IAppState';
+import { IEditorAppState } from '../../model/IEditorAppState';
 import { IObservableObject } from 'mobx';
 import { World } from '../../3d/World/World';
 import * as downloadjs from 'downloadjs';
 import { normalize } from '../../tools/normalize';
+import { createNewFile } from '../../model/IFile';
 
 interface IMenuProps {
-    appState: IAppState & IObservableObject;
+    appState: IEditorAppState & IObservableObject;
     world: World;
 }
 
@@ -24,9 +25,9 @@ export const Menu = observer(({ appState, world }: IMenuProps) => {
             <ul className="save">
                 <li>
                     <input
-                        defaultValue={appState.name}
+                        defaultValue={appState.openedFile.name}
                         onChange={(event) =>
-                            (appState.name = event.target.value)
+                            (appState.openedFile.name = event.target.value)
                         }
                     />
                 </li>
@@ -34,8 +35,8 @@ export const Menu = observer(({ appState, world }: IMenuProps) => {
                 <li
                     onClick={() => {
                         if (confirm('Are you sure?')) {
-                            world.clean();
-                            appState.drawings = [];
+                            world.clean();//todo better
+                            appState.openedFile = createNewFile();
                         }
                     }}
                 >
@@ -50,7 +51,7 @@ export const Menu = observer(({ appState, world }: IMenuProps) => {
                         onClick={async () =>
                             downloadjs(
                                 await world.export(format as any),
-                                `${normalize(appState.name)}.${format}`,
+                                `${normalize(appState.openedFile.name)}.${format}`,
                             )
                         }
                     >

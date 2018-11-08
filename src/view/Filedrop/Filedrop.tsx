@@ -1,14 +1,14 @@
 import './Filedrop.css';
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { IAppState } from '../../model/IAppState';
+import { IEditorAppState } from '../../model/IEditorAppState';
 import { IObservableObject } from 'mobx';
 import { World } from '../../3d/World/World';
 import { readFile } from 'fs';
 import { readFileAsText } from '../../tools/readFileAsText';
 
 interface IMenuProps {
-    appState: IAppState & IObservableObject;
+    appState: IEditorAppState & IObservableObject;
     world: World;
 }
 
@@ -106,13 +106,13 @@ export const Filedrop = observer(({ appState, world }: IMenuProps) => {
 
                                 const importedAppState = JSON.parse(
                                     await readFileAsText(file),
-                                ) as IAppState;
+                                ) as IEditorAppState;
 
                                 if (
                                     confirm(
                                         `Do you want to replace "${
-                                            appState.name
-                                        }" with "${importedAppState.name}"`,
+                                            appState.openedFile.name
+                                        }" with "${importedAppState.openedFile.name}"`,
                                     )
                                 ) {
                                     world.loadAppState(importedAppState);

@@ -1,19 +1,19 @@
-import { IAppState } from '../../model/IAppState';
-import { IObservableObject, observe, observable } from 'mobx';
+import { IObservableObject, observable } from 'mobx';
 import { debounce } from 'lodash';
-import { LOCALSTORAGE_SAVE_KEY } from '../../config';
 import { ISaveState } from './ISaveState';
 import { observeDeep } from '../../tools/observeDeep';
 
+//todo maybe class saver
 export function saveAppStateAfterChange(
-    appState: IAppState & IObservableObject,
+    localStorageSaveKey: string,
+    appState: IObservableObject
 ): ISaveState & IObservableObject {
     const saveState: ISaveState & IObservableObject = observable({
         saved: true,
     });
 
     const save = debounce(() => {
-        localStorage.setItem(LOCALSTORAGE_SAVE_KEY, JSON.stringify(appState));
+        localStorage.setItem(localStorageSaveKey, JSON.stringify(appState));
         saveState.saved = true;
     }, 1000);
 
