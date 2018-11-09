@@ -1,7 +1,10 @@
 import { observable, IObservableObject } from 'mobx';
 
 //todo maybe class saver
-export function restoreAppState<TState>(localStorageSaveKey: string,createNewAppState: ()=>TState): TState & IObservableObject {
+export function restoreAppState<TState>(
+    localStorageSaveKey: string,
+    createNewAppState: () => TState,
+): TState & IObservableObject {
     let appState: TState;
     try {
         const appModelSerialized = localStorage.getItem(localStorageSaveKey);

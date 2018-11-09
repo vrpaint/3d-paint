@@ -17,26 +17,29 @@ interface IEditorAppRootProps {
     world: World;
 }
 
-export const EditorAppRoot = observer(({ appState, saveState, world }: IEditorAppRootProps) => {
-    return (
-        <div className="EditorAppRoot">
-            <Menu {...{ appState, world }} />
-            <Toolbars {...{ world }} />
-            <Scene {...{ world }} />
-            <Save {...{ saveState }} />
-            <Filedrop {...{ appState, world }} onJsonFile={(json: IEditorAppState)=>{
-
-                if (
-                    confirm(
-                        `Do you want to replace "${
-                            appState.openedFile.name
-                        }" with "${json.openedFile.name}"`,
-                    )
-                ) {
-                    world.loadAppState(json);
-                }
-
-            }} />
-        </div>
-    );
-});
+export const EditorAppRoot = observer(
+    ({ appState, saveState, world }: IEditorAppRootProps) => {
+        return (
+            <div className="EditorAppRoot">
+                <Menu {...{ appState, world }} />
+                <Toolbars {...{ world }} />
+                <Scene {...{ world }} />
+                <Save {...{ saveState }} />
+                <Filedrop
+                    {...{ appState, world }}
+                    onJsonFile={(json: IEditorAppState) => {
+                        if (
+                            confirm(
+                                `Do you want to replace "${
+                                    appState.openedFile.name
+                                }" with "${json.openedFile.name}"`,
+                            )
+                        ) {
+                            world.loadAppState(json);
+                        }
+                    }}
+                />
+            </div>
+        );
+    },
+);

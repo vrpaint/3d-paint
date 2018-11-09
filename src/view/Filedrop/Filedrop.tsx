@@ -7,11 +7,11 @@ import { World } from '../../3d/World/World';
 import { readFile } from 'fs';
 import { readFileAsText } from '../../tools/readFileAsText';
 
-interface IFiledropProps<T>{
-    onJsonFile: (json: T)=>void//todo is this good solution?
+interface IFiledropProps<T> {
+    onJsonFile: (json: T) => void; //todo is this good solution?
 }
 
-export function Filedrop<T>({ onJsonFile }: IFiledropProps<T>){
+export function Filedrop<T>({ onJsonFile }: IFiledropProps<T>) {
     return (
         <div
             className="Filedrop"
@@ -107,8 +107,6 @@ export function Filedrop<T>({ onJsonFile }: IFiledropProps<T>){
                                 ) as T;
 
                                 onJsonFile(importedJSON);
-
-                                
                             } catch (error) {
                                 alert(error);
                             }
@@ -119,4 +117,4 @@ export function Filedrop<T>({ onJsonFile }: IFiledropProps<T>){
             }}
         />
     );
-});
+}

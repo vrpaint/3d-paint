@@ -35,7 +35,7 @@ export const Menu = observer(({ appState, world }: IMenuProps) => {
                 <li
                     onClick={() => {
                         if (confirm('Are you sure?')) {
-                            world.clean();//todo better
+                            world.clean(); //todo better
                             appState.openedFile = createNewFile();
                         }
                     }}
@@ -51,7 +51,9 @@ export const Menu = observer(({ appState, world }: IMenuProps) => {
                         onClick={async () =>
                             downloadjs(
                                 await world.export(format as any),
-                                `${normalize(appState.openedFile.name)}.${format}`,
+                                `${normalize(
+                                    appState.openedFile.name,
+                                )}.${format}`,
                             )
                         }
                     >

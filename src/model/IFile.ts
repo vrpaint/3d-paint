@@ -7,7 +7,7 @@ export interface IFile {
 
 export function createNewFile(): IFile {
     return {
-        name: 'Drawing 1',//todo maybe increase numbers
-        drawings: []
+        name: 'Drawing 1', //todo maybe increase numbers
+        drawings: [],
     };
 }

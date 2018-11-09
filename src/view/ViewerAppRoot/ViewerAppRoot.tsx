@@ -10,10 +10,8 @@ interface IViewerAppRootProps {
     saveState: ISaveState & IObservableObject;
 }
 
-export const ViewerAppRoot = observer(({ appState, saveState}: IViewerAppRootProps) => {
-    return (
-        <div className="ViewerAppRoot">
-            Viewer
-        </div>
-    );
-});
+export const ViewerAppRoot = observer(
+    ({ appState, saveState }: IViewerAppRootProps) => {
+        return <div className="ViewerAppRoot">Viewer</div>;
+    },
+);

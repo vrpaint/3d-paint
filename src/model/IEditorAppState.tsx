@@ -7,6 +7,6 @@ export interface IEditorAppState {
 
 export function createNewEditorAppState(): IEditorAppState {
     return {
-        openedFile: createNewFile()
+        openedFile: createNewFile(),
     };
 }

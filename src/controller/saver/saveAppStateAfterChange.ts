@@ -6,7 +6,7 @@ import { observeDeep } from '../../tools/observeDeep';
 //todo maybe class saver
 export function saveAppStateAfterChange(
     localStorageSaveKey: string,
-    appState: IObservableObject
+    appState: IObservableObject,
 ): ISaveState & IObservableObject {
     const saveState: ISaveState & IObservableObject = observable({
         saved: true,
