@@ -1,11 +1,11 @@
-import { IFile } from './IFile';
+import { IFile, createNewFile } from './IFile';
 
 export interface IViewerAppState {
-    openedFile: null | IFile;
+    openedFile: IFile;
 }
 
 export function createNewViewerAppState(): IViewerAppState {
     return {
-        openedFile: null,
+        openedFile: createNewFile(),
     };
 }

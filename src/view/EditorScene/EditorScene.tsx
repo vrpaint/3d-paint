@@ -1,15 +1,15 @@
-import './Scene.css';
+import './EditorScene.css';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { EditorWorld } from '../../3d/World/EditorWorld';
 
-interface ISceneProps {
+interface IEditorSceneProps {
     world: EditorWorld;
 }
 
-export const Scene = observer(({ world }: ISceneProps) => {
+export const EditorScene = observer(({ world }: IEditorSceneProps) => {
     return (
-        <div className="Scene">
+        <div className="EditorScene">
             <canvas
                 ref={(canvasElement) => {
                     if (canvasElement) {

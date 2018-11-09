@@ -51,6 +51,7 @@ export class ViewerWorld implements IWorld {
             new BABYLON.Vector3(0, 0, 0),
             this.scene,
         );
+        this.camera.attachControl(canvasElement, true);
 
         this.drawingToolFactory = new DrawingToolFactory(this);
         this.drawingToolFactory.replayState();

@@ -9,6 +9,7 @@ import {
     IViewerAppState,
 } from './model/IViewerAppState';
 import { ViewerAppRoot } from './view/ViewerAppRoot/ViewerAppRoot';
+import { ViewerWorld } from './3d/World/ViewerWorld';
 
 export class ViewerApp {
     constructor(
@@ -18,7 +19,7 @@ export class ViewerApp {
 
     private appState: IViewerAppState & IObservableObject;
     private saveState: ISaveState & IObservableObject;
-    //private world: World;
+    private world: ViewerWorld;
 
     run() {
         this.appState = restoreAppState(
@@ -30,11 +31,14 @@ export class ViewerApp {
             this.appState,
         );
 
+        this.world = new ViewerWorld(this.appState); //todo is it pretty?
+
         ReactDOM.render(
             <ViewerAppRoot
                 {...{
                     appState: this.appState,
                     saveState: this.saveState,
+                    world: this.world,
                 }}
             />,
             this.rootElement,

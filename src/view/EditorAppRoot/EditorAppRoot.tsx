@@ -4,13 +4,13 @@ import { observer } from 'mobx-react';
 import { IEditorAppState } from '../../model/IEditorAppState';
 import { IObservableObject } from 'mobx';
 import { ISaveState } from '../../controller/saver/ISaveState';
-import { Scene } from '../Scene/Scene';
 import { EditorWorld } from '../../3d/World/EditorWorld';
 import { Toolbars } from '../Toolbars/Toolbars';
 import { Save } from '../Save/Save';
 import { Menu } from '../Menu/Menu';
 import { Filedrop } from '../Filedrop/Filedrop';
 import { IFile } from '../../model/IFile';
+import { EditorScene } from '../EditorScene/EditorScene';
 
 interface IEditorAppRootProps {
     appState: IEditorAppState & IObservableObject;
@@ -24,7 +24,7 @@ export const EditorAppRoot = observer(
             <div className="EditorAppRoot">
                 <Menu {...{ appState, world }} />
                 <Toolbars {...{ world }} />
-                <Scene {...{ world }} />
+                <EditorScene {...{ world }} />
                 <Save {...{ saveState }} />
                 <Filedrop
                     onJsonFile={(json: IFile) => {

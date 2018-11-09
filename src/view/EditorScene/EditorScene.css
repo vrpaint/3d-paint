@@ -1,6 +1,6 @@
 /*todo scss*/
 
-.Scene canvas{
+.EditorScene canvas{
     z-index: 10;
     position: fixed;
     top: 0;
@@ -9,6 +9,7 @@
     height: 100vh;
 } 
 
+/*todo vr append .EditorScene*/
 #babylonVRiconbtn{
     z-index: 30;
     /*margin-top: calc( -600px + 100px) ;*/
