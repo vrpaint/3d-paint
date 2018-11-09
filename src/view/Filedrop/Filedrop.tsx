@@ -7,12 +7,11 @@ import { World } from '../../3d/World/World';
 import { readFile } from 'fs';
 import { readFileAsText } from '../../tools/readFileAsText';
 
-interface IMenuProps {
-    appState: IEditorAppState & IObservableObject;
-    world: World;
+interface IFiledropProps<T>{
+    onJsonFile: (json: T)=>void//todo is this good solution?
 }
 
-export const Filedrop = observer(({ appState, world }: IMenuProps) => {
+export function Filedrop<T>({ onJsonFile }: IFiledropProps<T>){
     return (
         <div
             className="Filedrop"
@@ -100,23 +99,16 @@ export const Filedrop = observer(({ appState, world }: IMenuProps) => {
                                 const file = event.dataTransfer.files[0];
 
                                 /*if(file.name!=='text/json'){
-                            throw new Error(`You should drop only "text/json" files not "${file}".`);
-                
-                        }*/
+                                    throw new Error(`You should drop only "text/json" files not "${file}".`);
+                                }*/
 
-                                const importedAppState = JSON.parse(
+                                const importedJSON = JSON.parse(
                                     await readFileAsText(file),
-                                ) as IEditorAppState;
+                                ) as T;
 
-                                if (
-                                    confirm(
-                                        `Do you want to replace "${
-                                            appState.openedFile.name
-                                        }" with "${importedAppState.openedFile.name}"`,
-                                    )
-                                ) {
-                                    world.loadAppState(importedAppState);
-                                }
+                                onJsonFile(importedJSON);
+
+                                
                             } catch (error) {
                                 alert(error);
                             }

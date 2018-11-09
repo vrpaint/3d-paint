@@ -24,7 +24,19 @@ export const EditorAppRoot = observer(({ appState, saveState, world }: IEditorAp
             <Toolbars {...{ world }} />
             <Scene {...{ world }} />
             <Save {...{ saveState }} />
-            <Filedrop {...{ appState, world }} />
+            <Filedrop {...{ appState, world }} onJsonFile={(json: IEditorAppState)=>{
+
+                if (
+                    confirm(
+                        `Do you want to replace "${
+                            appState.openedFile.name
+                        }" with "${json.openedFile.name}"`,
+                    )
+                ) {
+                    world.loadAppState(json);
+                }
+
+            }} />
         </div>
     );
 });
