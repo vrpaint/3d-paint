@@ -1,8 +1,9 @@
-import { DrawingToolAdapter } from './../DrawingTools/DrawingToolAdapter';
-import { DrawingToolFactory } from './../DrawingTools/DrawingToolFactory';
+import { IFile } from '../../model/IFile';
+import { DrawingToolAdapter } from '../DrawingTools/DrawingToolAdapter';
+import { DrawingToolFactory } from '../DrawingTools/DrawingToolFactory';
 import { IObservableObject } from 'mobx';
 import { IEditorAppState } from '../../model/IEditorAppState';
-import { MaterialFactory } from './../MaterialFactory';
+import { MaterialFactory } from '../MaterialFactory';
 import * as BABYLON from 'babylonjs';
 import 'babylonjs-serializers';
 import { createScene } from './createScene';
@@ -12,8 +13,9 @@ import { createSkybox } from './createSkybox';
 import { setPlayerActionOnVRController } from './actions/setPlayerActionOnVRController';
 import { Key } from 'ts-keycode-enum';
 import { setPlayerActionsOnMouse } from './actions/setPlayerActionsOnMouse';
+import { IWorld } from './IWorld';
 
-export class World {
+export class EditorWorld implements IWorld {
     public engine: BABYLON.Engine;
     public scene: BABYLON.Scene;
     public webVR: boolean;
@@ -22,10 +24,10 @@ export class World {
     //todo maybe encapsulate meshes
     public groundMesh: BABYLON.AbstractMesh;
     public skyboxMesh: BABYLON.AbstractMesh;
-    public wallMesh: null | BABYLON.AbstractMesh = null;
+    //public wallMesh: null | BABYLON.AbstractMesh = null;
     //todo maybe encapsulate wall
-    public wallMaterial: BABYLON.StandardMaterial;
-    public wallTexture: BABYLON.DynamicTexture;
+    //public wallMaterial: BABYLON.StandardMaterial;
+    //public wallTexture: BABYLON.DynamicTexture;
 
     public materialFactory: MaterialFactory;
     public VRHelper: BABYLON.VRExperienceHelper;
@@ -56,7 +58,7 @@ export class World {
         this.skyboxMesh = createSkybox(this.scene);
 
         //todo to separate file
-        this.wallTexture = new BABYLON.DynamicTexture(
+        /*this.wallTexture = new BABYLON.DynamicTexture(
             'wallTexture',
             1024,
             this.scene,
@@ -73,6 +75,7 @@ export class World {
             '#000000',
         );
         this.wallMaterial.backFaceCulling = false;
+        */
 
         this.VRHelper = this.scene.createDefaultVRExperience();
 
@@ -132,6 +135,10 @@ export class World {
     //todo set controlls
     //todo create world
 
+    get openedFile(): IFile {
+        return this.appState.openedFile;
+    }
+
     dispose() {
         this.scene.dispose(); //todo is it all?
     }
@@ -163,9 +170,8 @@ export class World {
     }
 
     //todo should it be here?
-    loadAppState(appState: IEditorAppState) {
-        this.appState.openedFile.name = appState.openedFile.name;
-        this.appState.openedFile.drawings = appState.openedFile.drawings;
+    loadAppState(newFile: IFile) {
+        this.appState.openedFile = newFile;
         this.clean();
         this.drawingToolFactory.replayState();
     }
@@ -186,7 +192,7 @@ export class World {
         //console.groupCollapsed('Exporting');
         switch (format) {
             case 'json':
-                return JSON.stringify(this.appState, null, 4);
+                return JSON.stringify(this.appState.openedFile, null, 4);
             case 'glb':
                 const options = {
                     shouldExportTransformNode: (

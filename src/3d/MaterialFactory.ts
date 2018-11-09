@@ -1,8 +1,9 @@
+import { IWorld } from './World/IWorld';
 import { CacheAsyncSource } from './../tools/CacheAsyncSource';
 //import * as superagent from 'superagent';
 import * as BABYLON from 'babylonjs';
 import { IStructure } from './IStructure';
-import { World } from './World/World';
+import { EditorWorld } from './World/EditorWorld';
 
 //todo class Structure
 /*
@@ -17,7 +18,7 @@ soundSettings
 
 //todo rename to StructuresFactory
 export class MaterialFactory {
-    constructor(private world: World) {}
+    constructor(private world: IWorld) {}
 
     /*getStructureSync(materialId: string): IStructure {
 
@@ -74,7 +75,7 @@ export class MaterialFactory {
                         } as any,
                     ) as any; //why?*/
 
-                case 'screenshot':
+                /*case 'screenshot':
                     return await new Promise(
                         (resolve: (value: BABYLON.Texture) => void, reject) => {
                             BABYLON.Tools.CreateScreenshot(
@@ -93,7 +94,7 @@ export class MaterialFactory {
                                 },
                             );
                         },
-                    );
+                    );*/
 
                 //throw new Error(`Can't create texture from textureId = "${textureId}". Unknown :special id.`);
                 //break;

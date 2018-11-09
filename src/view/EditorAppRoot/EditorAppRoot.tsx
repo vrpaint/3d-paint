@@ -5,16 +5,17 @@ import { IEditorAppState } from '../../model/IEditorAppState';
 import { IObservableObject } from 'mobx';
 import { ISaveState } from '../../controller/saver/ISaveState';
 import { Scene } from '../Scene/Scene';
-import { World } from '../../3d/World/World';
+import { EditorWorld } from '../../3d/World/EditorWorld';
 import { Toolbars } from '../Toolbars/Toolbars';
 import { Save } from '../Save/Save';
 import { Menu } from '../Menu/Menu';
 import { Filedrop } from '../Filedrop/Filedrop';
+import { IFile } from '../../model/IFile';
 
 interface IEditorAppRootProps {
     appState: IEditorAppState & IObservableObject;
     saveState: ISaveState & IObservableObject;
-    world: World;
+    world: EditorWorld;
 }
 
 export const EditorAppRoot = observer(
@@ -26,13 +27,12 @@ export const EditorAppRoot = observer(
                 <Scene {...{ world }} />
                 <Save {...{ saveState }} />
                 <Filedrop
-                    {...{ appState, world }}
-                    onJsonFile={(json: IEditorAppState) => {
+                    onJsonFile={(json: IFile) => {
                         if (
                             confirm(
                                 `Do you want to replace "${
                                     appState.openedFile.name
-                                }" with "${json.openedFile.name}"`,
+                                }" with "${json.name}"`,
                             )
                         ) {
                             world.loadAppState(json);

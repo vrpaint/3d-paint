@@ -1,11 +1,11 @@
 import { IFile } from './IFile';
 
 export interface IViewerAppState {
-    openedId: string | null;
+    openedFile: null | IFile;
 }
 
 export function createNewViewerAppState(): IViewerAppState {
     return {
-        openedId: null,
+        openedFile: null,
     };
 }

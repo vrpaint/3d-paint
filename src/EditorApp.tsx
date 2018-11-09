@@ -9,7 +9,7 @@ import { IObservableObject, observable } from 'mobx';
 import { restoreAppState } from './controller/saver/restoreAppState';
 import { saveAppStateAfterChange } from './controller/saver/saveAppStateAfterChange';
 import { EditorAppRoot } from './view/EditorAppRoot/EditorAppRoot';
-import { World } from './3d/World/World';
+import { EditorWorld } from './3d/World/EditorWorld';
 
 export class EditorApp {
     constructor(
@@ -19,7 +19,7 @@ export class EditorApp {
 
     private appState: IEditorAppState & IObservableObject;
     private saveState: ISaveState & IObservableObject;
-    private world: World;
+    private world: EditorWorld;
 
     run() {
         this.appState = restoreAppState(
@@ -30,7 +30,7 @@ export class EditorApp {
             this.localStorageSaveKey,
             this.appState,
         );
-        this.world = new World(this.appState); //todo is it pretty?
+        this.world = new EditorWorld(this.appState); //todo is it pretty?
 
         ReactDOM.render(
             <EditorAppRoot

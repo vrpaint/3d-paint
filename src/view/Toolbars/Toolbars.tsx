@@ -1,10 +1,10 @@
 import './Toolbars.css';
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { World } from '../../3d/World/World';
+import { EditorWorld } from '../../3d/World/EditorWorld';
 
 interface IToolbarsProps {
-    world: World;
+    world: EditorWorld;
 }
 
 interface IToolbarsState {

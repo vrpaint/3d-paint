@@ -3,14 +3,14 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { IEditorAppState } from '../../model/IEditorAppState';
 import { IObservableObject } from 'mobx';
-import { World } from '../../3d/World/World';
+import { EditorWorld } from '../../3d/World/EditorWorld';
 import * as downloadjs from 'downloadjs';
 import { normalize } from '../../tools/normalize';
 import { createNewFile } from '../../model/IFile';
 
 interface IMenuProps {
     appState: IEditorAppState & IObservableObject;
-    world: World;
+    world: EditorWorld;
 }
 
 export const Menu = observer(({ appState, world }: IMenuProps) => {

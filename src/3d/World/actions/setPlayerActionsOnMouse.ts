@@ -1,9 +1,9 @@
-import { World } from '../World';
+import { EditorWorld } from '../EditorWorld';
 import { babylonToCleanVector } from '../../../tools/vectors';
 import { DrawingToolAdapter } from '../../DrawingTools/DrawingToolAdapter';
 import { IFrame } from '../../../model/IFrame';
 
-export async function setPlayerActionsOnMouse(world: World) {
+export async function setPlayerActionsOnMouse(world: EditorWorld) {
     //todo DI drawind tools
 
     const drawingTool1 = world.getDrawingTool('pointer');

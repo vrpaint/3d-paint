@@ -1,10 +1,10 @@
 import './Scene.css';
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { World } from '../../3d/World/World';
+import { EditorWorld } from '../../3d/World/EditorWorld';
 
 interface ISceneProps {
-    world: World;
+    world: EditorWorld;
 }
 
 export const Scene = observer(({ world }: ISceneProps) => {

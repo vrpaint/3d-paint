@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { World } from '../World/World';
+import { EditorWorld } from '../World/EditorWorld';
 import { IDrawingTool } from './IDrawingTool';
 import * as BABYLON from 'babylonjs';
 import { IDrawing } from '../../model/IDrawing';
@@ -9,6 +9,7 @@ import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
 import { PathDrawingTool } from './drawingTools/PathDrawingTool';
 import './DrawingToolAdapter.css';
 import { TOOL_STRUCTURES } from '../../config';
+import { IWorld } from '../World/IWorld';
 
 export class DrawingToolAdapter implements IDrawingTool<any> {
     //todo TOptions is it needed?
@@ -16,7 +17,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
     private drawingTool: IDrawingTool<any>;
 
     constructor(
-        private world: World,
+        private world: IWorld,
         drawingToolConfig: IDrawingToolConfig<any>,
     ) {
         //todo create tool here with config
@@ -84,7 +85,7 @@ export class DrawingToolAdapter implements IDrawingTool<any> {
         if (this.currentDrawing /*todo or drawingTool.drawing*/) {
             //console.log('drawed',JSON.parse(JSON.stringify(this.currentDrawing)));
             //console.log('end spy');
-            this.world.appState.openedFile.drawings.push(
+            this.world.openedFile.drawings.push(
                 JSON.parse(JSON.stringify(this.currentDrawing)),
             ); //todo better
             //this.drawedIds.push(this.currentDrawing.id);

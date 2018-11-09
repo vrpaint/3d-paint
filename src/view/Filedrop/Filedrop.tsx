@@ -3,7 +3,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { IEditorAppState } from '../../model/IEditorAppState';
 import { IObservableObject } from 'mobx';
-import { World } from '../../3d/World/World';
+import { EditorWorld } from '../../3d/World/EditorWorld';
 import { readFile } from 'fs';
 import { readFileAsText } from '../../tools/readFileAsText';
 
@@ -17,31 +17,31 @@ export function Filedrop<T>({ onJsonFile }: IFiledropProps<T>) {
             className="Filedrop"
             ref={(element) => {
                 if (element) {
-                    console.log(`Setting up Filedrop listeners.`);
+                    //console.log(`Setting up Filedrop listeners.`);
 
                     /*element.addEventListener("drag", ( event )=>{
-                    event.preventDefault();
-                    console.log(`drag`,event);
-                }, false);*/
+                        event.preventDefault();
+                        console.log(`drag`,event);
+                    }, false);*/
 
                     /*document.addEventListener("dragstart", ( event )=> {
-                    event.preventDefault();
-                    console.log(`dragstart`,event);
-                    element.classList.add('drag');
-                }, false);
-              
-                document.addEventListener("dragend", ( event ) =>{
-                    event.preventDefault();
-                    console.log(`dragend`,event);
-                    element.classList.remove('drag');
-                }, false);
-                */
+                        event.preventDefault();
+                        console.log(`dragstart`,event);
+                        element.classList.add('drag');
+                    }, false);
+                
+                    document.addEventListener("dragend", ( event ) =>{
+                        event.preventDefault();
+                        console.log(`dragend`,event);
+                        element.classList.remove('drag');
+                    }, false);
+                    */
 
                     document.addEventListener(
                         'dragover',
                         (event) => {
                             event.preventDefault();
-                            console.log(`dragover`, event);
+                            //console.log(`dragover`, event);
                             element.classList.add('drag');
                         },
                         false,
@@ -51,7 +51,7 @@ export function Filedrop<T>({ onJsonFile }: IFiledropProps<T>) {
                         'dragover',
                         (event) => {
                             event.preventDefault();
-                            console.log(`dragover`, event);
+                            //console.log(`dragover`, event);
                         },
                         false,
                     );
@@ -60,7 +60,7 @@ export function Filedrop<T>({ onJsonFile }: IFiledropProps<T>) {
                         'dragenter',
                         (event) => {
                             event.preventDefault();
-                            console.log(`dragenter`, event);
+                            //console.log(`dragenter`, event);
                             element.classList.add('drag');
                         },
                         false,
@@ -70,7 +70,7 @@ export function Filedrop<T>({ onJsonFile }: IFiledropProps<T>) {
                         'dragleave',
                         (event) => {
                             event.preventDefault();
-                            console.log(`dragleave`, event);
+                            //console.log(`dragleave`, event);
 
                             element.classList.remove('drag');
                         },
@@ -81,7 +81,7 @@ export function Filedrop<T>({ onJsonFile }: IFiledropProps<T>) {
                         'drop',
                         async (event) => {
                             event.preventDefault();
-                            console.log(`drop`, event);
+                            //console.log(`drop`, event);
 
                             element.classList.remove('drag');
 

@@ -3,14 +3,14 @@ import { ControllerVibrations } from '../../../tools/ControllerVibrations';
 import { ControlWheel } from '../../../tools/ControlWheel';
 import * as uuidv4 from 'uuid/v4';
 import * as BABYLON from 'babylonjs';
-import { World } from '../World';
+import { EditorWorld } from '../EditorWorld';
 import * as html2canvas from 'html2canvas';
 import { babylonToCleanVector } from '../../../tools/vectors';
 import * as Color from 'color';
 
 export function setPlayerActionOnVRController(
     controller: BABYLON.WebVRController,
-    world: World,
+    world: EditorWorld,
 ) {
     const focusOnToolbarVibrations = new ControllerVibrations(
         controller,

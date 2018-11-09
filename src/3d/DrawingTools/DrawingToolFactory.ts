@@ -1,11 +1,11 @@
 import { PathDrawingToolDefaultOptions } from './drawingTools/PathDrawingTool';
 import { DrawingToolAdapter } from './DrawingToolAdapter';
-import { World } from '../World/World';
 import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
+import { IWorld } from '../World/IWorld';
 
 //is this needed?
 export class DrawingToolFactory {
-    constructor(private world: World) {}
+    constructor(private world: IWorld) {}
 
     //todo cache
     getDrawingTool(

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { IDrawingTool } from '../IDrawingTool';
 import * as BABYLON from 'babylonjs';
-import { World } from '../../World/World';
+import { EditorWorld } from '../../World/EditorWorld';
 import { IFrame, cloneFrame } from '../../../model/IFrame';
 import { cleanVectorToBabylon } from '../../../tools/vectors';
 import { TOOL_PATH_SIZES } from '../../../config';
+import { IWorld } from '../../World/IWorld';
 
 //todo split options into real and quality
 //todo default values
@@ -32,7 +33,7 @@ export class PathDrawingTool implements IDrawingTool<IPathDrawingToolOptions> {
     private toolMesh: BABYLON.Mesh;
 
     constructor(
-        private world: World,
+        private world: IWorld,
         private _structureId: string,
         public options: IPathDrawingToolOptions,
     ) {
