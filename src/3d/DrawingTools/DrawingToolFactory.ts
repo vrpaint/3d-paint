@@ -2,6 +2,7 @@ import { PathDrawingToolDefaultOptions } from './drawingTools/PathDrawingTool';
 import { DrawingToolAdapter } from './DrawingToolAdapter';
 import { IDrawingToolConfig } from '../../model/IDrawingToolConfig';
 import { IWorld } from '../World/IWorld';
+import { waitAnimationFrame } from '../../tools/wait';
 
 //is this needed?
 export class DrawingToolFactory {
@@ -27,11 +28,22 @@ export class DrawingToolFactory {
         }
     }
 
-    async replayState() {
+    async replayState(percentCallback?: (percent: number)=>void) {
+
+        let i = 0 ;
         for (const drawing of this.world.openedFile.drawings) {
+
+            if(percentCallback)percentCallback(i/this.world.openedFile.drawings.length);
+
             const drawingTool = this.getDrawingTool(drawing.drawingToolConfig);
             await drawingTool.replayState(drawing);
             drawingTool.dispose();
+
+            await waitAnimationFrame();
+            i++;
+            
         }
+
+        if(percentCallback)percentCallback(1);
     }
 }

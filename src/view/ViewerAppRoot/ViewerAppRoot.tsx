@@ -8,6 +8,7 @@ import { Filedrop } from '../Filedrop/Filedrop';
 import { IFile } from '../../model/IFile';
 import { ViewerScene } from '../ViewerScene/ViewerScene';
 import { ViewerWorld } from '../../3d/World/ViewerWorld';
+import { Loading } from '../Loading/Loading';
 
 interface IViewerAppRootProps {
     appState: IViewerAppState & IObservableObject;
@@ -20,12 +21,11 @@ export const ViewerAppRoot = observer(
         return (
             <div className="ViewerAppRoot">
                 {appState.openedFile.name}
-
+                <Loading percent={appState.loading}/>
                 <ViewerScene {...{ world }} />
                 <Filedrop
                     onJsonFile={(json: IFile) => {
-                        appState.openedFile = json;
-                        //world.loadAppState(json);
+                        world.loadAppState(json);
                     }}
                 />
             </div>

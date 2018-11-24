@@ -5,7 +5,7 @@ export function restoreAppState<TState>(
     localStorageSaveKey: string,
     createNewAppState: () => TState,
 ): TState & IObservableObject {
-    let appState: TState;
+    let appState: {};
     try {
         const appModelSerialized = localStorage.getItem(localStorageSaveKey);
         if (!appModelSerialized) {
@@ -22,8 +22,10 @@ export function restoreAppState<TState>(
         );
         console.warn(error);
         //todo backup
-        //todo migrations
-        appState = createNewAppState();
+        appState = {};
     }
-    return observable(appState);
+
+    const appStateUpdated: TState =  Object.assign(createNewAppState(),appState)/*todo deep*/;
+
+    return observable(appStateUpdated);
 }
