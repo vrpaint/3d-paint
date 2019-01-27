@@ -188,30 +188,4 @@ export class EditorWorld implements IWorld {
         }
     }*/
 
-    async export(format: 'json' | 'glb'): Promise<Blob | string> {
-        //console.groupCollapsed('Exporting');
-        switch (format) {
-            case 'json':
-                return JSON.stringify(this.appState.openedFile, null, 4);
-            case 'glb':
-                const options = {
-                    shouldExportTransformNode: (
-                        transformNode: BABYLON.Node,
-                    ) => {
-                        const shouldExport = transformNode.name.includes(
-                            'world-export',
-                        );
-                        return shouldExport;
-                    },
-                    exportWithoutWaitingForScene: false,
-                };
-
-                const glb = await BABYLON.GLTF2Export.GLBAsync(
-                    this.scene,
-                    'model',
-                    options,
-                );
-                return glb.glTFFiles['model.glb' /*todo via keys*/];
-        }
-    }
 }
