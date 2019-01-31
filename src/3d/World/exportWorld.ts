@@ -1,11 +1,12 @@
 import { IWorld } from './IWorld';
 
-async function exportWord(world: IWorld, format: 'json' | 'glb'): Promise<Blob | string> {
+export async function exportWord(world: IWorld, format: 'json' | 'glb' | 'gltf'): Promise<Blob | string> {
     //console.groupCollapsed('Exporting');
     switch (format) {
         case 'json':
             return JSON.stringify(world.openedFile, null, 4);
         case 'glb':
+        case 'gltf':
             const options = {
                 shouldExportTransformNode: (
                     transformNode: BABYLON.Node,
@@ -18,11 +19,29 @@ async function exportWord(world: IWorld, format: 'json' | 'glb'): Promise<Blob |
                 exportWithoutWaitingForScene: false,
             };
 
-            const glb = await BABYLON.GLTF2Export.GLBAsync(
-                world.scene,
-                'model',
-                options,
-            );
-            return glb.glTFFiles['model.glb' /*todo via keys*/];
+            if(format==='glb'){
+
+                const glb = await BABYLON.GLTF2Export.GLBAsync(
+                    world.scene,
+                    'model',
+                    options,
+                );
+                return glb.glTFFiles[`model.${format}` /*todo via keys*/];
+
+            }
+
+            //todo DRY
+            if(format==='gltf'){
+
+                const glb = await BABYLON.GLTF2Export.GLTFAsync(
+                    world.scene,
+                    'model',
+                    options,
+                );
+                return glb.glTFFiles[`model.${format}` /*todo via keys*/];
+
+            }
+
+            throw new Error('Nooo');
     }
 }

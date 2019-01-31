@@ -7,6 +7,7 @@ import { EditorWorld } from '../../3d/World/EditorWorld';
 import * as downloadjs from 'downloadjs';
 import { normalize } from '../../tools/normalize';
 import { createNewFile } from '../../model/IFile';
+import { exportWord } from '../../3d/World/exportWorld';
 
 interface IMenuProps {
     appState: IEditorAppState & IObservableObject;
@@ -45,12 +46,12 @@ export const Menu = observer(({ appState, world }: IMenuProps) => {
             </ul>
 
             <ul className="export">
-                {['json', 'glb'].map((format) => (
+                {['json', 'glb', 'gltf'].map((format) => (
                     <li
                         key={format}
                         onClick={async () =>
                             downloadjs(
-                                await world.export(format as any),
+                                await exportWord(world,format as any),
                                 `${normalize(
                                     appState.openedFile.name,
                                 )}.${format}`,
