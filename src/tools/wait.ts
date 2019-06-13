@@ -1,7 +1,7 @@
-export async function waitAnimationFrame(){
-    return new Promise((resolve)=>{
-        requestAnimationFrame(()=>{
+export async function waitAnimationFrame() {
+    return new Promise((resolve) => {
+        requestAnimationFrame(() => {
             resolve();
-        })
-    })
+        });
+    });
 }

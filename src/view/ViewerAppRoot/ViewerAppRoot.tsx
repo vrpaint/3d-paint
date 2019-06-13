@@ -21,7 +21,7 @@ export const ViewerAppRoot = observer(
         return (
             <div className="ViewerAppRoot">
                 {appState.openedFile.name}
-                <Loading percent={appState.loading}/>
+                <Loading percent={appState.loading} />
                 <ViewerScene {...{ world }} />
                 <Filedrop
                     onJsonFile={(json: IFile) => {

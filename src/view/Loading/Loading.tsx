@@ -6,11 +6,5 @@ interface ILoadingProps {
 }
 
 export function Loading({ percent }: ILoadingProps) {
-    return (
-        <div
-            className="Loading"
-        >
-            {Math.round(percent*100)}%
-        </div>
-    );
+    return <div className="Loading">{Math.round(percent * 100)}%</div>;
 }

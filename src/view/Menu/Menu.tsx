@@ -51,7 +51,7 @@ export const Menu = observer(({ appState, world }: IMenuProps) => {
                         key={format}
                         onClick={async () =>
                             downloadjs(
-                                await exportWord(world,format as any),
+                                await exportWord(world, format as any),
                                 `${normalize(
                                     appState.openedFile.name,
                                 )}.${format}`,

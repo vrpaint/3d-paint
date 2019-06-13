@@ -28,12 +28,11 @@ export class DrawingToolFactory {
         }
     }
 
-    async replayState(percentCallback?: (percent: number)=>void) {
-
-        let i = 0 ;
+    async replayState(percentCallback?: (percent: number) => void) {
+        let i = 0;
         for (const drawing of this.world.openedFile.drawings) {
-
-            if(percentCallback)percentCallback(i/this.world.openedFile.drawings.length);
+            if (percentCallback)
+                percentCallback(i / this.world.openedFile.drawings.length);
 
             const drawingTool = this.getDrawingTool(drawing.drawingToolConfig);
             await drawingTool.replayState(drawing);
@@ -41,9 +40,8 @@ export class DrawingToolFactory {
 
             await waitAnimationFrame();
             i++;
-            
         }
 
-        if(percentCallback)percentCallback(1);
+        if (percentCallback) percentCallback(1);
     }
 }

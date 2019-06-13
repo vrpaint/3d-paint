@@ -21,7 +21,7 @@ export class ViewerWorld implements IWorld {
     public camera: BABYLON.ArcRotateCamera;
     private drawingToolFactory: DrawingToolFactory;
     public canvasElement: HTMLCanvasElement;
- 
+
     constructor(public appState: IViewerAppState & IObservableObject) {}
 
     run(canvasElement: HTMLCanvasElement) {
@@ -55,7 +55,7 @@ export class ViewerWorld implements IWorld {
         this.camera.attachControl(canvasElement, true);
 
         this.drawingToolFactory = new DrawingToolFactory(this);
-        this.drawingToolFactory.replayState((percent)=>{
+        this.drawingToolFactory.replayState((percent) => {
             this.appState.loading = percent;
         });
     }
@@ -100,12 +100,11 @@ export class ViewerWorld implements IWorld {
 
     //todo should it be here?
     loadAppState(newFile: IFile) {
-
         alert(1);
 
         this.appState.openedFile = newFile;
         this.clean();
-        this.drawingToolFactory.replayState((percent)=>{
+        this.drawingToolFactory.replayState((percent) => {
             this.appState.loading = percent;
         });
     }

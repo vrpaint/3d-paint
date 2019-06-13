@@ -1,6 +1,9 @@
 import { IWorld } from './IWorld';
 
-export async function exportWord(world: IWorld, format: 'json' | 'glb' | 'gltf'): Promise<Blob | string> {
+export async function exportWord(
+    world: IWorld,
+    format: 'json' | 'glb' | 'gltf',
+): Promise<Blob | string> {
     //console.groupCollapsed('Exporting');
     switch (format) {
         case 'json':
@@ -8,9 +11,7 @@ export async function exportWord(world: IWorld, format: 'json' | 'glb' | 'gltf')
         case 'glb':
         case 'gltf':
             const options = {
-                shouldExportTransformNode: (
-                    transformNode: BABYLON.Node,
-                ) => {
+                shouldExportTransformNode: (transformNode: BABYLON.Node) => {
                     const shouldExport = transformNode.name.includes(
                         'world-export',
                     );
@@ -19,27 +20,23 @@ export async function exportWord(world: IWorld, format: 'json' | 'glb' | 'gltf')
                 exportWithoutWaitingForScene: false,
             };
 
-            if(format==='glb'){
-
+            if (format === 'glb') {
                 const glb = await BABYLON.GLTF2Export.GLBAsync(
                     world.scene,
                     'model',
                     options,
                 );
                 return glb.glTFFiles[`model.${format}` /*todo via keys*/];
-
             }
 
             //todo DRY
-            if(format==='gltf'){
-
+            if (format === 'gltf') {
                 const glb = await BABYLON.GLTF2Export.GLTFAsync(
                     world.scene,
                     'model',
                     options,
                 );
                 return glb.glTFFiles[`model.${format}` /*todo via keys*/];
-
             }
 
             throw new Error('Nooo');

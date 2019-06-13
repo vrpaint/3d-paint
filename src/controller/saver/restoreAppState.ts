@@ -25,7 +25,10 @@ export function restoreAppState<TState>(
         appState = {};
     }
 
-    const appStateUpdated: TState =  Object.assign(createNewAppState(),appState)/*todo deep*/;
+    const appStateUpdated: TState = Object.assign(
+        createNewAppState(),
+        appState,
+    ) /*todo deep*/;
 
     return observable(appStateUpdated);
 }
