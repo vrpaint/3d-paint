@@ -3,6 +3,17 @@
   "version": "0.1.0",
   "private": false,
   "homepage": "https://vrpaint.github.io/3d-paint/",
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "deploy-from-cache": "gh-pages -d build",
+    "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,tsx,js}\" webpack.config.js",
+    "prettier-watch": "onchange \"**/*.{js,ts,tsx,json}\" -- npm run prettier"
+  },
   "dependencies": {
     "@types/html2canvas": "0.0.35",
     "babylonjs": "^3.3.0",
@@ -25,17 +36,6 @@
     "touchcontroller": "^0.12.0",
     "ts-keycode-enum": "^1.0.4",
     "uuid": "^3.3.2"
-  },
-  "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "deploy-from-cache": "gh-pages -d build",
-    "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,tsx,js}\" webpack.config.js",
-    "prettier-watch": "onchange \"**/*.{js,ts,tsx,json}\" -- npm run prettier"
   },
   "devDependencies": {
     "@types/color": "^3.0.0",
